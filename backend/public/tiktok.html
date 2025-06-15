@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TikTok Downloader</title>
+  <style>
+    body { background: #121212; color: white; font-family: sans-serif; text-align: center; padding: 2rem; }
+    input, button { padding: 10px; border-radius: 5px; margin: 10px 0; width: 60%; }
+    .back { margin-top: 2rem; display: block; color: #ccc; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <h1>TikTok Downloader</h1>
+  <p>Download TikTok videos without watermark</p>
+  <form id="tiktokForm">
+    <input type="url" id="urlInput" placeholder="Paste TikTok URL" required />
+    <br />
+    <button type="submit">Download</button>
+  </form>
+  <a href="/" class="back">← Back to Home</a>
+
+  <script>
+    document.getElementById('tiktokForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = document.getElementById('urlInput').value;
+      const res = await fetch('/api/tiktok', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      });
+      const data = await res.json();
+      if (data?.url) window.open(data.url, '_blank');
+      else alert(data.error || 'Download failed.');
+    });
+  </script>
+</body>
+</html>

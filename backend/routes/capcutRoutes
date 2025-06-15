@@ -1,0 +1,7 @@
+const express = require("express");
+const router = express.Router();
+const {checkApiKey }= require("../middlewares/middleware");
+const { downloadCapcut } = require("../controllers/capcutController");
+
+router.post("/",checkApiKey, downloadCapcut);
+module.exports = router;

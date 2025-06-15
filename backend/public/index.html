@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Media Downloader</title>
+  <style>
+    body { background: #121212; color: white; font-family: sans-serif; text-align: center; }
+    input, button { padding: 10px; border-radius: 5px; margin-top: 10px; }
+    .platforms { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 2rem; }
+    .card { background: #1e1e1e; padding: 1rem; border-radius: 10px; width: 200px; }
+  </style>
+</head>
+<body>
+  <h1>Media Downloader</h1>
+  <p>Download videos from various platforms</p>
+  <form id="universalForm">
+    <input type="url" id="urlInput" placeholder="Paste video URL" required />
+    <button type="submit">Download</button>
+  </form>
+
+  <div class="platforms">
+    <div class="card"><a href="/youtube.html">YouTube</a></div>
+    <div class="card"><a href="/tiktok.html">TikTok</a></div>
+    <div class="card"><a href="/instagram.html">Instagram</a></div>
+    <div class="card"><a href="/facebook.html">Facebook</a></div>
+    <div class="card"><a href="/twitter.html">Twitter</a></div>
+  </div>
+
+  <script>
+    document.getElementById('universalForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = document.getElementById('urlInput').value;
+      const res = await fetch('/api/universal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      });
+      const data = await res.json();
+      if (data && data.url) {
+        window.open(data.url, '_blank');
+      } else {
+        alert('Download failed');
+      }
+    });
+  </script>
+</body>
+</html>

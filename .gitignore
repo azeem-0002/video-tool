@@ -1,0 +1,37 @@
+# ===============================
+# Backend (Node.js)
+# ===============================
+/backend/node_modules/
+/backend/dist/
+/backend/build/
+/backend/coverage/
+/backend/.env
+/backend/.env.*.local
+/backend/npm-debug.log*
+
+# ===============================
+# Frontend (Next.js)
+/frontend/.next/
+/frontend/out/
+/frontend/.vercel/
+/frontend/export/
+/frontend/node_modules/
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+
+# ===============================
+# General (all folders)
+# ===============================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+logs/
+*.log
+*.pid
+*.seed
+*.pid.lock
