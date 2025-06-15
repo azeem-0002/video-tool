@@ -1,10 +1,16 @@
 import { PlatformDownloader } from "@/components/platform-downloader"
 import { Download } from "lucide-react"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { Metadata } from "next"
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "TikTok Video Downloader - Free No Watermark MP4 & MP3 TikTok Saver (HD)",
   description:
     "Free TikTok Downloader: Download TikTok videos, Stories, and Slideshows in HD MP4 (no watermark) or convert to MP3. Works fast on Android, iOS, and PC. Secure & easy to use!",
@@ -163,50 +169,97 @@ export default function TikTokPage() {
               </CardContent>
             </Card>
           </section>
-          <section className="max-w-3xl mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – TikTok Video Downloader</h2>
-      <div className="space-y-6">
-        <div>
-          <h3 className="font-semibold">1. What is a TikTok video downloader?</h3>
-          <p>A tool to save TikTok videos directly to your device—usually without watermark.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">2. Is the downloader free?</h3>
-          <p>Yes. Completely free with no extra costs.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">3. Do I need an account to use it?</h3>
-          <p>No account or login required.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">4. Can I download videos without a watermark?</h3>
-          <p>Yes. Most videos can be saved clean, without any watermark.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">5. Are there any limits on video downloads?</h3>
-          <p>No limits. Download as many as you want.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">6. Is the tool compatible with mobile devices?</h3>
-          <p>Fully compatible with Android, iOS, and all browsers.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">7. Can I download private or restricted videos?</h3>
-          <p>Only if you already have viewing access.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">8. What formats are supported?</h3>
-          <p>Downloads are typically saved as MP4 files.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">9. Do I need to install any app or extension?</h3>
-          <p>No. Everything works in your browser.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">10. Is the tool safe and anonymous?</h3>
-          <p>Yes. It’s secure and keeps your activity private.</p>
-        </div>
-      </div>
+          <section className="max-w-3xl mx-auto px-4 py-8 text-center">
+            <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – TikTok Video Downloader</h2>
+            <Accordion type="single" collapsible className="space-y-4">
+              <AccordionItem value="item-1">
+                <AccordionTrigger>1. What is a TikTok video downloader?</AccordionTrigger>
+                <AccordionContent>
+                  A tool to save TikTok videos directly to your device—usually without watermark.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-2">
+                <AccordionTrigger>2. Is the downloader free?</AccordionTrigger>
+                <AccordionContent>
+                  Yes. Completely free with no extra costs.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-3">
+                <AccordionTrigger>3. Do I need an account to use it?</AccordionTrigger>
+                <AccordionContent>
+                  No account or login required.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-4">
+                <AccordionTrigger>4. Can I download videos without a watermark?</AccordionTrigger>
+                <AccordionContent>
+                  Yes. Most videos can be saved clean, without any watermark.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-5">
+                <AccordionTrigger>5. Are there any limits on video downloads?</AccordionTrigger>
+                <AccordionContent>
+                  No limits. Download as many as you want.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-6">
+                <AccordionTrigger>6. Is the tool compatible with mobile devices?</AccordionTrigger>
+                <AccordionContent>
+                  Fully compatible with Android, iOS, and all browsers.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-7">
+                <AccordionTrigger>7. Can I download private or restricted videos?</AccordionTrigger>
+                <AccordionContent>
+                  Only if you already have viewing access.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-8">
+                <AccordionTrigger>8. What formats are supported?</AccordionTrigger>
+                <AccordionContent>
+                  Downloads are typically saved as MP4 files.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-9">
+                <AccordionTrigger>9. Do I need to install any app or extension?</AccordionTrigger>
+                <AccordionContent>
+                  No. Everything works in your browser.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-10">
+                <AccordionTrigger>10. Is the tool safe and anonymous?</AccordionTrigger>
+                <AccordionContent>
+                  Yes. It’s secure and keeps your activity private.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </section>
+          {/* Trust Badges */}
+          <section>
+            <h2 className="text-2xl font-bold mb-6 text-center">Trusted by Million of Users</h2>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                20,000+ Users
+              </Badge>
+              <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                100% Secure
+              </Badge>
+              <Badge
+                variant="secondary"
+                className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
+              >
+                No Watermarks
+              </Badge>
+            </div>
           </section>
         </div>
       </div>

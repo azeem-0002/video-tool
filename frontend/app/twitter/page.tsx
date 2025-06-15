@@ -1,10 +1,16 @@
 import { PlatformDownloader } from "@/components/platform-downloader"
 import { Download } from "lucide-react"
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { Metadata } from "next"
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Twitter/X Video Downloader - Save Videos & GIFs in HD MP4 (Free)",
   description:
     "Free Twitter/X video downloader: Easily download videos and GIFs from Twitter (now X) in high-quality HD MP4 format. No software, no login, fast, and works on all devices!",
@@ -160,52 +166,82 @@ export default function TwitterPage() {
             </Card>
           </section>
 
-          {/* FAQ Section */}
-           <section className="max-w-3xl mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – Twitter Video Downloader</h2>
-      <div className="space-y-6">
-        <div>
-          <h3 className="font-semibold">1. What is a Twitter video downloader and how does it work?</h3>
-          <p>A Twitter video downloader lets you save videos from Twitter to your device. Copy the tweet URL, paste it, and hit 'Download'.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">2. Is the Twitter downloader free to use?</h3>
-          <p>Yes, it’s completely free with no subscriptions or payments required.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">3. Do I need to register an account?</h3>
-          <p>No sign-up or login is needed.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">4. Are there any limits on downloads?</h3>
-          <p>No restrictions—download as many videos as you want.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">5. What video resolutions are supported?</h3>
-          <p>Supports HD, Full HD, and 4K if the original video is available in that quality.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">6. Can I download videos from private Twitter accounts?</h3>
-          <p>No, only public tweet videos are supported.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">7. Are the downloaded videos watermarked?</h3>
-          <p>No watermark or branding is added.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">8. What devices are compatible with the downloader?</h3>
-          <p>All devices including Android, iOS, Windows, macOS, and Linux are supported.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">9. Is the downloader secure?</h3>
-          <p>Yes, it's safe and does not store personal data.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">10. Can I reuse downloaded videos for publishing or commercial use?</h3>
-          <p>Only if you have the proper rights or permission from the content owner.</p>
-        </div>
-      </div>
-           </section>
+          
+           {/* FAQ Section */}
+          <section className="max-w-3xl mx-auto px-4 py-8 text-center">
+            <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – Twitter Video Downloader</h2>
+            <Accordion type="single" collapsible className="space-y-4">
+              <AccordionItem value="item-1">
+                <AccordionTrigger>1. What is a Twitter video downloader and how does it work?</AccordionTrigger>
+                <AccordionContent>
+                  A Twitter video downloader lets you save videos from Twitter to your device. Copy the tweet URL, paste it, and hit 'Download'.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-2">
+                <AccordionTrigger>2. Is the Twitter downloader free to use?</AccordionTrigger>
+                <AccordionContent>
+                  Yes, it’s completely free with no subscriptions or payments required.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-3">
+                <AccordionTrigger>3. Do I need to register an account?</AccordionTrigger>
+                <AccordionContent>
+                  No sign-up or login is needed.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-4">
+                <AccordionTrigger>4. Are there any limits on downloads?</AccordionTrigger>
+                <AccordionContent>
+                  No restrictions—download as many videos as you want.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-5">
+                <AccordionTrigger>5. What video resolutions are supported?</AccordionTrigger>
+                <AccordionContent>
+                  Supports HD, Full HD, and 4K if the original video is available in that quality.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-6">
+                <AccordionTrigger>6. Can I download videos from private Twitter accounts?</AccordionTrigger>
+                <AccordionContent>
+                  No, only public tweet videos are supported.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-7">
+                <AccordionTrigger>7. Are the downloaded videos watermarked?</AccordionTrigger>
+                <AccordionContent>
+                  No watermark or branding is added.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-8">
+                <AccordionTrigger>8. What devices are compatible with the downloader?</AccordionTrigger>
+                <AccordionContent>
+                  All devices including Android, iOS, Windows, macOS, and Linux are supported.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-9">
+                <AccordionTrigger>9. Is the downloader secure?</AccordionTrigger>
+                <AccordionContent>
+                  Yes, it's safe and does not store personal data.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-10">
+                <AccordionTrigger>10. Can I reuse downloaded videos for publishing or commercial use?</AccordionTrigger>
+                <AccordionContent>
+                  Only if you have the proper rights or permission from the content owner.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </section>
 
           {/* Trust Badges */}
           <section>

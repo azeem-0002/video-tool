@@ -1,10 +1,13 @@
-import { PlatformDownloader } from "@/components/platform-downloader"
-import { Facebook } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import type { Metadata } from "next"
+"use client";
 
-export const metadata: Metadata = {
+import { useState } from "react";
+import { PlatformDownloader } from "@/components/platform-downloader";
+import { Facebook } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import type { Metadata } from "next";
+
+const metadata: Metadata = {
   title: "Facebook Video Downloader - Free & HD FB Video Saver (Reels, Stories, Live)",
   description:
     "Download Facebook videos, Reels, Stories, and Live streams in HD quality, absolutely free and with no watermark. Our FB video downloader works online on any device – fast and secure!",
@@ -15,11 +18,11 @@ export const metadata: Metadata = {
     description:
       "Easily download Facebook videos, Reels, Stories, and Live streams in high definition, completely free and without watermarks. Compatible with all devices.",
     type: "website",
-    url: "https://freevideodownloader.co/facebook", // Ensure this is your actual domain
-    siteName: "FreeVideoDownloader", // Consistent site name
+    url: "https://freevideodownloader.co/facebook",
+    siteName: "FreeVideoDownloader",
     images: [
       {
-        url: "https://freevideodownloader.co/images/fb-downloader-og-image.jpg", // Add a specific image for FB
+        url: "https://freevideodownloader.co/images/fb-downloader-og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Facebook Video Downloader - Save FB Videos Easily",
@@ -29,13 +32,14 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Download Facebook Videos FREE - Reels, Stories, Live in HD",
-    description: "Get your Facebook videos, Reels, and Stories in HD, without watermarks. Fast, free, and works on any device.",
+    description:
+      "Get your Facebook videos, Reels, and Stories in HD, without watermarks. Fast, free, and works on any device.",
     images: [
-      "https://freevideodownloader.co/images/fb-downloader-twitter-card.jpg", // Add a specific image for FB
+      "https://freevideodownloader.co/images/fb-downloader-twitter-card.jpg",
     ],
   },
   alternates: {
-    canonical: "https://freevideodownloader.co/facebook", // Ensure this is your actual domain
+    canonical: "https://freevideodownloader.co/facebook",
   },
   robots: {
     index: true,
@@ -51,6 +55,52 @@ export const metadata: Metadata = {
 };
 
 export default function FacebookPage() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqs = [
+    {
+      question: "1. What is a Facebook video downloader?",
+      answer:
+        "A tool to save videos from Facebook to your device for offline viewing.",
+    },
+    {
+      question: "2. Is the Facebook video downloader free to use?",
+      answer: "Yes. It’s 100% free with no hidden charges.",
+    },
+    {
+      question: "3. Do I need to register or log in?",
+      answer: "No registration is needed to use the service.",
+    },
+    {
+      question: "4. What resolutions can I download?",
+      answer: "SD, HD, Full HD, and 4K depending on source quality.",
+    },
+    {
+      question: "5. Can I download videos from private Facebook accounts?",
+      answer: "Only if you have permission and access to view them.",
+    },
+    {
+      question: "6. Are there limits on how many videos I can download?",
+      answer: "No, you can download unlimited videos.",
+    },
+    {
+      question: "7. Will downloaded videos contain watermarks?",
+      answer: "No watermarks are added.",
+    },
+    {
+      question: "8. What format are videos saved in?",
+      answer: "MP4 format, which is widely compatible.",
+    },
+    {
+      question: "9. Do I need to install any software?",
+      answer: "No. Everything works from your browser.",
+    },
+    {
+      question: "10. Is the tool safe and private?",
+      answer: "Yes, it’s secure and respects your privacy.",
+    },
+  ];
+
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-4xl mx-auto">
@@ -62,8 +112,7 @@ export default function FacebookPage() {
             Facebook Video Downloader – Easily Save Facebook Videos, Reels & Stories in HD
           </h1>
           <p className="text-muted-foreground">
-            Download Facebook reels, stories, and live videos in high quality. No watermark, no installation, no login –
-            just paste your video link below.
+            Download Facebook reels, stories, and live videos in high quality. No watermark, no installation, no login – just paste your video link below.
           </p>
         </div>
 
@@ -169,56 +218,29 @@ export default function FacebookPage() {
             </Card>
           </section>
 
-          {/* FAQ Section */}
-         <section className="max-w-3xl mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – Facebook Video Downloader</h2>
-      <div className="space-y-6">
-        <div>
-          <h3 className="font-semibold">1. What is a Facebook video downloader?</h3>
-          <p>A tool to save videos from Facebook to your device for offline viewing.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">2. Is the Facebook video downloader free to use?</h3>
-          <p>Yes. It’s 100% free with no hidden charges.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">3. Do I need to register or log in?</h3>
-          <p>No registration is needed to use the service.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">4. What resolutions can I download?</h3>
-          <p>SD, HD, Full HD, and 4K depending on source quality.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">5. Can I download videos from private Facebook accounts?</h3>
-          <p>Only if you have permission and access to view them.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">6. Are there limits on how many videos I can download?</h3>
-          <p>No, you can download unlimited videos.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">7. Will downloaded videos contain watermarks?</h3>
-          <p>No watermarks are added.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">8. What format are videos saved in?</h3>
-          <p>MP4 format, which is widely compatible.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">9. Do I need to install any software?</h3>
-          <p>No. Everything works from your browser.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">10. Is the tool safe and private?</h3>
-          <p>Yes, it’s secure and respects your privacy.</p>
-        </div>
-      </div>
-        </section>
+          {/* FAQ Section - Accordion */}
+          <section className="max-w-3xl mx-auto px-4 py-8">
+            <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – Facebook Video Downloader</h2>
+            <div className="space-y-4">
+              {faqs.map((faq, i) => (
+                <div key={i} className="border-b pb-4">
+                  <button
+                    onClick={() => setOpenIndex((prev) => (prev === i ? null : i))}
+                    className="w-full text-left focus:outline-none"
+                    aria-expanded={openIndex === i}
+                    aria-controls={`faq-${i}`}
+                  >
+                    <h3 className="font-semibold">{faq.question}</h3>
+                  </button>
+                  {openIndex === i && <p id={`faq-${i}`} className="mt-2">{faq.answer}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
 
           {/* Trust Badges */}
           <section>
-            <h2 className="text-2xl font-bold mb-6">Trusted by Users Worldwide</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">Trusted by Users Worldwide</h2>
             <div className="flex flex-wrap justify-center gap-4">
               <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                 Fast & Reliable
@@ -226,16 +248,10 @@ export default function FacebookPage() {
               <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                 No Personal Data Stored
               </Badge>
-              <Badge
-                variant="secondary"
-                className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
-              >
+              <Badge variant="secondary" className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
                 100% Free
               </Badge>
-              <Badge
-                variant="secondary"
-                className="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200"
-              >
+              <Badge variant="secondary" className="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
                 Works on All Devices
               </Badge>
             </div>
@@ -243,5 +259,5 @@ export default function FacebookPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

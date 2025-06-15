@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "VideoDownloader Pro",
+    name: "FreeVideoDownloader",
     short_name: "VideoDownloader",
     description: "Universal video downloader for all major social media platforms",
     start_url: "/",

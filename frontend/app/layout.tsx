@@ -10,7 +10,7 @@ import { ToastProvider } from "@/components/toast-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "VideoDownloader Pro - Download Videos from Any Platform",
+  title: "FreeVideoDownloader - Download Videos from Any Platform",
   description:
     "Professional video downloader supporting YouTube, TikTok, Instagram, Facebook, Twitter, CapCut, and Pinterest. Fast, free, and easy to use.",
   keywords: "video downloader, youtube downloader, tiktok downloader, instagram downloader",

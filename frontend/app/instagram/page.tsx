@@ -1,10 +1,12 @@
 import { PlatformDownloader } from "@/components/platform-downloader"
 import { Instagram } from "lucide-react"
+import * as Accordion from "@radix-ui/react-accordion";
+import { ChevronDown } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { Metadata } from "next"
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Instagram Video Downloader: Save Reels, Stories & IGTV in HD - Free & No Watermark",
   description:
     "Free Instagram Video Downloader: Easily download Instagram videos, Reels, Stories, and IGTV in HD MP4. No watermark, no login, fast, and secure. Works on all devices (iOS & Android).",
@@ -162,50 +164,64 @@ export default function InstagramPage() {
 
           {/* FAQ Section */}
           <section className="max-w-3xl mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – Instagram Video Downloader</h2>
-      <div className="space-y-6">
-        <div>
-          <h3 className="font-semibold">1. Is the Instagram video downloader free to use?</h3>
-          <p>Yes, it’s completely free. No hidden fees or registration required.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">2. Do I need to register to use the tool?</h3>
-          <p>No account needed. Just paste the link and download.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">3. What resolutions are supported?</h3>
-          <p>Supports Full HD and up to 4K if available.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">4. Can I download both public and private Instagram videos?</h3>
-          <p>Yes, but you must have access to the private video.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">5. Are there watermarks on downloaded videos?</h3>
-          <p>No. The videos are saved without branding or watermarks.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">6. Are there limits on the number of downloads?</h3>
-          <p>No limits. Download as much as you like.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">7. How do I download a video from Instagram?</h3>
-          <p>Copy the Instagram video URL, paste it into the downloader, and click download.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">8. Is the downloader safe?</h3>
-          <p>Yes. It’s secure and doesn’t store any personal data.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">9. Can I reuse Instagram videos for commercial use?</h3>
-          <p>Only with the appropriate rights or permission from the content owner.</p>
-        </div>
-      </div>
-    </section>
+            <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – Instagram Video Downloader</h2>
+            <Accordion.Root type="multiple" className="space-y-4">
+              {[
+                {
+                  question: "1. Is the Instagram video downloader free to use?",
+                  answer: "Yes, it’s completely free. No hidden fees or registration required.",
+                },
+                {
+                  question: "2. Do I need to register to use the tool?",
+                  answer: "No account needed. Just paste the link and download.",
+                },
+                {
+                  question: "3. What resolutions are supported?",
+                  answer: "Supports Full HD and up to 4K if available.",
+                },
+                {
+                  question: "4. Can I download both public and private Instagram videos?",
+                  answer: "Yes, but you must have access to the private video.",
+                },
+                {
+                  question: "5. Are there watermarks on downloaded videos?",
+                  answer: "No. The videos are saved without branding or watermarks.",
+                },
+                {
+                  question: "6. Are there limits on the number of downloads?",
+                  answer: "No limits. Download as much as you like.",
+                },
+                {
+                  question: "7. How do I download a video from Instagram?",
+                  answer: "Copy the Instagram video URL, paste it into the downloader, and click download.",
+                },
+                {
+                  question: "8. Is the downloader safe?",
+                  answer: "Yes. It’s secure and doesn’t store any personal data.",
+                },
+                {
+                  question: "9. Can I reuse Instagram videos for commercial use?",
+                  answer: "Only with the appropriate rights or permission from the content owner.",
+                },
+              ].map((faq, idx) => (
+                <Accordion.Item key={idx} value={`faq-${idx}`} className="border rounded-lg">
+                  <Accordion.Header>
+                    <Accordion.Trigger className="flex w-full items-center justify-between px-4 py-3 font-semibold text-left text-black dark:text-white">
+                      <h3>{faq.question}</h3>
+                      <ChevronDown className="ml-2 h-5 w-5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                    </Accordion.Trigger>
+                  </Accordion.Header>
+                  <Accordion.Content className="px-4 pb-4 pt-0 text-muted-foreground">
+                    <p>{faq.answer}</p>
+                  </Accordion.Content>
+                </Accordion.Item>
+              ))}
+            </Accordion.Root>
+          </section>
 
           {/* Trust Badges */}
           <section>
-            <h2 className="text-2xl font-bold mb-6">Trusted by Thousands</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">Trusted by Thousands</h2>
             <div className="flex flex-wrap justify-center gap-4">
               <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                 10,000+ Active Users

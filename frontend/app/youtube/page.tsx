@@ -1,10 +1,16 @@
 import { PlatformDownloader } from "@/components/platform-downloader"
 import { Youtube } from "lucide-react"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { Metadata } from "next"
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "YouTube Video Downloader - Free MP4 & MP3 YouTube Saver (HD, 4K)",
   description:
     "Free YouTube Downloader: Download YouTube videos in various qualities (HD, 4K, 1080p) to MP4 or convert to MP3. Fast, secure, and no software or watermark needed. Compatible with all devices!",
@@ -175,55 +181,86 @@ export default function YouTubePage() {
               </CardContent>
             </Card>
           </section>
-          <section className="max-w-3xl mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – YouTube Video Downloader</h2>
-      <div className="space-y-6">
-        <div>
-          <h3 className="font-semibold">1. What is a YouTube video downloader?</h3>
-          <p>It lets you save YouTube videos directly to your device, supporting resolutions up to 4K.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">2. Is there any cost involved in using the tool?</h3>
-          <p>No, it’s totally free with no subscription required.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">3. Is user registration required?</h3>
-          <p>No login or account is needed.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">4. What video resolutions are supported?</h3>
-          <p>Supports SD, HD, Full HD, and 4K if the source video allows.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">5. Can I save private video links?</h3>
-          <p>Only if you have proper access permissions.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">6. Are there watermarks on downloaded videos?</h3>
-          <p>No watermark or branding is added.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">7. Are there limits on the number of downloads?</h3>
-          <p>No download limits.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">8. Which file types are available?</h3>
-          <p>Formats like MP4 and WEBM are supported.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">9. Do I need to install anything?</h3>
-          <p>No, it’s browser-based. No installation required.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold">10. Is downloading YouTube videos allowed?</h3>
-          <p>Only download content you’re authorized to use. Respect copyright laws.</p>
-        </div>
-      </div>
-    </section>
+
+          {/* FAQ */}
+          <section className="max-w-3xl mx-auto px-4 py-8 text-center">
+            <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – YouTube Video Downloader</h2>
+            <Accordion type="single" collapsible className="space-y-2">
+              <AccordionItem value="item-1">
+                <AccordionTrigger>What is a YouTube video downloader?</AccordionTrigger>
+                <AccordionContent>
+                  It lets you save YouTube videos directly to your device, supporting resolutions up to 4K.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-2">
+                <AccordionTrigger>Is there any cost involved in using the tool?</AccordionTrigger>
+                <AccordionContent>
+                  No, it’s totally free with no subscription required.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-3">
+                <AccordionTrigger>Is user registration required?</AccordionTrigger>
+                <AccordionContent>
+                  No login or account is needed.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-4">
+                <AccordionTrigger>What video resolutions are supported?</AccordionTrigger>
+                <AccordionContent>
+                  Supports SD, HD, Full HD, and 4K if the source video allows.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-5">
+                <AccordionTrigger>Can I save private video links?</AccordionTrigger>
+                <AccordionContent>
+                  Only if you have proper access permissions.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-6">
+                <AccordionTrigger>Are there watermarks on downloaded videos?</AccordionTrigger>
+                <AccordionContent>
+                  No watermark or branding is added.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-7">
+                <AccordionTrigger>Are there limits on the number of downloads?</AccordionTrigger>
+                <AccordionContent>
+                  No download limits.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-8">
+                <AccordionTrigger>Which file types are available?</AccordionTrigger>
+                <AccordionContent>
+                  Formats like MP4 and WEBM are supported.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-9">
+                <AccordionTrigger>Do I need to install anything?</AccordionTrigger>
+                <AccordionContent>
+                  No, it’s browser-based. No installation required.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-10">
+                <AccordionTrigger>Is downloading YouTube videos allowed?</AccordionTrigger>
+                <AccordionContent>
+                  Only download content you’re authorized to use. Respect copyright laws.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </section>
 
           {/* Trust Badges */}
           <section>
-            <h2 className="text-2xl font-bold mb-6">Trusted by Users</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">Trusted by Users</h2>
             <div className="flex flex-wrap justify-center gap-4">
               <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                 20,000+ Users

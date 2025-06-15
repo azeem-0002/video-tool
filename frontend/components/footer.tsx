@@ -12,7 +12,7 @@ export function Footer() {
                 <Download className="h-4 w-4 text-white" />
               </div>
               <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                VideoDownloader Pro
+                FreeVideoDownloader
               </span>
             </Link>
             <p className="text-sm text-muted-foreground">
@@ -67,7 +67,7 @@ export function Footer() {
         </div>
 
         <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} VideoDownloader Pro. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} FreeVideoDownloader. All rights reserved.</p>
         </div>
       </div>
     </footer>

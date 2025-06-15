@@ -28,7 +28,7 @@ export function Navigation() {
               <Download className="h-4 w-4 text-white" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              VideoDownloader Pro
+              FreeVideoDownloader
             </span>
           </Link>
 
