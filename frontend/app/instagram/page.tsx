@@ -164,47 +164,71 @@ export default function InstagramPage() {
 
           {/* FAQ Section */}
           <section className="max-w-3xl mx-auto px-4 py-8">
-            <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – Instagram Video Downloader</h2>
+            <h2 className="text-3xl font-bold mb-6">
+              Frequently Asked Questions – Instagram Video Downloader
+            </h2>
             <Accordion.Root type="multiple" className="space-y-4">
               {[
                 {
-                  question: "1. Is the Instagram video downloader free to use?",
-                  answer: "Yes, it’s completely free. No hidden fees or registration required.",
+                  question:
+                    "1. Is the Instagram video download tool available at no cost?",
+                  answer:
+                    "Yes, this Instagram video download service is 100% free of charge. Users can access all features without any hidden fees or subscriptions.",
                 },
                 {
-                  question: "2. Do I need to register to use the tool?",
-                  answer: "No account needed. Just paste the link and download.",
+                  question:
+                    "2. Do I need to register to use the Instagram video downloader?",
+                  answer:
+                    "No sign-up or registration is required. Anyone can visit the platform and begin downloading Instagram videos instantly without creating an account.",
                 },
                 {
-                  question: "3. What resolutions are supported?",
-                  answer: "Supports Full HD and up to 4K if available.",
+                  question:
+                    "3. What resolutions are supported for Instagram video downloads?",
+                  answer:
+                    "The tool supports video downloads in multiple resolutions, including Full HD (1080p) and Ultra HD (4K), depending on the source video quality.",
                 },
                 {
-                  question: "4. Can I download both public and private Instagram videos?",
-                  answer: "Yes, but you must have access to the private video.",
+                  question:
+                    "4. Can the tool download both public and private Instagram videos?",
+                  answer:
+                    "Yes, it allows downloads from public profiles and private content only if the user has authorized access. Always ensure proper permissions before downloading private media.",
                 },
                 {
-                  question: "5. Are there watermarks on downloaded videos?",
-                  answer: "No. The videos are saved without branding or watermarks.",
+                  question:
+                    "5. Do downloaded Instagram videos contain watermarks?",
+                  answer:
+                    "No watermarks are added to the downloaded files. You receive clean, original-quality videos without any branding or overlay.",
                 },
                 {
-                  question: "6. Are there limits on the number of downloads?",
-                  answer: "No limits. Download as much as you like.",
+                  question:
+                    "6. Is there a restriction on the number of Instagram videos I can download?",
+                  answer:
+                    "There are no daily or monthly limits. Users can download unlimited videos from Instagram without any usage caps.",
                 },
                 {
-                  question: "7. How do I download a video from Instagram?",
-                  answer: "Copy the Instagram video URL, paste it into the downloader, and click download.",
+                  question:
+                    "7. What is the process for downloading videos from Instagram?",
+                  answer:
+                    "Copy the Instagram video URL, paste it into the downloader input field, and click the download button. The video will be ready for saving within moments.",
                 },
                 {
-                  question: "8. Is the downloader safe?",
-                  answer: "Yes. It’s secure and doesn’t store any personal data.",
+                  question:
+                    "8. Is using this Instagram video downloader secure?",
+                  answer:
+                    "Yes, the tool follows secure browsing practices, and no personal data or download history is stored. Your privacy is respected at all times.",
                 },
                 {
-                  question: "9. Can I reuse Instagram videos for commercial use?",
-                  answer: "Only with the appropriate rights or permission from the content owner.",
+                  question:
+                    "9. Can downloaded Instagram videos be reused for commercial projects?",
+                  answer:
+                    "All content rights remain with the original creators. For commercial or public use, ensure you have the appropriate licenses or permissions from the video owner.",
                 },
               ].map((faq, idx) => (
-                <Accordion.Item key={idx} value={`faq-${idx}`} className="border rounded-lg">
+                <Accordion.Item
+                  key={idx}
+                  value={`faq-${idx}`}
+                  className="border rounded-lg"
+                >
                   <Accordion.Header>
                     <Accordion.Trigger className="flex w-full items-center justify-between px-4 py-3 font-semibold text-left text-black dark:text-white">
                       <h3>{faq.question}</h3>

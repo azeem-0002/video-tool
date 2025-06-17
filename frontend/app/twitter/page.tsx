@@ -169,75 +169,114 @@ export default function TwitterPage() {
           
            {/* FAQ Section */}
           <section className="max-w-3xl mx-auto px-4 py-8 text-center">
-            <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – Twitter Video Downloader</h2>
+            <h2 className="text-3xl font-bold mb-6">
+              Frequently Asked Questions – Twitter Video Downloader
+            </h2>
             <Accordion type="single" collapsible className="space-y-4">
               <AccordionItem value="item-1">
-                <AccordionTrigger>1. What is a Twitter video downloader and how does it work?</AccordionTrigger>
+                <AccordionTrigger>
+                  1. How can I download Twitter videos online?
+                </AccordionTrigger>
                 <AccordionContent>
-                  A Twitter video downloader lets you save videos from Twitter to your device. Copy the tweet URL, paste it, and hit 'Download'.
+                  To save a video from Twitter, copy the tweet link, paste it
+                  into the input field on our tool, and click the download
+                  button. The file will be saved to your device in your selected
+                  resolution.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-2">
-                <AccordionTrigger>2. Is the Twitter downloader free to use?</AccordionTrigger>
+                <AccordionTrigger>
+                  2. Do I need to sign up to use the Twitter video download
+                  tool?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Yes, it’s completely free with no subscriptions or payments required.
+                  No registration is required. The service is available
+                  instantly without logging in or creating an account.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-3">
-                <AccordionTrigger>3. Do I need to register an account?</AccordionTrigger>
+                <AccordionTrigger>
+                  3. Is there a daily or monthly download limit?
+                </AccordionTrigger>
                 <AccordionContent>
-                  No sign-up or login is needed.
+                  There are no restrictions. Users can download unlimited
+                  Twitter videos without facing any cap or usage limit.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-4">
-                <AccordionTrigger>4. Are there any limits on downloads?</AccordionTrigger>
+                <AccordionTrigger>
+                  4. What video formats and resolutions are available?
+                </AccordionTrigger>
                 <AccordionContent>
-                  No restrictions—download as many videos as you want.
+                  Our tool supports multiple quality options, including HD, Full
+                  HD, and up to 4K resolution, depending on the source video’s
+                  quality.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-5">
-                <AccordionTrigger>5. What video resolutions are supported?</AccordionTrigger>
+                <AccordionTrigger>
+                  5. Can I download videos posted on private Twitter accounts?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Supports HD, Full HD, and 4K if the original video is available in that quality.
+                  Videos from private accounts are only accessible if you have
+                  permission and access to view them. Our tool supports
+                  downloads from publicly accessible tweets.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-6">
-                <AccordionTrigger>6. Can I download videos from private Twitter accounts?</AccordionTrigger>
+                <AccordionTrigger>
+                  6. Is this Twitter video saving service free of cost?
+                </AccordionTrigger>
                 <AccordionContent>
-                  No, only public tweet videos are supported.
+                  Yes, this video downloader is completely free. No hidden
+                  charges or premium plans.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-7">
-                <AccordionTrigger>7. Are the downloaded videos watermarked?</AccordionTrigger>
+                <AccordionTrigger>
+                  7. Will the downloaded video contain any branding or
+                  watermark?
+                </AccordionTrigger>
                 <AccordionContent>
-                  No watermark or branding is added.
+                  No, the video files are downloaded in their original form
+                  without any added logos or watermarks.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-8">
-                <AccordionTrigger>8. What devices are compatible with the downloader?</AccordionTrigger>
+                <AccordionTrigger>
+                  8. Is the video downloading process user-friendly?
+                </AccordionTrigger>
                 <AccordionContent>
-                  All devices including Android, iOS, Windows, macOS, and Linux are supported.
+                  Yes, the interface is designed for all users. No technical
+                  skills are needed—just paste, click, and download.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-9">
-                <AccordionTrigger>9. Is the downloader secure?</AccordionTrigger>
+                <AccordionTrigger>
+                  9. Which devices support this downloader tool?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Yes, it's safe and does not store personal data.
+                  The platform works on all major devices including Android
+                  phones, iPhones, iPads, laptops, desktops, and tablets via any
+                  web browser.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-10">
-                <AccordionTrigger>10. Can I reuse downloaded videos for publishing or commercial use?</AccordionTrigger>
+                <AccordionTrigger>
+                  10. Is this tool compatible with all operating systems?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Only if you have the proper rights or permission from the content owner.
+                  Yes, it's compatible with Windows, macOS, iOS, Android, and
+                  Linux operating systems, as it is fully web-based.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>

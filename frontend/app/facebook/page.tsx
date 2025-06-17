@@ -57,49 +57,58 @@ const metadata: Metadata = {
 export default function FacebookPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const faqs = [
-    {
-      question: "1. What is a Facebook video downloader?",
-      answer:
-        "A tool to save videos from Facebook to your device for offline viewing.",
-    },
-    {
-      question: "2. Is the Facebook video downloader free to use?",
-      answer: "Yes. It’s 100% free with no hidden charges.",
-    },
-    {
-      question: "3. Do I need to register or log in?",
-      answer: "No registration is needed to use the service.",
-    },
-    {
-      question: "4. What resolutions can I download?",
-      answer: "SD, HD, Full HD, and 4K depending on source quality.",
-    },
-    {
-      question: "5. Can I download videos from private Facebook accounts?",
-      answer: "Only if you have permission and access to view them.",
-    },
-    {
-      question: "6. Are there limits on how many videos I can download?",
-      answer: "No, you can download unlimited videos.",
-    },
-    {
-      question: "7. Will downloaded videos contain watermarks?",
-      answer: "No watermarks are added.",
-    },
-    {
-      question: "8. What format are videos saved in?",
-      answer: "MP4 format, which is widely compatible.",
-    },
-    {
-      question: "9. Do I need to install any software?",
-      answer: "No. Everything works from your browser.",
-    },
-    {
-      question: "10. Is the tool safe and private?",
-      answer: "Yes, it’s secure and respects your privacy.",
-    },
-  ];
+   const faqs = [
+  {
+    question: "1. What is a Facebook Video Downloader Tool?",
+    answer:
+      "A Facebook Video Downloader is a web-based utility that lets users save videos directly from Facebook to their device. It supports high-resolution downloads (including HD and 4K), allowing offline viewing without internet access.",
+  },
+  {
+    question: "2. Is Using the Facebook Video Downloader Free of Charge?",
+    answer:
+      "Yes, the tool is 100% free to use. There are no hidden fees, subscriptions, or sign-up requirements.",
+  },
+  {
+    question: "3. Do I Need to Register or Log In to Use It?",
+    answer:
+      "No account creation or login is required. Simply copy the Facebook video link, paste it into the downloader, and initiate the download.",
+  },
+  {
+    question: "4. What Video Resolutions Can I Download?",
+    answer:
+      "Available resolutions include SD, HD, Full HD, and up to 4K (if the original video supports it). The tool adjusts to provide the best available quality.",
+  },
+  {
+    question: "5. Can I Download Private Facebook Videos?",
+    answer:
+      "Yes, you can download private videos, but only if you have access or permission to view them. This ensures ethical use and respects content ownership.",
+  },
+  {
+    question: "6. Are There Limits to the Number of Videos I Can Download?",
+    answer:
+      "There are no daily limits or restrictions. Users can download unlimited Facebook videos without any throttling or charges.",
+  },
+  {
+    question: "7. Will the Downloaded Videos Have Any Watermarks?",
+    answer:
+      "No. All video downloads are watermark-free, ensuring clean and original content playback.",
+  },
+  {
+    question: "8. In What File Format Will the Video Be Saved?",
+    answer:
+      "Videos are saved in MP4 format, which is widely compatible with smartphones, tablets, desktops, and most media players.",
+  },
+  {
+    question: "9. How Do I Save a Facebook Video to My Device?",
+    answer:
+      "Follow these steps:\n\n1. Copy the video URL from Facebook.\n2. Paste the link into the download input field.\n3. Select your preferred resolution.\n4. Click ‘Download’ to begin saving the video.",
+  },
+  {
+    question: "10. Is the Facebook Downloader Safe and Private?",
+    answer:
+      "Yes. The downloader respects user privacy. It does not collect personal data or store download history. All downloads are processed anonymously.",
+  },
+];
 
   return (
     <div className="container mx-auto px-4 py-12">

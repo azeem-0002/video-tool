@@ -184,75 +184,117 @@ export default function YouTubePage() {
 
           {/* FAQ */}
           <section className="max-w-3xl mx-auto px-4 py-8 text-center">
-            <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – YouTube Video Downloader</h2>
+            <h2 className="text-3xl font-bold mb-6">
+              Frequently Asked Questions – YouTube Video Downloader
+            </h2>
             <Accordion type="single" collapsible className="space-y-2">
               <AccordionItem value="item-1">
-                <AccordionTrigger>What is a YouTube video downloader?</AccordionTrigger>
+                <AccordionTrigger>
+                  1. What is a YouTube video downloader?
+                </AccordionTrigger>
                 <AccordionContent>
-                  It lets you save YouTube videos directly to your device, supporting resolutions up to 4K.
+                  A YouTube video downloader is an online utility that enables
+                  users to save videos from YouTube directly to their devices.
+                  This tool supports multiple resolutions, including
+                  high-definition options up to 4K, depending on availability.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-2">
-                <AccordionTrigger>Is there any cost involved in using the tool?</AccordionTrigger>
+                <AccordionTrigger>
+                  2. Is there any cost involved in using the tool?
+                </AccordionTrigger>
                 <AccordionContent>
-                  No, it’s totally free with no subscription required.
+                  No, this service is offered at no charge. Users can access all
+                  features without paying fees or purchasing a subscription.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-3">
-                <AccordionTrigger>Is user registration required?</AccordionTrigger>
+                <AccordionTrigger>
+                  3. Is user registration required?
+                </AccordionTrigger>
                 <AccordionContent>
-                  No login or account is needed.
+                  No account creation or login is necessary. You can start
+                  downloading videos right away without providing any personal
+                  details.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-4">
-                <AccordionTrigger>What video resolutions are supported?</AccordionTrigger>
+                <AccordionTrigger>
+                  4. What video resolutions are supported?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Supports SD, HD, Full HD, and 4K if the source video allows.
+                  The downloader supports a variety of quality options, ranging
+                  from standard definition to ultra HD (4K), based on the
+                  original video quality.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-5">
-                <AccordionTrigger>Can I save private video links?</AccordionTrigger>
+                <AccordionTrigger>
+                  5. Can I save private video links?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Only if you have proper access permissions.
+                  Videos marked as private can be downloaded only if you have
+                  authorized access. A valid link and viewing rights are
+                  required.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-6">
-                <AccordionTrigger>Are there watermarks on downloaded videos?</AccordionTrigger>
+                <AccordionTrigger>
+                  6. Are there any watermarks on the downloaded files?
+                </AccordionTrigger>
                 <AccordionContent>
-                  No watermark or branding is added.
+                  No. Saved videos are provided in their original format without
+                  any added branding or watermarks.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-7">
-                <AccordionTrigger>Are there limits on the number of downloads?</AccordionTrigger>
+                <AccordionTrigger>
+                  7. Is there a limit on the number of videos I can download?
+                </AccordionTrigger>
                 <AccordionContent>
-                  No download limits.
+                  There are no usage restrictions. You can download unlimited
+                  videos, as often as you like.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-8">
-                <AccordionTrigger>Which file types are available?</AccordionTrigger>
+                <AccordionTrigger>
+                  8. Which file types are available for download?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Formats like MP4 and WEBM are supported.
+                  Videos can be saved in multiple formats, including MP4 and
+                  WEBM, based on what’s supported by the source content and user
+                  preference.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-9">
-                <AccordionTrigger>Do I need to install anything?</AccordionTrigger>
+                <AccordionTrigger>
+                  9. Do I need to install any applications or browser
+                  extensions?
+                </AccordionTrigger>
                 <AccordionContent>
-                  No, it’s browser-based. No installation required.
+                  No installation is required. The downloader works directly
+                  from your browser, offering a seamless and software-free
+                  experience.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-10">
-                <AccordionTrigger>Is downloading YouTube videos allowed?</AccordionTrigger>
+                <AccordionTrigger>
+                  10. Is downloading YouTube videos allowed?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Only download content you’re authorized to use. Respect copyright laws.
+                  Saving content from YouTube may conflict with their Terms of
+                  Service. It’s advised to download only content for which you
+                  have permission or that is in the public domain. Always follow
+                  copyright regulations in your region.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>

@@ -170,75 +170,115 @@ export default function TikTokPage() {
             </Card>
           </section>
           <section className="max-w-3xl mx-auto px-4 py-8 text-center">
-            <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions – TikTok Video Downloader</h2>
+            <h2 className="text-3xl font-bold mb-6">
+              Frequently Asked Questions – TikTok Video Downloader
+            </h2>
             <Accordion type="single" collapsible className="space-y-4">
               <AccordionItem value="item-1">
-                <AccordionTrigger>1. What is a TikTok video downloader?</AccordionTrigger>
+                <AccordionTrigger>
+                  1. What is a TikTok video downloader and how does it work?
+                </AccordionTrigger>
                 <AccordionContent>
-                  A tool to save TikTok videos directly to your device—usually without watermark.
+                  A TikTok video downloader is a free online tool that lets you
+                  download videos directly from TikTok to your device. Simply
+                  copy the video URL, paste it into the downloader input box,
+                  and click the download button—no app or software required.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-2">
-                <AccordionTrigger>2. Is the downloader free?</AccordionTrigger>
+                <AccordionTrigger>
+                  2. Is the TikTok video downloader free to use?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Yes. Completely free with no extra costs.
+                  Yes, our TikTok video downloader is completely free. You can
+                  save unlimited videos without any cost, subscription, or
+                  registration.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-3">
-                <AccordionTrigger>3. Do I need an account to use it?</AccordionTrigger>
+                <AccordionTrigger>
+                  3. Do I need to sign up or create an account to download
+                  TikTok videos?
+                </AccordionTrigger>
                 <AccordionContent>
-                  No account or login required.
+                  No account is needed. Our service is instant and accessible to
+                  everyone without requiring sign-up or login.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-4">
-                <AccordionTrigger>4. Can I download videos without a watermark?</AccordionTrigger>
+                <AccordionTrigger>
+                  4. Can I download TikTok videos in high quality, including 4K
+                  resolution?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Yes. Most videos can be saved clean, without any watermark.
+                  Absolutely! Our downloader supports video resolutions up to
+                  4K, ensuring you get the highest possible quality when
+                  available from the original source.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-5">
-                <AccordionTrigger>5. Are there any limits on video downloads?</AccordionTrigger>
+                <AccordionTrigger>
+                  5. Can I download TikTok videos without the watermark?
+                </AccordionTrigger>
                 <AccordionContent>
-                  No limits. Download as many as you want.
+                  Yes, you can download TikTok videos without the watermark.
+                  This allows for a cleaner viewing or sharing experience.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-6">
-                <AccordionTrigger>6. Is the tool compatible with mobile devices?</AccordionTrigger>
+                <AccordionTrigger>
+                  6. Are there any limits on how many videos I can download?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Fully compatible with Android, iOS, and all browsers.
+                  There are no restrictions—you can download as many TikTok
+                  videos as you want, anytime.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-7">
-                <AccordionTrigger>7. Can I download private or restricted videos?</AccordionTrigger>
+                <AccordionTrigger>
+                  7. Which video formats are supported for download?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Only if you already have viewing access.
+                  Videos are typically available in MP4 format, which is widely
+                  compatible with mobile devices, tablets, and desktops.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-8">
-                <AccordionTrigger>8. What formats are supported?</AccordionTrigger>
+                <AccordionTrigger>
+                  8. Is your TikTok downloader tool safe and secure?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Downloads are typically saved as MP4 files.
+                  Yes, our tool is completely safe. We don’t collect or store
+                  user data, and the site is regularly scanned to be free from
+                  malware or harmful software.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-9">
-                <AccordionTrigger>9. Do I need to install any app or extension?</AccordionTrigger>
+                <AccordionTrigger>
+                  9. Can I download videos from private TikTok accounts?
+                </AccordionTrigger>
                 <AccordionContent>
-                  No. Everything works in your browser.
+                  No, for privacy reasons, you can only download videos that are
+                  publicly accessible on TikTok.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-10">
-                <AccordionTrigger>10. Is the tool safe and anonymous?</AccordionTrigger>
+                <AccordionTrigger>
+                  10. What should I do if the TikTok video download fails?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Yes. It’s secure and keeps your activity private.
+                  If your download doesn’t work, check your internet connection,
+                  refresh the page, or try a different video link. If the
+                  problem continues, contact our support team for help.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
