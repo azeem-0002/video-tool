@@ -9,11 +9,11 @@ import { cn } from "@/lib/utils"
 
 const platforms = [
   { name: "Universal", href: "/" },
-  { name: "TikTok", href: "/tiktok" },
-  { name: "YouTube", href: "/youtube" },
-  { name: "Facebook", href: "/facebook" },
-  { name: "Instagram", href: "/instagram" },
-  { name: "Twitter", href: "/twitter" },
+  { name: "TikTok", href: "/tiktok-video-downloader" },
+  { name: "YouTube", href: "/youtube-video-downloader" },
+  { name: "Facebook", href: "/facebook-video-downloader" },
+  { name: "Instagram", href: "/instagram-video-downloader" },
+  { name: "Twitter", href: "/twitter-video-downloader" },
 ]
 
 export function Navigation() {
@@ -23,7 +23,7 @@ export function Navigation() {
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2" onClick={() => window.scrollTo(0, 0)}>
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-purple-600">
               <Download className="h-4 w-4 text-white" />
             </div>
@@ -35,7 +35,7 @@ export function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             {platforms.map((platform) => (
-              <Link key={platform.name} href={platform.href}>
+              <Link key={platform.name} href={platform.href} onClick={() => window.scrollTo(0, 0)}>
                 <Button variant="ghost" size="sm" className="text-sm">
                   {platform.name}
                 </Button>
@@ -60,7 +60,7 @@ export function Navigation() {
         >
           <div className="flex flex-col space-y-2 pt-4">
             {platforms.map((platform) => (
-              <Link key={platform.name} href={platform.href}>
+              <Link key={platform.name} href={platform.href} onClick={() => window.scrollTo(0, 0)}>
                 <Button variant="ghost" size="sm" className="w-full justify-start" onClick={() => setIsOpen(false)}>
                   {platform.name}
                 </Button>

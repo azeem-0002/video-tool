@@ -12,6 +12,7 @@ import { Download, Loader2, AlertTriangle, CheckCircle, XCircle, Youtube, Instag
 import { VideoResult } from "@/components/video-result"
 import { toast } from "sonner"
 import Link from "next/link"
+import { transformBackendResponse } from "@/lib/response-transformer"
 
 interface VideoData {
   title: string
@@ -56,7 +57,7 @@ export function UniversalDownloader() {
     if (!platform) {
       return {
         isValid: false,
-        message: "Unsupported platform. We support YouTube, TikTok, Instagram, Facebook, Twitter, and Pinterest.",
+        message: "Unsupported platform. We support YouTube, TikTok, Instagram, Facebook, and Twitter.",
       }
     }
 
@@ -83,8 +84,6 @@ export function UniversalDownloader() {
       return "facebook"
     } else if (urlLower.includes("twitter.com") || urlLower.includes("x.com")) {
       return "twitter"
-    } else if (urlLower.includes("pinterest.com")) {
-      return "pinterest"
     }
 
     return null
@@ -102,6 +101,212 @@ export function UniversalDownloader() {
     } else {
       setUrlValidation(null)
     }
+  }
+
+  // Comprehensive validation for empty/null backend responses
+  const validateBackendResponse = (data: any, platform: string): { isValid: boolean; message: string } => {
+    console.log("Validating backend response:", { data, platform })
+
+    // Check if data is null, undefined, or empty string
+    if (data === null || data === undefined || data === "") {
+      return {
+        isValid: false,
+        message: `No ${platform} video data received from the server. The video might not be available or accessible.`,
+      }
+    }
+
+    // Check if data is not an object
+    if (typeof data !== "object") {
+      return {
+        isValid: false,
+        message: `Invalid ${platform} video data format received from the server.`,
+      }
+    }
+
+    // Check if data is an empty object
+    if (Object.keys(data).length === 0) {
+      return {
+        isValid: false,
+        message: `Empty ${platform} video data received. The video might be private, deleted, or not accessible.`,
+      }
+    }
+
+    // Platform-specific validation
+    switch (platform) {
+      case "facebook":
+        // Check if all Facebook video properties are null/empty
+        const fbVideoProps = ["HD", "Normal_video", "video_url", "url", "video", "download_url"]
+        const hasFbVideo = fbVideoProps.some((prop) => {
+          const value = data[prop]
+          return value !== null && value !== undefined && value !== "" && value !== false
+        })
+
+        if (!hasFbVideo) {
+          return {
+            isValid: false,
+            message:
+              "This Facebook video is not available for download. The video might be private, age-restricted, or in a format that's not supported. Please try a different Facebook video URL or make sure the video is publicly accessible.",
+          }
+        }
+        break
+
+      case "twitter":
+        // Check Twitter URL array
+        if (data.url && Array.isArray(data.url)) {
+          const hasValidTwitterUrls = data.url.some((item: any) => {
+            if (typeof item === "string" && item.trim()) return true
+            if (item && typeof item === "object") {
+              return !!(item.hd || item.sd || item.url || item.video_url)
+            }
+            return false
+          })
+
+          if (!hasValidTwitterUrls) {
+            return {
+              isValid: false,
+              message:
+                "This Twitter video is not available for download. The tweet might be private, deleted, or the video format is not supported. Please try a different Twitter video URL.",
+            }
+          }
+        } else {
+          // Check other Twitter properties
+          const twitterProps = ["video", "download_url", "media"]
+          const hasTwitterVideo = twitterProps.some((prop) => {
+            const value = data[prop]
+            return value !== null && value !== undefined && value !== ""
+          })
+
+          if (!hasTwitterVideo) {
+            return {
+              isValid: false,
+              message:
+                "This Twitter content doesn't contain downloadable video. Please make sure the tweet contains a video.",
+            }
+          }
+        }
+        break
+
+      case "youtube":
+        // Check YouTube video properties
+        const ytProps = ["mp4", "mp3", "video_url", "url"]
+        const hasYtVideo = ytProps.some((prop) => {
+          const value = data[prop]
+          return value !== null && value !== undefined && value !== ""
+        })
+
+        if (!hasYtVideo) {
+          return {
+            isValid: false,
+            message:
+              "This YouTube video is not available for download. The video might be age-restricted, private, or protected by copyright.",
+          }
+        }
+        break
+
+      case "tiktok":
+        // Check TikTok video properties - handle multiple possible structures
+        let hasTtVideo = false
+
+        // Method 1: Check video array (most common)
+        if (data.video && Array.isArray(data.video)) {
+          hasTtVideo =
+            data.video.length > 0 &&
+            data.video.some((url: any) => {
+              if (typeof url === "string" && url.trim() !== "") return true
+              if (url && typeof url === "object" && url.url && typeof url.url === "string") return true
+              return false
+            })
+        }
+
+        // Method 2: Check direct video URL properties
+        if (!hasTtVideo) {
+          const ttVideoProps = ["video_url", "download_url", "url", "play", "wmplay", "hdplay"]
+          hasTtVideo = ttVideoProps.some((prop) => {
+            const value = data[prop]
+            return value && typeof value === "string" && value.trim() !== ""
+          })
+        }
+
+        // Method 3: Check nested video objects
+        if (!hasTtVideo && data.video && typeof data.video === "object" && !Array.isArray(data.video)) {
+          const videoObj = data.video
+          const videoObjProps = ["url", "download_url", "play", "wmplay", "hdplay"]
+          hasTtVideo = videoObjProps.some((prop) => {
+            const value = videoObj[prop]
+            return value && typeof value === "string" && value.trim() !== ""
+          })
+        }
+
+        // Method 4: Check audio array as backup (for videos with audio only)
+        if (!hasTtVideo && data.audio && Array.isArray(data.audio)) {
+          hasTtVideo =
+            data.audio.length > 0 &&
+            data.audio.some((url: any) => {
+              if (typeof url === "string" && url.trim() !== "") return true
+              if (url && typeof url === "object" && url.url && typeof url.url === "string") return true
+              return false
+            })
+        }
+
+        // Method 5: Check if data has any URL-like properties
+        if (!hasTtVideo) {
+          const allProps = Object.keys(data)
+          hasTtVideo = allProps.some((prop) => {
+            const value = data[prop]
+            if (typeof value === "string" && value.includes("http") && value.includes("tiktok")) {
+              return true
+            }
+            return false
+          })
+        }
+
+        if (!hasTtVideo) {
+          // Log the actual data structure for debugging
+          console.log("TikTok validation failed. Data structure:", JSON.stringify(data, null, 2))
+          return {
+            isValid: false,
+            message:
+              "This TikTok video is not available for download. The video might be private, deleted, or protected.",
+          }
+        }
+        break
+
+      case "instagram":
+        // Check Instagram data
+        if (Array.isArray(data)) {
+          const hasIgVideo = data.length > 0 && data.some((item) => item && item.url)
+          if (!hasIgVideo) {
+            return {
+              isValid: false,
+              message:
+                "This Instagram content is not available for download. The content might be private, expired, or in an unsupported format.",
+            }
+          }
+        } else {
+          const igProps = ["url", "video_url", "download_url"]
+          const hasIgVideo = igProps.some((prop) => {
+            const value = data[prop]
+            return value !== null && value !== undefined && value !== ""
+          })
+
+          if (!hasIgVideo) {
+            return {
+              isValid: false,
+              message:
+                "This Instagram content is not available for download. The content might be private, expired, or in an unsupported format.",
+            }
+          }
+        }
+        break
+
+      default:
+        return {
+          isValid: false,
+          message: "This video is not available for download from this platform.",
+        }
+    }
+
+    return { isValid: true, message: "Valid data received" }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -137,8 +342,18 @@ export function UniversalDownloader() {
       console.log("Response status:", response.status)
 
       if (!response.ok) {
-        const errorData = await response.json()
-        console.error("Response error:", errorData)
+        let errorMessage = "Failed to process video"
+
+        try {
+          const errorData = await response.json()
+          console.error("Response error:", errorData)
+          errorMessage = errorData.error || errorMessage
+        } catch {
+          // If JSON parsing fails, get the text response
+          const errorText = await response.text()
+          console.error("Response error (text):", errorText)
+          errorMessage = errorText.substring(0, 100) || errorMessage
+        }
 
         // Handle specific error cases
         if (response.status === 404) {
@@ -150,42 +365,70 @@ export function UniversalDownloader() {
         } else if (response.status >= 500) {
           throw new Error("Server error. Please try again later.")
         } else {
-          throw new Error(`Failed to process video: ${errorData.error || "Unknown error"}`)
+          throw new Error(`Failed to process video: ${errorMessage}`)
         }
       }
 
-      const apiResponse = await response.json()
+      let apiResponse
+      try {
+        apiResponse = await response.json()
+      } catch (jsonError) {
+        console.error("Failed to parse JSON response:", jsonError)
+        throw new Error("Invalid response from server. Please try again.")
+      }
+
       console.log("API Response:", apiResponse)
 
+      // Check if API response indicates failure
       if (!apiResponse.success) {
-        // Handle backend-specific errors
         const errorMessage = apiResponse.error || "Failed to process video"
-        if (errorMessage.toLowerCase().includes("not found") || errorMessage.toLowerCase().includes("404")) {
-          throw new Error("Video not found. The video might have been deleted or the URL is incorrect.")
-        } else if (
-          errorMessage.toLowerCase().includes("private") ||
-          errorMessage.toLowerCase().includes("restricted")
-        ) {
-          throw new Error("Cannot download private or restricted videos. Please use a public video URL.")
-        } else {
-          throw new Error(errorMessage)
-        }
+        throw new Error(errorMessage)
       }
 
-      // Check if we got valid data
-      if (!apiResponse.data) {
-        throw new Error("No video data received. The video might not be available for download.")
+      // Check if response has data property
+      if (!apiResponse.hasOwnProperty("data")) {
+        throw new Error("No video data received from the server.")
       }
 
-      // Transform the backend response to match our frontend format
+      console.log(`Raw ${platform} backend data:`, JSON.stringify(apiResponse.data, null, 2))
+
+      // Comprehensive validation of backend data
+      const dataValidation = validateBackendResponse(apiResponse.data, platform)
+      if (!dataValidation.isValid) {
+        throw new Error(dataValidation.message)
+      }
+
+      // Use the centralized response transformer
       const transformedData = transformBackendResponse(apiResponse.data, platform)
+      console.log("Transformed data:", transformedData)
 
-      // Validate transformed data
+      // Final validation of transformed data
       if (!transformedData.downloadLinks || transformedData.downloadLinks.length === 0) {
-        throw new Error("No download links available for this video. The video format might not be supported.")
+        console.error("No download links after transformation:", {
+          originalData: apiResponse.data,
+          transformedData,
+          platform,
+        })
+
+        throw new Error(
+          `Unable to extract download links from this ${platform} video. The video format might not be supported or the content is protected.`,
+        )
       }
 
-      setResult(transformedData)
+      // Validate that download links have actual URLs
+      const validLinks = transformedData.downloadLinks.filter((link) => link.url && link.url.trim())
+      if (validLinks.length === 0) {
+        throw new Error(
+          `No valid download URLs found for this ${platform} video. The video might be protected or in an unsupported format.`,
+        )
+      }
+
+      // Update the result with only valid links
+      setResult({
+        ...transformedData,
+        downloadLinks: validLinks,
+      })
+
       toast.success("Video processed successfully!")
     } catch (err) {
       console.error("Processing error:", err)
@@ -202,175 +445,6 @@ export function UniversalDownloader() {
       toast.error("Failed to process video")
     } finally {
       setLoading(false)
-    }
-  }
-
-  // Transform backend responses
-  const transformBackendResponse = (data: any, platform: string): VideoData => {
-    switch (platform) {
-      case "tiktok":
-        return {
-          title: data.title || data.title_audio || "TikTok Video",
-          thumbnail: data.thumbnail || "/placeholder.svg?height=200&width=320",
-          downloadLinks: [
-            ...(data.video
-              ? data.video.map((url: string, index: number) => ({
-                  quality: "Video",
-                  url,
-                  format: "mp4",
-                }))
-              : []),
-            ...(data.audio
-              ? data.audio.map((url: string, index: number) => ({
-                  quality: "Audio Only",
-                  url,
-                  format: "mp3",
-                }))
-              : []),
-          ],
-        }
-
-      case "facebook":
-        return {
-          title: data.title || "Facebook Video",
-          thumbnail: data.thumbnail || "/placeholder.svg?height=200&width=320",
-          downloadLinks: [
-            ...(data.HD
-              ? [
-                  {
-                    quality: "HD",
-                    url: data.HD,
-                    format: "mp4",
-                  },
-                ]
-              : []),
-            ...(data.Normal_video
-              ? [
-                  {
-                    quality: "SD",
-                    url: data.Normal_video,
-                    format: "mp4",
-                  },
-                ]
-              : []),
-          ],
-        }
-
-      case "youtube":
-        return {
-          title: data.title || "YouTube Video",
-          thumbnail: data.thumbnail || "/placeholder.svg?height=200&width=320",
-          downloadLinks: [
-            ...(data.mp4
-              ? [
-                  {
-                    quality: "Video",
-                    url: data.mp4,
-                    format: "mp4",
-                  },
-                ]
-              : []),
-            ...(data.mp3
-              ? [
-                  {
-                    quality: "Audio Only",
-                    url: data.mp3,
-                    format: "mp3",
-                  },
-                ]
-              : []),
-          ],
-        }
-
-      case "instagram":
-        if (Array.isArray(data)) {
-          return {
-            title: "Instagram Video",
-            thumbnail: data[0]?.thumbnail || "/placeholder.svg?height=200&width=320",
-            downloadLinks: data.map((item: any, index: number) => ({
-              quality: `Video ${index + 1}`,
-              url: item.url,
-              format: "mp4",
-            })),
-          }
-        }
-        return {
-          title: "Instagram Video",
-          thumbnail: "/placeholder.svg?height=200&width=320",
-          downloadLinks: [],
-        }
-
-      case "pinterest":
-        const result = data.result || data
-        return {
-          title: result.title || "Pinterest Video",
-          thumbnail: result.image || result.images?.orig?.url || "/placeholder.svg?height=200&width=320",
-          downloadLinks: [
-            ...(result.video_url
-              ? [
-                  {
-                    quality: "Video",
-                    url: result.video_url,
-                    format: "mp4",
-                  },
-                ]
-              : []),
-            ...(result.videos?.V_720P
-              ? [
-                  {
-                    quality: "720p",
-                    url: result.videos.V_720P.url,
-                    format: "mp4",
-                  },
-                ]
-              : []),
-            ...(result.videos?.V_HLSV4
-              ? [
-                  {
-                    quality: "HLS Stream",
-                    url: result.videos.V_HLSV4.url,
-                    format: "m3u8",
-                  },
-                ]
-              : []),
-          ],
-        }
-
-      case "twitter":
-        return {
-          title: data.title || "Twitter Video",
-          thumbnail: data.thumbnail || "/placeholder.svg?height=200&width=320",
-          downloadLinks: Array.isArray(data.url)
-            ? data.url.map((item: any, index: number) => {
-                if (item.hd) {
-                  return {
-                    quality: "HD",
-                    url: item.hd,
-                    format: "mp4",
-                  }
-                }
-                if (item.sd) {
-                  return {
-                    quality: "SD",
-                    url: item.sd,
-                    format: "mp4",
-                  }
-                }
-                return {
-                  quality: `Video ${index + 1}`,
-                  url: typeof item === "string" ? item : item.url || item,
-                  format: "mp4",
-                }
-              })
-            : [],
-        }
-
-      default:
-        return {
-          title: "Video",
-          thumbnail: "/placeholder.svg?height=200&width=320",
-          downloadLinks: [],
-        }
     }
   }
 
@@ -433,9 +507,10 @@ export function UniversalDownloader() {
 
       <Card className="border-2 border-dashed border-muted-foreground/25 hover:border-muted-foreground/50 transition-colors">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Universal Video Downloader</CardTitle>
+          <CardTitle className="text-2xl">Free Online Video Downloader</CardTitle>
           <CardDescription>
-            Paste any video URL from Instagram, TikTok, YouTube, Facebook, Twitter - we'll auto-detect the platform
+            Paste any video URL from any website - our professional video downloader auto-detects the platform for
+            instant online video download
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -447,7 +522,7 @@ export function UniversalDownloader() {
                   id="url"
                   ref={inputRef}
                   type="url"
-                  placeholder="Paste any video URL here (YouTube, TikTok, Instagram, Facebook, Twitter)..."
+                  placeholder="Paste any video URL here to download videos from any website..."
                   value={url}
                   onChange={(e) => handleUrlChange(e.target.value)}
                   className="flex-1"
@@ -499,84 +574,79 @@ export function UniversalDownloader() {
       {/* Video Result - Now appears before Prefer Dedicated Tools */}
       {result && <VideoResult data={result} />}
 
+      {/* Descriptive paragraph */}
+      <div className="text-center max-w-2xl mx-auto mb-8">
+        <p className="text-xl text-muted-foreground">
+          Universal video downloader supporting all major platforms. Our free online video download tool works with
+          YouTube, TikTok, Instagram, Facebook, Twitter and more. Fast, secure, and easy to use.
+        </p>
+      </div>
+
       {/* Prefer Dedicated Tools - Now appears after video result */}
       <Card>
-  <CardHeader className="text-center">
-    <CardTitle className="text-xl">Prefer Dedicated Tools?</CardTitle>
-    <CardDescription>
-      Check out our platform-specific downloaders for enhanced features
-    </CardDescription>
-  </CardHeader>
-
-  <CardContent className="flex flex-col items-center">
-    <div className="flex flex-wrap justify-center gap-4 max-w-5xl mx-auto">
-      <Link href="/tiktok" className="block">
-        <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-black dark:hover:border-white bg-gradient-to-r from-gray-900 to-black hover:from-black hover:to-gray-800 text-white w-64">
-          <CardContent className="p-4 text-center">
-            <div className="flex items-center justify-center gap-2">
-              <div className="w-5 h-5 bg-white rounded-sm flex items-center justify-center">
-                <div className="w-3 h-3 bg-black rounded-sm"></div>
-              </div>
-              <h3 className="font-semibold">TikTok Downloader</h3>
-            </div>
-            <p className="text-xs text-gray-300 mt-1">No watermark</p>
-          </CardContent>
-        </Card>
-      </Link>
-
-      <Link href="/youtube" className="block">
-        <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-red-500 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white w-64">
-          <CardContent className="p-4 text-center">
-            <div className="flex items-center justify-center gap-2">
-              <Youtube className="w-5 h-5" />
-              <h3 className="font-semibold">YouTube Downloader</h3>
-            </div>
-            <p className="text-xs text-red-100 mt-1">HD & MP3</p>
-          </CardContent>
-        </Card>
-      </Link>
-
-      <Link href="/facebook" className="block">
-        <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-blue-500 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white w-64">
-          <CardContent className="p-4 text-center">
-            <div className="flex items-center justify-center gap-2">
-              <Facebook className="w-5 h-5" />
-              <h3 className="font-semibold">Facebook Downloader</h3>
-            </div>
-            <p className="text-xs text-blue-100 mt-1">Posts & Stories</p>
-          </CardContent>
-        </Card>
-      </Link>
-
-      <Link href="/instagram" className="block">
-        <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-pink-500 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 hover:from-purple-600 hover:via-pink-600 hover:to-orange-600 text-white w-64">
-          <CardContent className="p-4 text-center">
-            <div className="flex items-center justify-center gap-2">
-              <Instagram className="w-5 h-5" />
-              <h3 className="font-semibold">Instagram Saver</h3>
-            </div>
-            <p className="text-xs text-pink-100 mt-1">Reels & Stories</p>
-          </CardContent>
-        </Card>
-      </Link>
-
-      <Link href="/twitter" className="block">
-        <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-blue-400 bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white w-64">
-          <CardContent className="p-4 text-center">
-            <div className="flex items-center justify-center gap-2">
-              <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center">
-                <span className="text-blue-500 font-bold text-xs">𝕏</span>
-              </div>
-              <h3 className="font-semibold">Twitter Downloader</h3>
-            </div>
-            <p className="text-xs text-blue-100 mt-1">Video clips</p>
-          </CardContent>
-        </Card>
-      </Link>
-    </div>
-  </CardContent>
-</Card>
-
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">Prefer Dedicated Tools?</CardTitle>
+          <CardDescription>Check out our platform-specific downloaders for enhanced features</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto place-items-center">
+            <Link href="/tiktok-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
+              <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-black dark:hover:border-white bg-gradient-to-r from-gray-900 to-black hover:from-black hover:to-gray-800 text-white">
+                <CardContent className="p-4 text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-5 h-5 bg-white rounded-sm flex items-center justify-center">
+                      <div className="w-3 h-3 bg-black rounded-sm"></div>
+                    </div>
+                    <h3 className="font-semibold">TikTok Downloader</h3>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/youtube-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
+              <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-red-500 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white">
+                <CardContent className="p-4 text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <Youtube className="w-5 h-5" />
+                    <h3 className="font-semibold">YouTube Downloader</h3>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/facebook-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
+              <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-blue-500 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white">
+                <CardContent className="p-4 text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <Facebook className="w-5 h-5" />
+                    <h3 className="font-semibold">Facebook Downloader</h3>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/instagram-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
+              <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-pink-500 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 hover:from-purple-600 hover:via-pink-600 hover:to-orange-600 text-white">
+                <CardContent className="p-4 text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <Instagram className="w-5 h-5" />
+                    <h3 className="font-semibold">Instagram Saver</h3>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/twitter-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
+              <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-blue-400 bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white">
+                <CardContent className="p-4 text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center">
+                      <span className="text-blue-500 font-bold text-xs">𝕏</span>
+                    </div>
+                    <h3 className="font-semibold">Twitter Downloader</h3>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

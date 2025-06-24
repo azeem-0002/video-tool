@@ -100,12 +100,6 @@ export function PlatformDownloader({ platform, endpoint, placeholder }: Platform
         }
         return { isValid: false, message: "Please enter a valid Twitter/X URL (twitter.com or x.com)" }
 
-      case "pinterest":
-        if (urlLower.includes("pinterest.com")) {
-          return { isValid: true, message: "✓ Valid Pinterest URL" }
-        }
-        return { isValid: false, message: "Please enter a valid Pinterest URL (pinterest.com)" }
-
       default:
         return { isValid: true, message: "✓ URL format looks valid" }
     }
@@ -125,9 +119,6 @@ export function PlatformDownloader({ platform, endpoint, placeholder }: Platform
     }
   }
 
-  // Update the handleSubmit function to use Next.js API routes instead of direct backend calls
-
-  // Replace the entire handleSubmit function with this:
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -157,26 +148,56 @@ export function PlatformDownloader({ platform, endpoint, placeholder }: Platform
       })
 
       console.log("Response status:", response.status)
+      console.log("Response headers:", response.headers)
+      console.log("Backend URL:", process.env.BACKEND_URL) // This will be undefined on client side
+      console.log("Endpoint being called:", endpoint)
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        console.error("Response error:", errorData)
+      // Replace this section:
+      // Add this to see the actual response
 
-        // Handle specific error cases
-        if (response.status === 404) {
-          throw new Error("Video not found. Please check if the URL is correct and the video is publicly accessible.")
-        } else if (response.status === 403) {
-          throw new Error("Access denied. The video might be private or restricted.")
-        } else if (response.status === 429) {
-          throw new Error("Too many requests. Please wait a moment and try again.")
-        } else if (response.status >= 500) {
-          throw new Error("Server error. Please try again later.")
-        } else {
-          throw new Error(`Failed to process video: ${errorData.error || "Unknown error"}`)
+      // With this improved version:
+      const responseText = await response.text()
+      console.log("Raw response:", responseText)
+
+      // Check if response is JSON
+      let apiResponse
+      try {
+        apiResponse = JSON.parse(responseText)
+      } catch (parseError) {
+        console.error("Failed to parse JSON response:", parseError)
+        console.error("Response text:", responseText)
+
+        // Check if it's an HTML error page
+        if (responseText.includes("<html>") || responseText.includes("<!DOCTYPE")) {
+          throw new Error("Server returned an HTML error page. Please check your backend configuration.")
         }
+
+        // Check if it's a plain text error (like "Internal Server Error")
+        if (responseText.startsWith("Internal Server Error") || responseText.startsWith("Error")) {
+          throw new Error(`Server error: ${responseText}`)
+        }
+
+        // Check if it's a 500 error response
+        if (response.status >= 500) {
+          throw new Error(
+            `Server error (${response.status}): The backend service is currently unavailable. Please try again later.`,
+          )
+        }
+
+        // Check if it's a 404 error
+        if (response.status === 404) {
+          throw new Error("Service endpoint not found. Please check your configuration.")
+        }
+
+        // Check if response is empty
+        if (!responseText.trim()) {
+          throw new Error("Empty response from server. Please check your backend configuration.")
+        }
+
+        // Generic parsing error with more context
+        throw new Error(`Invalid response format. Expected JSON but received: ${responseText.substring(0, 200)}...`)
       }
 
-      const apiResponse = await response.json()
       console.log("API Response:", apiResponse)
 
       if (!apiResponse.success) {
@@ -320,42 +341,6 @@ export function PlatformDownloader({ platform, endpoint, placeholder }: Platform
           title: "Instagram Video",
           thumbnail: "/placeholder.svg?height=200&width=320",
           downloadLinks: [],
-        }
-
-      case "pinterest":
-        const result = data.result || data
-        return {
-          title: result.title || "Pinterest Video",
-          thumbnail: result.image || result.images?.orig?.url || "/placeholder.svg?height=200&width=320",
-          downloadLinks: [
-            ...(result.video_url
-              ? [
-                  {
-                    quality: "Video",
-                    url: result.video_url,
-                    format: "mp4",
-                  },
-                ]
-              : []),
-            ...(result.videos?.V_720P
-              ? [
-                  {
-                    quality: "720p",
-                    url: result.videos.V_720P.url,
-                    format: "mp4",
-                  },
-                ]
-              : []),
-            ...(result.videos?.V_HLSV4
-              ? [
-                  {
-                    quality: "HLS Stream",
-                    url: result.videos.V_HLSV4.url,
-                    format: "m3u8",
-                  },
-                ]
-              : []),
-          ],
         }
 
       case "twitter":
@@ -521,96 +506,89 @@ export function PlatformDownloader({ platform, endpoint, placeholder }: Platform
 
       {/* Explore More Tools - Moved here after the video result */}
       <Card>
-  <CardHeader className="text-center">
-    <CardTitle className="text-xl">Explore More Tools</CardTitle>
-    <CardDescription>Try our other video downloaders</CardDescription>
-  </CardHeader>
-
-  <CardContent className="flex flex-col items-center">
-    <div className="flex flex-wrap justify-center gap-4 max-w-5xl mx-auto">
-      {platform !== "tiktok" && (
-        <Link href="/tiktok" className="block">
-          <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-black dark:hover:border-white bg-gradient-to-r from-gray-900 to-black hover:from-black hover:to-gray-800 text-white w-64">
-            <CardContent className="p-4 text-center">
-              <div className="flex items-center justify-center gap-2">
-                <div className="w-5 h-5 bg-white rounded-sm flex items-center justify-center">
-                  <div className="w-3 h-3 bg-black rounded-sm"></div>
-                </div>
-                <h3 className="font-semibold">TikTok Downloader</h3>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-      )}
-
-      {platform !== "youtube" && (
-        <Link href="/youtube" className="block">
-          <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-red-500 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white w-64">
-            <CardContent className="p-4 text-center">
-              <div className="flex items-center justify-center gap-2">
-                <Youtube className="w-5 h-5" />
-                <h3 className="font-semibold">YouTube Downloader</h3>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-      )}
-
-      {platform !== "facebook" && (
-        <Link href="/facebook" className="block">
-          <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-blue-500 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white w-64">
-            <CardContent className="p-4 text-center">
-              <div className="flex items-center justify-center gap-2">
-                <Facebook className="w-5 h-5" />
-                <h3 className="font-semibold">Facebook Downloader</h3>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-      )}
-
-      {platform !== "instagram" && (
-        <Link href="/instagram" className="block">
-          <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-pink-500 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 hover:from-purple-600 hover:via-pink-600 hover:to-orange-600 text-white w-64">
-            <CardContent className="p-4 text-center">
-              <div className="flex items-center justify-center gap-2">
-                <Instagram className="w-5 h-5" />
-                <h3 className="font-semibold">Instagram Saver</h3>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-      )}
-
-      {platform !== "twitter" && (
-        <Link href="/twitter" className="block">
-          <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-blue-400 bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white w-64">
-            <CardContent className="p-4 text-center">
-              <div className="flex items-center justify-center gap-2">
-                <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center">
-                  <span className="text-blue-500 font-bold text-xs">𝕏</span>
-                </div>
-                <h3 className="font-semibold">Twitter Downloader</h3>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-      )}
-
-      <Link href="/" className="block">
-        <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-purple-500 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white w-64">
-          <CardContent className="p-4 text-center">
-            <div className="flex items-center justify-center gap-2">
-              <Globe className="w-5 h-5" />
-              <h3 className="font-semibold">Universal Downloader</h3>
-            </div>
-          </CardContent>
-        </Card>
-      </Link>
-    </div>
-  </CardContent>
-</Card>
-
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">Explore More Tools</CardTitle>
+          <CardDescription>Try our other video downloaders</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto place-items-center">
+            {platform !== "tiktok" && (
+              <Link href="/tiktok-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
+                <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-black dark:hover:border-white bg-gradient-to-r from-gray-900 to-black hover:from-black hover:to-gray-800 text-white">
+                  <CardContent className="p-4 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-5 h-5 bg-white rounded-sm flex items-center justify-center">
+                        <div className="w-3 h-3 bg-black rounded-sm"></div>
+                      </div>
+                      <h3 className="font-semibold">TikTok Downloader</h3>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            )}
+            {platform !== "youtube" && (
+              <Link href="/youtube-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
+                <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-red-500 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white">
+                  <CardContent className="p-4 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <Youtube className="w-5 h-5" />
+                      <h3 className="font-semibold">YouTube Downloader</h3>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            )}
+            {platform !== "facebook" && (
+              <Link href="/facebook-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
+                <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-blue-500 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white">
+                  <CardContent className="p-4 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <Facebook className="w-5 h-5" />
+                      <h3 className="font-semibold">Facebook Downloader</h3>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            )}
+            {platform !== "instagram" && (
+              <Link href="/instagram-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
+                <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-pink-500 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 hover:from-purple-600 hover:via-pink-600 hover:to-orange-600 text-white">
+                  <CardContent className="p-4 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <Instagram className="w-5 h-5" />
+                      <h3 className="font-semibold">Instagram Saver</h3>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            )}
+            {platform !== "twitter" && (
+              <Link href="/twitter-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
+                <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-blue-400 bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white">
+                  <CardContent className="p-4 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center">
+                        <span className="text-blue-500 font-bold text-xs">𝕏</span>
+                      </div>
+                      <h3 className="font-semibold">Twitter Downloader</h3>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            )}
+            <Link href="/" className="block w-full md:col-start-2" onClick={() => window.scrollTo(0, 0)}>
+              <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-purple-500 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                <CardContent className="p-4 text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <Globe className="w-5 h-5" />
+                    <h3 className="font-semibold">Universal Downloader</h3>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

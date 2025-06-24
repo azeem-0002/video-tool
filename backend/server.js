@@ -7,30 +7,29 @@ const PORT = process.env.PORT;
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN
 const SECRET_KEY = process.env.SECRET_KEY;
 
-// ✅ Custom CORS middleware
-// app.use((req, res, next) => {
-//   const origin = req.headers.origin;
-//   const apiKey = req.headers['x-api-key'];
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  const apiKey = req.headers['x-api-key'];
 
-//   // Allow requests from the allowed origin
-//   if (origin === ALLOWED_ORIGIN) {
-//     res.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
-//     res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-//     res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization,x-api-key");
-//     return next();
-//   }
+  // Allow browser requests from your frontend
+  if (origin === ALLOWED_ORIGIN) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization,x-api-key");
+    return next();
+  }
 
-//   // Allow Postman or other tools using x-api-key
-//   if (apiKey && apiKey === SECRET_KEY) {
-//     res.setHeader("Access-Control-Allow-Origin", "*"); // allow all for API key
-//     res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-//     res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization,x-api-key");
-//     return next();
-//   }
+  // Allow Postman or scripts with API key
+  if (apiKey && apiKey === SECRET_KEY) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization,x-api-key");
+    return next();
+  }
 
-//   // Reject all other requests
-//   return res.status(403).json({ error: "CORS policy: Access denied" });
-// });
+  // Deny everything else
+  return res.status(403).json({ error: "CORS policy: Access denied" });
+});
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
