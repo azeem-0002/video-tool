@@ -23,7 +23,7 @@ const capcutRoutes = require("./routes/capcutRoutes");
 const pinterestRoutes = require("./routes/pinterestRoutes");
 
 app.use("/api/youtube", youtubeRoutes);
-app.use("/apiapi/tiktok", tiktokRoutes);
+app.use("/api/tiktok", tiktokRoutes);
 app.use("/api/instagram", instagramRoutes);
 app.use("/api/facebook", facebookRoutes);
 app.use("/api/twitter", twitterRoutes);
