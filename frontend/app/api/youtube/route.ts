@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     console.log("Making request to:", `${backendUrl}/api/youtube`)
 
-    const response = await fetch(`${backendUrl}/api/youtube`, {
+    const response = await fetch(`${backendUrl}/youtube`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,12 +43,24 @@ export async function POST(request: NextRequest) {
     console.log("Backend response status:", response.status)
 
     if (!response.ok) {
+      // Read the response body only once
       const errorText = await response.text()
-      console.error("Backend error:", errorText)
+      console.error("YouTube backend error:", errorText)
+
+      // Try to parse as JSON if possible, otherwise use as text
+      let errorMessage = errorText
+      try {
+        const errorData = JSON.parse(errorText)
+        errorMessage = errorData.error || errorData.message || errorText
+      } catch {
+        // If not JSON, use the text as is
+        errorMessage = errorText
+      }
+
       return NextResponse.json(
         {
           success: false,
-          error: `Backend error (${response.status}): ${errorText}`,
+          error: `Backend error (${response.status}): ${errorMessage}`,
         },
         { status: response.status },
       )
@@ -62,7 +74,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: `Internal server error: ${error.message}`,
+        error: `Internal server error: ${error instanceof Error ? error.message : "Unknown error"}`,
       },
       { status: 500 },
     )

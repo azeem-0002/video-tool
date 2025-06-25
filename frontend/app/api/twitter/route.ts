@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "Server configuration error" }, { status: 500 })
     }
 
-    const response = await fetch(`${backendUrl}/api/twitter`, {
+    const response = await fetch(`${backendUrl}/twitter`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,8 +26,21 @@ export async function POST(request: NextRequest) {
     })
 
     if (!response.ok) {
+      // Read the response body only once
       const errorText = await response.text()
-      return NextResponse.json({ success: false, error: `Backend error: ${errorText}` }, { status: response.status })
+      console.error("Twitter backend error:", errorText)
+
+      // Try to parse as JSON if possible, otherwise use as text
+      let errorMessage = errorText
+      try {
+        const errorData = JSON.parse(errorText)
+        errorMessage = errorData.error || errorData.message || errorText
+      } catch {
+        // If not JSON, use the text as is
+        errorMessage = errorText
+      }
+
+      return NextResponse.json({ success: false, error: `Backend error: ${errorMessage}` }, { status: response.status })
     }
 
     const data = await response.json()

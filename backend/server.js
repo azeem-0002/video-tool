@@ -7,29 +7,7 @@ const PORT = process.env.PORT;
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN
 const SECRET_KEY = process.env.SECRET_KEY;
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  const apiKey = req.headers['x-api-key'];
-
-  // Allow browser requests from your frontend
-  if (origin === ALLOWED_ORIGIN) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization,x-api-key");
-    return next();
-  }
-
-  // Allow Postman or scripts with API key
-  if (apiKey && apiKey === SECRET_KEY) {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization,x-api-key");
-    return next();
-  }
-
-  // Deny everything else
-  return res.status(403).json({ error: "CORS policy: Access denied" });
-});
+app.use(cors());
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
@@ -45,7 +23,7 @@ const capcutRoutes = require("./routes/capcutRoutes");
 const pinterestRoutes = require("./routes/pinterestRoutes");
 
 app.use("/api/youtube", youtubeRoutes);
-app.use("/api/tiktok", tiktokRoutes);
+app.use("/apiapi/tiktok", tiktokRoutes);
 app.use("/api/instagram", instagramRoutes);
 app.use("/api/facebook", facebookRoutes);
 app.use("/api/twitter", twitterRoutes);
