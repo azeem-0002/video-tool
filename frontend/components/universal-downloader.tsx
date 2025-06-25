@@ -347,11 +347,39 @@ export function UniversalDownloader() {
         try {
           const errorData = await response.json()
           console.error("Response error:", errorData)
+
+          // Check for ngrok offline error
+          if (errorData.error && typeof errorData.error === "string") {
+            if (errorData.error.includes("ngrok") && errorData.error.includes("offline")) {
+              throw new Error(
+                "🚨 Backend service is offline. The ngrok tunnel has expired or stopped. Please restart your backend service and update the ngrok URL.",
+              )
+            }
+            if (errorData.error.includes("ERR_NGROK")) {
+              throw new Error(
+                "🚨 Backend connection failed. The ngrok tunnel is not accessible. Please check your backend service.",
+              )
+            }
+            if (errorData.error.includes("<!DOCTYPE html>")) {
+              throw new Error(
+                "🚨 Backend service returned an error page instead of data. Please check your backend configuration.",
+              )
+            }
+          }
+
           errorMessage = errorData.error || errorMessage
-        } catch {
+        } catch (parseError) {
           // If JSON parsing fails, get the text response
           const errorText = await response.text()
           console.error("Response error (text):", errorText)
+
+          // Check for ngrok errors in text response
+          if (errorText.includes("ngrok") && errorText.includes("offline")) {
+            throw new Error(
+              "🚨 Backend service is offline. The ngrok tunnel has expired. Please restart your backend service.",
+            )
+          }
+
           errorMessage = errorText.substring(0, 100) || errorMessage
         }
 
@@ -382,6 +410,19 @@ export function UniversalDownloader() {
       // Check if API response indicates failure
       if (!apiResponse.success) {
         const errorMessage = apiResponse.error || "Failed to process video"
+
+        // Check for ngrok offline error in API response
+        if (errorMessage.includes("ngrok") && errorMessage.includes("offline")) {
+          throw new Error(
+            "🚨 Backend service is offline. The ngrok tunnel has expired or stopped. Please restart your backend service and update the ngrok URL in your environment variables.",
+          )
+        }
+        if (errorMessage.includes("ERR_NGROK")) {
+          throw new Error(
+            "🚨 Backend connection failed. The ngrok tunnel is not accessible. Please check your backend service and ngrok configuration.",
+          )
+        }
+
         throw new Error(errorMessage)
       }
 
