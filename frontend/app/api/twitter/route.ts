@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "Server configuration error" }, { status: 500 })
     }
 
-    const response = await fetch(`${backendUrl}/twitter`, {
+    const response = await fetch(`${backendUrl}/api/twitter`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

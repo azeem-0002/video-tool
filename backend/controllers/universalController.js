@@ -13,7 +13,7 @@ const supportedPlatforms = [
 
 exports.downloadUniversal = async (req, res) => {
   try {
-    const { url, platform } = req.body;
+    const { url } = req.body;
 
     if (!url || !platform) {
       return res.status(400).json({ success: false, error: "URL and platform are required." });

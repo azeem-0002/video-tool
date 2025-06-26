@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     console.log("Making request to:", `${backendUrl}/api/youtube`)
 
-    const response = await fetch(`${backendUrl}/youtube`, {
+    const response = await fetch(`${backendUrl}/api/youtube`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

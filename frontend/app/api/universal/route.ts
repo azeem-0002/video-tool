@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "Server configuration error" }, { status: 500 })
     }
 
-    const response = await fetch(`${backendUrl}/${platform}`, {
+    const response = await fetch(`${backendUrl}/api/${platform}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
