@@ -30,5 +30,8 @@ app.use("/api/twitter", twitterRoutes);
 app.use("/api/capcut", capcutRoutes);
 app.use("/api/pinterest", pinterestRoutes);
 app.use("/api/universal", universalRoutes);
+app.use("/test", (req, res) => {
+  res.json({ message: "Test route is working!" });
+});
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
