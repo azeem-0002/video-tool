@@ -1,16 +1,29 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Mail, MessageCircle, Shield, Globe, AlertCircle, CheckCircle } from "lucide-react"
+import { Mail, MessageCircle, Shield, Globe, AlertCircle, CheckCircle } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Contact Us - FreeVideoDownloader",
   description:
-    "Get in touch with FreeVideoDownloader support. We're here to help with questions, feedback, and technical issues - privately and simply.",
+    "Reach out to FreeVideoDownloader at contact@freevideodownloader.co. We respect your privacy and welcome your feedback, concerns, or suggestions with no personal data required.",
+  keywords: [
+    "Free Video Downloader",
+    "Contact FreeVideoDownloader",
+    "Video Download Support",
+    "YouTube Downloader Help",
+    "Privacy Friendly Downloader",
+    "TikTok Video Download Support",
+    "Instagram Downloader Contact",
+    "Facebook Video Downloader",
+    "No Login Video Downloader",
+    "Download Videos Anonymously"
+  ],
   robots: {
     index: true,
     follow: true,
   },
 }
+
 
 export default function ContactPage() {
   return (
@@ -27,8 +40,7 @@ export default function ContactPage() {
         <Card className="mb-8">
           <CardContent className="pt-6">
             <p className="text-lg leading-relaxed">
-              Although we do not request your personal information, we welcome comments, questions, or concerns. We
-              count on your experience.
+              Although we do not request your personal information yet we welcome comments, questions, or concerns raised by you on behalf of your experience.
             </p>
           </CardContent>
         </Card>
@@ -46,10 +58,10 @@ export default function ContactPage() {
               <p className="leading-relaxed mb-4">
                 Just email us straight at:{" "}
                 <a
-                  href="mailto:support@freevideodownloader.co"
+                  href="mailto:contact@freevideodownloader.co"
                   className="text-blue-600 hover:text-blue-800 underline font-semibold"
                 >
-                  support@freevideodownloader.co
+                  contact@freevideodownloader.co
                 </a>
               </p>
               <p className="leading-relaxed text-muted-foreground">
@@ -62,16 +74,17 @@ export default function ContactPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <MessageCircle className="w-6 h-6 text-green-600" />
-                About what can you contact us?
+                How can you contact us?
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="leading-relaxed mb-4">You are welcome to reach out for:</p>
+              <p className="leading-relaxed mb-4">You are warmly welcome to reach out for:</p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>Broad questions or comments connected to tools</li>
                 <li>Notifying broken features or website problems</li>
                 <li>Advice for development</li>
                 <li>Concerns regarding our terms or privacy statement</li>
+                <li>Not Personal Information Called for that are not related to the said queries</li>
               </ul>
             </CardContent>
           </Card>
@@ -92,7 +105,7 @@ export default function ContactPage() {
                 <li>Phone number</li>
               </ul>
               <p className="leading-relaxed">
-                Your message is kept private; we do not save or distribute any personal information.
+                and it is also assured to you that Your message is kept private; we do not save or distribute any personal information at any platform at any cost.
               </p>
             </CardContent>
           </Card>
@@ -101,11 +114,11 @@ export default function ContactPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Globe className="w-6 h-6 text-orange-600" />
-                Demand legal information?
+                Demand legal information
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="leading-relaxed mb-4">Regarding legal specifics, kindly go to:</p>
+              <p className="leading-relaxed mb-4">In connection with legal specifics, kindly entertain to:</p>
               <div className="space-y-2">
                 <div>
                   <a href="/privacy" className="text-blue-600 hover:text-blue-800 underline font-medium">
@@ -154,5 +167,5 @@ export default function ContactPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

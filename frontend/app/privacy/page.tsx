@@ -1,16 +1,29 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Shield } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Privacy Policy - FreeVideoDownloader",
   description:
-    "Privacy Policy for FreeVideoDownloader - We don't collect or store any personal information. Your privacy is our priority.",
+    "Read the Privacy Policy of FreeVideoDownloader.co. Learn how we collect, use, and protect your data when using our video downloading tools across TikTok, YouTube, Instagram, Facebook, and more.",
+  keywords: [
+    "FreeVideoDownloader Privacy Policy",
+    "Data Protection",
+    "GDPR CCPA Compliance",
+    "Video Downloader Privacy",
+    "No Personal Data Collection",
+    "Secure Video Downloading",
+    "Cookie Policy",
+    "Google Analytics Usage",
+    "Third-party services",
+    "Safe Video Downloader"
+  ],
   robots: {
     index: true,
     follow: true,
   },
 }
+
 
 export default function PrivacyPolicyPage() {
   return (
@@ -22,147 +35,162 @@ export default function PrivacyPolicyPage() {
           </div>
           <h1 className="text-3xl font-bold mb-4">Privacy Policy</h1>
           <div className="text-sm text-muted-foreground space-y-1">
-            <p>
-              <strong>Effective Date of Privacy Policy:</strong> June 19, 2025
-            </p>
-            <p>
-              <strong>Current Date of Update:</strong> June 19, 2025
-            </p>
+            <p><strong>Effective Date:</strong> 06/28/2025</p>
+            <p><strong>Website:</strong> https://freevideodownloader.co</p>
           </div>
         </div>
 
         <Card className="mb-8">
           <CardContent className="pt-6">
-            <p className="text-lg leading-relaxed mb-6">
-              At freevideodownloader.co, your privacy is important to us. How we handle your information when you use
-              our service is described in this policy. To be clear, we don't gather or keep any personal information.
-              Your visit is always confidential.
+            <p className="text-lg leading-relaxed">
+              You are warmly esteemed for visiting our freevideodownloader.co because of its strong Privacy Policy that entertains how we collect, use, narrate, and protect your information when you visit our website and use our services to download videos from third-party platforms such as TikTok, Instagram, YouTube, Facebook, and Twitter.
+              <br /><br />
+              Your privacy is significant to us, and we are committed to protect it in compliance with international data protection levels such as GDPR and CCPA, even if we do not directly process personal data by default in any case.
             </p>
           </CardContent>
         </Card>
 
         <div className="space-y-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span className="text-blue-600 font-bold">1.</span>
-                Things We Don't Gather
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="leading-relaxed">
-                Your name, email address, or any other personal information is not requested. No forms, no accounts, and
-                no covert tracking. We don't maintain any logs of your activities; everything happens just in your
-                browser.
-              </p>
-            </CardContent>
-          </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span className="text-blue-600 font-bold">2.</span>
-                No Hidden Trackers or Cookies
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="leading-relaxed">
-                Cookies, tracking pixels, and third-party analytics tools are not used by us. No advertisements, no
-                behavioral tracking, and no fingerprinting. When you visit our website, your identity remains anonymous.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span className="text-blue-600 font-bold">3.</span>
-                The Operation of Our Server
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="leading-relaxed">
-                Our hosting is safe and adheres to accepted internet safety guidelines. Similar to other websites, in
-                order to guard against misuse or outages, certain non-identifiable technical logs might be temporarily
-                stored (such as the time of request). These logs are kept to a minimum, are not private, and are
-                routinely deleted.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span className="text-blue-600 font-bold">4.</span>
-                Privacy of Children
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="leading-relaxed">
-                Users under the age of thirteen should not use our site. This website automatically refrains from
-                collecting any information from kids since we don't gather any.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span className="text-blue-600 font-bold">5.</span>
-                How We Handle Security
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="leading-relaxed">
-                Even though we don't keep any user data on file, we nevertheless guard against vulnerabilities and
-                illegal access to our systems. We have designed it so that the fewer data stored, the lower the risk.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span className="text-blue-600 font-bold">6.</span>
-                Modifications to This Policy
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="leading-relaxed">
-                Technically or legally, we'll update this page and change the "Last Updated" date above if anything
-                changes. The most recent version is always available here.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span className="text-blue-600 font-bold">7.</span>
-                Contact Us
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="leading-relaxed">
-                Have more questions? You can contact them at{" "}
-                <a href="mailto:support@freevideodownloader.co" className="text-blue-600 hover:text-blue-800 underline">
-                  support@freevideodownloader.co
-                </a>
-                .
-              </p>
-            </CardContent>
-          </Card>
+          {[
+            {
+              title: "1. Information We Collect",
+              content: `We struggle to limit data collection to the minimum importance. Here's what we may collect:\n\n
+a. Automatically Collected Data\n
+When anybody accesses or tries to access our site, we may automatically collect certain information, such as:\n
+• IP address of user\n
+• Browser type and version of device\n
+• Operating system, Device type and unique identifiers\n
+• Referring URL\n
+• Date and time of access\n
+• Pages you view\n
+• Approximate geographic location (country level)\n
+This data is used for analytics, security, and site optimization purposes only.\n\n
+b. Voluntarily Provided Information\n
+There is nothing to require when you visit our website. On the other hand certain credentials are required when you attempt to register yourself on our site like vise\n
+• Your name (if provided)\n
+• Your email address\n
+• The content of your message\n
+This data is only used for responding to inquiries and will not be shared or sold to any third party.`
+            },
+            {
+              title: "2. Use of Information",
+              content: `The collected data is used for the following purposes:\n
+• To monitor and analyze website performance and usage trends\n
+• Improve user experience and interface\n
+• Detect and prevent fraudulent or illegal activity\n
+• Respond to your inquiries or feedback\n
+• Comply with legal obligations\n
+We have no dare to use your data for profiling, direct marketing, or behavioral advertising.`
+            },
+            {
+              title: "3. Cookies and Tracking Technologies",
+              content: `Cookies and similar technologies are used by us to:\n
+• Save your preferences\n
+• Improve loading speed\n
+• Gather anonymized traffic data via tools like Google Analytics\n
+• Serve contextual ads via partners like Google AdSense\n\n
+Cookie Options:\n
+It is assured that We do not use cookies to personally identify users. It is up to you to refuse the use of cookies by selecting the suitable settings in your browser. However, this may restrict some functionalities of the website.`
+            },
+            {
+              title: "4. Third-Party Services",
+              content: `Third-party services might work with us that may collect anonymized data. These may be included:\n
+• Google Analytics\n
+• Google AdSense\n
+• Content Delivery Networks (CDNs)\n
+• Security Services: Cloudflare (for threat detection)\n\n
+Each and every third-party service has its own privacy policy, therefore we encourage you to review their terms and conditions.\n
+Likewise, we do not sell or rent your data to any third parties.`
+            },
+            {
+              title: "5. Downloading Content Disclaimer",
+              content: `For personal use only our service acts as an intermediary that allows users to extract public video URLs and download them. We do not host or store any videos on our servers.\n\n
+Hence:\n
+• We do not control or modify the original content.\n
+• The user is solely responsible for ensuring compliance with the terms of use of the platform they are downloading from.\n
+• Downloading copyrighted or private content without permission is strictly prohibited.\n
+• For the sake of using our website, you agree that you will not use it for illegal, infringing, or unauthorized purposes.`
+            },
+            {
+              title: "6. Data Sharing and Disclosure",
+              content: `Collected data is used only in the following situations:\n
+• To comply with a legal obligation (court orders, government requests)\n
+• To protect and defend our legal rights or property\n
+• In connection with a business transfer (merger, sale, etc.)\n
+• With your explicit consent\n\n
+We encourage you to use our services because there is nothing to injure you likewise we do not sell user data.`
+            },
+            {
+              title: "7. Data Security",
+              content: `Industry-standard measures are implemented by us to protect your data, including:\n
+• SSL encryption (HTTPS)\n
+• Secure server environments\n
+• Regular malware and vulnerability scanning\n\n
+Despite this, no method of transmission over the Internet is 100% secure hence we cannot guarantee you for absolute data protection.`
+            },
+            {
+              title: "8. Data Retention",
+              content: `For analytical purposes non-personal data is retained by us for a maximum of 12 months.\n
+To meet the needs of query or comply with legal obligations. Communication data (emails) is stored only as long as necessary to respond.`
+            },
+            {
+              title: "9. User Rights (Under GDPR/CCPA)",
+              content: `We don’t actively collect personal data, though you have the right to:\n
+• Request access to your personal data (if any)\n
+• Correction or deletion\n
+• Object to processing\n
+• Data portability\n
+• File a complaint with a data protection authority\n\n
+For availing the above mentioned you have to exercise these rights by contacting us.`
+            },
+            {
+              title: "10. Children’s Privacy",
+              content: `Our website and services are not willing to direct children under 13 (or under 16 in the EU) for the sake of collection of data.\n
+If we become aware that a child has provided us personal data, we will delete it as soon as possible.`
+            },
+            {
+              title: "11. International Data Transfers",
+              content: `Our servers and service providers have to follow the legal framework only, may be located in countries outside your own.\n
+By using our website, you consent to the transfer of your data to these countries, subject to adequate protections as required by applicable laws.`
+            },
+            {
+              title: "12. Changes to This Privacy Policy",
+              content: `To update this Privacy Policy from time to time we have to reflect changes in:\n
+• Legal requirements\n
+• Our services\n
+• Industry practices\n\n
+Any changes will be posted on this page and the effective date will be updated. We recommend reviewing this page from time to time.`
+            },
+            {
+              title: "13. Contact Us",
+              content: `For any query or concerns regarding this Privacy Policy, please contact us at:\n
+📧 Email: contact@freevideodownloader.co\n
+🌐 Website: https://freevideodownloader.co`
+            }
+          ].map((section, index) => (
+            <Card key={index}>
+              <CardHeader>
+                <CardTitle className="flex items-start gap-2 whitespace-pre-wrap">
+                  <span className="text-blue-600 font-bold">{section.title}</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="whitespace-pre-wrap leading-relaxed">{section.content}</p>
+              </CardContent>
+            </Card>
+          ))}
 
           <Card className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
             <CardContent className="pt-6">
               <p className="leading-relaxed text-center font-medium">
-                We appreciate your faith in us. Our objective is straightforward: offer a quick, secure, and private
-                movie download experience with no conditions.
+                Thank you for trusting us. We aim to serve you with a secure, clear, and respectful privacy-first experience.
               </p>
             </CardContent>
           </Card>
+
         </div>
       </div>
     </div>
-  )
+  );
 }
