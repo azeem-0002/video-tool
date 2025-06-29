@@ -54,6 +54,7 @@ export default function HomePage() {
   return (
     <>
       <Head>
+        <meta name="google-site-verification" content="0L02qgemlSuGX8WJ2KqmVbdXujPL5aHkQLMCK8iV3Y8" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
