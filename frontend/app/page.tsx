@@ -2,7 +2,6 @@ import { Hero } from "@/components/hero"
 import { Features } from "@/components/features"
 import { SEOContent } from "@/components/seo-content"
 import type { Metadata } from "next"
-import Head from "next/head"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 export const metadata: Metadata = {
@@ -53,9 +52,8 @@ export const metadata: Metadata = {
   },
 }
 
-
 function StructuredData() {
-  const webPageSchema = {
+  const schema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "Free Online Video Downloader – No App Needed, Fast & No Watermark",
@@ -65,52 +63,13 @@ function StructuredData() {
     inLanguage: "en",
   }
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://freevideodownloader.co/",
-      },
-    ],
-  }
-
   return (
-    <Head>
-      {/* Google Analytics tag */}
-      <script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id=G-PC6H4VWJNP"
-      ></script>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-PC6H4VWJNP');
-          `,
-        }}
-      />
-
-      {/* Structured Data: WebPage */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
-      />
-
-      {/* Structured Data: BreadcrumbList */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-    </Head>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
   )
 }
-
 
 export default function HomePage() {
   return (
