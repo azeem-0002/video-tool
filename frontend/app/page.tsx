@@ -115,7 +115,6 @@ function StructuredData() {
 export default function HomePage() {
   return (
     <>
-      <StructuredData />
       <div className="min-h-screen">
         <Hero />
         <SEOContent />

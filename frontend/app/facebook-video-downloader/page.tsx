@@ -51,74 +51,12 @@ export const metadata: Metadata = {
   },
 }
 
-function StructuredData() {
-  const webPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "Facebook Video Downloader - Free & HD FB Video Saver (Reels, Stories, Live)",
-    url: "https://freevideodownloader.co/facebook-video-downloader",
-    description:
-      "Download Facebook videos, Reels, Stories, and Live streams in HD quality — absolutely free and with no watermark. Our FB video downloader works online on any device – fast and secure!",
-    inLanguage: "en",
-  }
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://freevideodownloader.co/",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Facebook Video Downloader",
-        item: "https://freevideodownloader.co/facebook-video-downloader",
-      },
-    ],
-  }
-
-  return (
-    <Head>
-      {/* Google Analytics tag */}
-      <script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id=G-PC6H4VWJNP"
-      ></script>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-PC6H4VWJNP');
-          `,
-        }}
-      />
-
-      {/* Structured Data: WebPage */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
-      />
-
-      {/* Structured Data: BreadcrumbList */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-    </Head>
-  )
-}
 
 
 export default function FacebookPage() {
   return (
     <>
-    <StructuredData />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
