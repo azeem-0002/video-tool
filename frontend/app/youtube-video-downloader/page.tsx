@@ -52,25 +52,70 @@ export const metadata: Metadata = {
   },
 }
 
+function StructuredDataYouTube() {
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "YouTube Video Downloader - Free MP4 & MP3 YouTube Saver (HD, 4K)",
+    "url": "https://freevideodownloader.co/youtube-video-downloader",
+    "description": "Free YouTube Downloader: Download YouTube videos in various qualities (HD, 4K, 1080p) to MP4 or convert to MP3. Fast, secure, and no software or watermark needed. Compatible with all devices!",
+    "inLanguage": "en"
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freevideodownloader.co/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "YouTube Video Downloader",
+        "item": "https://freevideodownloader.co/youtube-video-downloader"
+      }
+    ]
+  };
+
+  return (
+    <>
+      {/* WebPage Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
+
+      {/* BreadcrumbList Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
+      {/* Google Analytics Tag */}
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-PC6H4VWJNP"></script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-PC6H4VWJNP');
+          `
+        }}
+      />
+    </>
+  );
+}
+
+
 export default function YouTubePage() {
   return (
     <>
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebPage",
-              name: "YouTube Video Downloader - Free MP4 & MP3 YouTube Saver (HD, 4K)",
-              url: "https://freevideodownloader.co/youtube",
-              description:
-                "Free YouTube Downloader: Download YouTube videos in various qualities (HD, 4K, 1080p) to MP4 or convert to MP3. Fast, secure, and no software or watermark needed. Compatible with all devices!",
-              inLanguage: "en",
-            }),
-          }}
-        />
-      </Head>
+    <StructuredDataYouTube/>
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">

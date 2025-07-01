@@ -51,25 +51,70 @@ export const metadata: Metadata = {
   },
 }
 
+function StructuredDataTwitter() {
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Twitter/X Video Downloader - Save Videos & GIFs in HD MP4 (Free)",
+    "url": "https://freevideodownloader.co/twitter-video-downloader",
+    "description": "Free Twitter/X video downloader: Easily download videos and GIFs from Twitter (now X) in high-quality HD MP4 format. No software, no login, fast, and works on all devices!",
+    "inLanguage": "en"
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freevideodownloader.co/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Twitter Video Downloader",
+        "item": "https://freevideodownloader.co/twitter-video-downloader"
+      }
+    ]
+  };
+
+  return (
+    <>
+      {/* WebPage Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
+
+      {/* BreadcrumbList Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
+      {/* Google Analytics Tag */}
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-PC6H4VWJNP"></script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-PC6H4VWJNP');
+          `
+        }}
+      />
+    </>
+  );
+}
+
+
 export default function TwitterPage() {
   return (
     <>
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebPage",
-              name: "Twitter/X Video Downloader - Save Videos & GIFs in HD MP4 (Free)",
-              url: "/twitter-video-downloader",
-              description:
-                "Free Twitter/X video downloader: Easily download videos and GIFs from Twitter (now X) in high-quality HD MP4 format. No software, no login, fast, and works on all devices!",
-              inLanguage: "en",
-            }),
-          }}
-        />
-      </Head>
+    <StructuredDataTwitter />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">

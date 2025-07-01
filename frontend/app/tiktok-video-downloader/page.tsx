@@ -49,25 +49,70 @@ export const metadata: Metadata = {
   },
 }
 
+function StructuredDataTikTok() {
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "TikTok Video Downloader - Free No Watermark MP4 & MP3 TikTok Saver (HD)",
+    "url": "https://freevideodownloader.co/tiktok-video-downloader",
+    "description": "Free TikTok Downloader: Download TikTok videos, Stories, and Slideshows in HD MP4 (no watermark) or convert to MP3. Works fast on Android, iOS, and PC. Secure & easy to use!",
+    "inLanguage": "en"
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freevideodownloader.co/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "TikTok Video Downloader",
+        "item": "https://freevideodownloader.co/tiktok-video-downloader"
+      }
+    ]
+  };
+
+  return (
+    <>
+      {/* WebPage Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
+
+      {/* BreadcrumbList Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
+      {/* Google Analytics Tag */}
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-PC6H4VWJNP"></script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-PC6H4VWJNP');
+          `
+        }}
+      />
+    </>
+  );
+}
+
+
 export default function TikTokPage() {
   return (
     <>
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebPage",
-              name: "TikTok Video Downloader - Free No Watermark MP4 & MP3 TikTok Saver (HD)",
-              url: "/tiktok-video-downloader",
-              description:
-                "Free TikTok Downloader: Download TikTok videos, Stories, and Slideshows in HD MP4 (no watermark) or convert to MP3. Works fast on Android, iOS, and PC. Secure & easy to use!",
-              inLanguage: "en",
-            }),
-          }}
-        />
-      </Head>
+    <StructuredDataTikTok />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">

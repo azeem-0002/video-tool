@@ -53,23 +53,60 @@ export const metadata: Metadata = {
 }
 
 function StructuredData() {
-  const schema = {
+  const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Free Online Video Downloader – No App Needed, Fast & No Watermark",
-    url: "https://freevideodownloader.co/",
-    description:
+    "name": "Free Online Video Downloader – No App Needed, Fast & No Watermark",
+    "url": "https://freevideodownloader.co/",
+    "description":
       "Free online video downloader to save high-quality videos from any website. No app needed. Fast, easy, and no watermark — download any video instantly.",
-    inLanguage: "en",
-  }
+    "inLanguage": "en"
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freevideodownloader.co/"
+      }
+    ]
+  };
 
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  )
+    <>
+      {/* WebPage Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
+
+      {/* BreadcrumbList Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
+      {/* Google Analytics Tag */}
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-PC6H4VWJNP"></script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-PC6H4VWJNP');
+        `
+        }}
+      />
+    </>
+  );
 }
+
+
 
 export default function HomePage() {
   return (

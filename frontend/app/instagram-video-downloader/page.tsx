@@ -51,25 +51,70 @@ export const metadata: Metadata = {
   },
 }
 
+function StructuredDataInstagram() {
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Instagram Video Downloader: Save Reels, Stories & IGTV in HD - Free & No Watermark",
+    "url": "https://freevideodownloader.co/instagram-video-downloader",
+    "description": "Free Instagram Video Downloader: Easily download Instagram videos, Reels, Stories, and IGTV in HD MP4. No watermark, no login, fast, and secure. Works on all devices (iOS & Android).",
+    "inLanguage": "en"
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freevideodownloader.co/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Instagram Video Downloader",
+        "item": "https://freevideodownloader.co/instagram-video-downloader"
+      }
+    ]
+  };
+
+  return (
+    <>
+      {/* WebPage Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
+
+      {/* BreadcrumbList Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
+      {/* Google Analytics Tag */}
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-PC6H4VWJNP"></script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-PC6H4VWJNP');
+          `
+        }}
+      />
+    </>
+  );
+}
+
+
 export default function InstagramPage() {
   return (
     <>
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebPage",
-              name: "Instagram Video Downloader: Save Reels, Stories & IGTV in HD - Free & No Watermark",
-              url: "https://freevideodownloader.co/instagram-video-downloader",
-              description:
-                "Free Instagram Video Downloader: Easily download Instagram videos, Reels, Stories, and IGTV in HD MP4. No watermark, no login, fast, and secure. Works on all devices (iOS & Android).",
-              inLanguage: "en",
-            }),
-          }}
-        />
-      </Head>
+    <StructuredDataInstagram />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
