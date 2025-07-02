@@ -522,13 +522,6 @@ export function UniversalDownloader() {
   return (
 
     <div className="max-w-4xl mx-auto space-y-8">
-      {/* Descriptive paragraph */}
-      <div className="text-center max-w-2xl mx-auto mb-8">
-        <p className="text-sm text-muted-foreground">
-          Universal video downloader supporting all major platforms. Our free online video download tool works with
-          YouTube, TikTok, Instagram, Facebook, Twitter and more. Fast, secure, and easy to use.
-        </p>
-      </div>
       {/* Error Alert - Displayed at the top */}
       {error && (
         <Alert variant="destructive" className="border-red-200 bg-red-50 dark:bg-red-900/20">
