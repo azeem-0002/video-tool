@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Code, Globe, Zap, Shield, Mail } from "lucide-react"
 import type { Metadata } from "next"
-import Head from "next/head"
 
 export const metadata: Metadata = {
   title: "API Access - FreeVideoDownloader Developer API",
@@ -17,6 +16,47 @@ export const metadata: Metadata = {
 }
 
 export default function APIAccessPage() {
+  const webAPISchema = {
+    "@context": "https://schema.org",
+    "@type": "WebAPI",
+    name: "FreeVideoDownloader API",
+    description:
+      "The FreeVideoDownloader API provides fast, reliable access to video and audio downloads from top platforms like YouTube, TikTok, Instagram, Facebook, and Twitter. Designed for developers and businesses.",
+    documentation: "https://freevideodownloader.co/api-access",
+    termsOfService: "https://freevideodownloader.co/terms",
+    provider: {
+      "@type": "Organization",
+      name: "FreeVideoDownloader",
+      url: "https://freevideodownloader.co",
+    },
+    endpointDescription: "https://freevideodownloader.co/api-access",
+    endpointUrl: "https://freevideodownloader.co/api/v1",
+    protocol: "REST",
+    contentType: "application/json",
+    areaServed: "Worldwide",
+    offers: {
+      "@type": "Offer",
+      price: "Contact for pricing",
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "API Support",
+      email: "contact@freevideodownloader.co",
+      availableLanguage: ["English"],
+    },
+    keywords: [
+      "video download API",
+      "YouTube downloader API",
+      "TikTok video API",
+      "Instagram video extractor",
+      "Facebook video downloader",
+      "Twitter video API",
+      "REST video API",
+    ],
+  }
+
   const supportedPlatforms = [
     { name: "YouTube", icon: "🎥", description: "Download videos and audio from YouTube" },
     { name: "TikTok", icon: "🎵", description: "Extract TikTok videos without watermarks" },
@@ -27,54 +67,7 @@ export default function APIAccessPage() {
 
   return (
     <>
-      <Head>
-        {/* WebAPI Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebAPI",
-              name: "FreeVideoDownloader API",
-              description:
-                "The FreeVideoDownloader API provides fast, reliable access to video and audio downloads from top platforms like YouTube, TikTok, Instagram, Facebook, and Twitter. Designed for developers and businesses.",
-              documentation: "https://freevideodownloader.co/api-access",
-              termsOfService: "https://freevideodownloader.co/terms",
-              provider: {
-                "@type": "Organization",
-                name: "FreeVideoDownloader",
-                url: "https://freevideodownloader.co",
-              },
-              endpointDescription: "https://freevideodownloader.co/api-access",
-              endpointUrl: "https://freevideodownloader.co/api/v1",
-              protocol: "REST",
-              contentType: "application/json",
-              areaServed: "Worldwide",
-              offers: {
-                "@type": "Offer",
-                price: "Contact for pricing",
-                priceCurrency: "USD",
-                availability: "https://schema.org/InStock",
-              },
-              contactPoint: {
-                "@type": "ContactPoint",
-                contactType: "API Support",
-                email: "contact@freevideodownloader.co",
-                availableLanguage: "English",
-              },
-              keywords: [
-                "video download API",
-                "YouTube downloader API",
-                "TikTok video API",
-                "Instagram video extractor",
-                "Facebook video downloader",
-                "Twitter video API",
-                "REST video API",
-              ],
-            }),
-          }}
-        />
-      </Head>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAPISchema) }} />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">

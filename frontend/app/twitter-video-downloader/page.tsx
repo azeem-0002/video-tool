@@ -2,7 +2,6 @@ import { PlatformDownloader } from "@/components/platform-downloader"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { Metadata } from "next"
-import Head from "next/head"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 export const metadata: Metadata = {
@@ -50,141 +49,127 @@ export const metadata: Metadata = {
 }
 
 export default function TwitterPage() {
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Twitter/X Video Downloader - Save Videos & GIFs in HD MP4 (Free)",
+    url: "https://freevideodownloader.co/twitter-video-downloader",
+    description:
+      "Free Twitter/X video downloader: Easily download videos and GIFs from Twitter (now X) in high-quality HD MP4 format. No software, no login, fast, and works on all devices!",
+    inLanguage: "en",
+  }
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://freevideodownloader.co/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Twitter Video Downloader",
+        item: "https://freevideodownloader.co/twitter-video-downloader",
+      },
+    ],
+  }
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "How can I download Twitter videos online?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "To save a video from Twitter, copy the tweet link, paste it into the input field on our tool, and click the download button. The file will be saved to your device in your selected resolution.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Do I need to sign up to use the Twitter video download tool?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No registration is required. The service is available instantly without logging in or creating an account.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Is there a daily or monthly download limit?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "There are no restrictions. Users can download unlimited Twitter videos without facing any cap or usage limit.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What video formats and resolutions are available?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Our tool supports multiple quality options, including HD, Full HD, and up to 4K resolution, depending on the source video's quality.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Can I download videos posted on private Twitter accounts?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Videos from private accounts are only accessible if you have permission and access to view them. Our tool supports downloads from publicly accessible tweets.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Is this Twitter video saving service free of cost?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, this video downloader is completely free. No hidden charges or premium plans.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Will the downloaded video contain any branding or watermark?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No, the video files are downloaded in their original form without any added logos or watermarks.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Is the video downloading process user-friendly?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, the interface is designed for all users. No technical skills are needed—just paste, click, and download.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Which devices support this downloader tool?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "The platform works on all major devices including Android phones, iPhones, iPads, laptops, desktops, and tablets via any web browser.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Is this tool compatible with all operating systems?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, it's compatible with Windows, macOS, iOS, Android, and Linux operating systems, as it is fully web-based.",
+        },
+      },
+    ],
+  }
+
   return (
     <>
-      <Head>
-        {/* WebPage Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebPage",
-              name: "Twitter/X Video Downloader - Save Videos & GIFs in HD MP4 (Free)",
-              url: "https://freevideodownloader.co/twitter-video-downloader",
-              description:
-                "Free Twitter/X video downloader: Easily download videos and GIFs from Twitter (now X) in high-quality HD MP4 format. No software, no login, fast, and works on all devices!",
-              inLanguage: "en",
-            }),
-          }}
-        />
-        {/* Breadcrumb Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                {
-                  "@type": "ListItem",
-                  position: 1,
-                  name: "Home",
-                  item: "https://freevideodownloader.co/",
-                },
-                {
-                  "@type": "ListItem",
-                  position: 2,
-                  name: "Twitter Video Downloader",
-                  item: "https://freevideodownloader.co/twitter-video-downloader",
-                },
-              ],
-            }),
-          }}
-        />
-        {/* FAQ Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: [
-                {
-                  "@type": "Question",
-                  name: "How can I download Twitter videos online?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "To save a video from Twitter, copy the tweet link, paste it into the input field on our tool, and click the download button. The file will be saved to your device in your selected resolution.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Do I need to sign up to use the Twitter video download tool?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "No registration is required. The service is available instantly without logging in or creating an account.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Is there a daily or monthly download limit?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "There are no restrictions. Users can download unlimited Twitter videos without facing any cap or usage limit.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "What video formats and resolutions are available?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Our tool supports multiple quality options, including HD, Full HD, and up to 4K resolution, depending on the source video's quality.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Can I download videos posted on private Twitter accounts?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Videos from private accounts are only accessible if you have permission and access to view them. Our tool supports downloads from publicly accessible tweets.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Is this Twitter video saving service free of cost?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Yes, this video downloader is completely free. No hidden charges or premium plans.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Will the downloaded video contain any branding or watermark?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "No, the video files are downloaded in their original form without any added logos or watermarks.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Is the video downloading process user-friendly?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Yes, the interface is designed for all users. No technical skills are needed—just paste, click, and download.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Which devices support this downloader tool?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "The platform works on all major devices including Android phones, iPhones, iPads, laptops, desktops, and tablets via any web browser.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Is this tool compatible with all operating systems?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Yes, it's compatible with Windows, macOS, iOS, Android, and Linux operating systems, as it is fully web-based.",
-                  },
-                },
-              ],
-            }),
-          }}
-        />
-      </Head>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">

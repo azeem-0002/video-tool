@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { Metadata } from "next"
-import Head from "next/head"
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Free Video Downloader",
@@ -13,54 +12,52 @@ export const metadata: Metadata = {
 }
 
 export default function PrivacyPolicy() {
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://freevideodownloader.co/privacy#webpage",
+    url: "https://freevideodownloader.co/privacy",
+    name: "Privacy Policy",
+    description:
+      "Read the Free Video Downloader privacy policy to understand how we collect, use, and protect your information when using our video downloading services. GDPR & CCPA compliant.",
+    inLanguage: "en",
+    isPartOf: {
+      "@type": "WebSite",
+      url: "https://freevideodownloader.co",
+      name: "Free Video Downloader",
+    },
+  }
+
+  const privacyPolicySchema = {
+    "@context": "https://schema.org",
+    "@type": "PrivacyPolicy",
+    name: "Privacy Policy",
+    url: "https://freevideodownloader.co/privacy",
+    datePublished: "2025-06-28",
+    dateModified: "2025-06-28",
+    publisher: {
+      "@type": "Organization",
+      name: "Free Video Downloader",
+      url: "https://freevideodownloader.co",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://freevideodownloader.co/logo.png",
+      },
+    },
+    audience: {
+      "@type": "Audience",
+      audienceType: "General Public",
+    },
+    about: {
+      "@type": "Thing",
+      name: "Privacy, GDPR, CCPA, Cookies, Data Protection",
+    },
+  }
+
   return (
     <>
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebPage",
-              "@id": "https://freevideodownloader.co/privacy#webpage",
-              url: "https://freevideodownloader.co/privacy",
-              name: "Privacy Policy",
-              description:
-                "Read the Free Video Downloader privacy policy to understand how we collect, use, and protect your information when using our video downloading services. GDPR & CCPA compliant.",
-              inLanguage: "en",
-              isPartOf: {
-                "@type": "WebSite",
-                url: "https://freevideodownloader.co",
-                name: "Free Video Downloader",
-              },
-              mainEntity: {
-                "@type": "PrivacyPolicy",
-                name: "Privacy Policy",
-                url: "https://freevideodownloader.co/privacy",
-                datePublished: "2025-06-28",
-                dateModified: "2025-06-28",
-                publisher: {
-                  "@type": "Organization",
-                  name: "Free Video Downloader",
-                  url: "https://freevideodownloader.co",
-                  logo: {
-                    "@type": "ImageObject",
-                    url: "https://freevideodownloader.co/logo.png",
-                  },
-                },
-                audience: {
-                  "@type": "Audience",
-                  audienceType: "General Public",
-                },
-                about: {
-                  "@type": "Thing",
-                  name: "Privacy, GDPR, CCPA, Cookies, Data Protection",
-                },
-              },
-            }),
-          }}
-        />
-      </Head>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(privacyPolicySchema) }} />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">

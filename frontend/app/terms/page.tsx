@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { Metadata } from "next"
-import Head from "next/head"
 
 export const metadata: Metadata = {
   title: "Terms of Service | Free Video Downloader",
@@ -13,54 +12,52 @@ export const metadata: Metadata = {
 }
 
 export default function TermsOfService() {
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://freevideodownloader.co/terms#webpage",
+    url: "https://freevideodownloader.co/terms",
+    name: "Terms of Service",
+    description:
+      "Review the Free Video Downloader Terms of Service outlining proper usage of tools, copyright policies, and user responsibilities for video downloading from third-party platforms.",
+    inLanguage: "en",
+    isPartOf: {
+      "@type": "WebSite",
+      url: "https://freevideodownloader.co",
+      name: "Free Video Downloader",
+    },
+  }
+
+  const creativeWorkSchema = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: "Terms of Service",
+    url: "https://freevideodownloader.co/terms",
+    datePublished: "2025-06-28",
+    dateModified: "2025-06-28",
+    publisher: {
+      "@type": "Organization",
+      name: "Free Video Downloader",
+      url: "https://freevideodownloader.co",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://freevideodownloader.co/logo.png",
+      },
+    },
+    audience: {
+      "@type": "Audience",
+      audienceType: "General Public",
+    },
+    about: {
+      "@type": "Thing",
+      name: "Terms, Conditions, Copyright, Content Use",
+    },
+  }
+
   return (
     <>
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebPage",
-              "@id": "https://freevideodownloader.co/terms#webpage",
-              url: "https://freevideodownloader.co/terms",
-              name: "Terms of Service",
-              description:
-                "Review the Free Video Downloader Terms of Service outlining proper usage of tools, copyright policies, and user responsibilities for video downloading from third-party platforms.",
-              inLanguage: "en",
-              isPartOf: {
-                "@type": "WebSite",
-                url: "https://freevideodownloader.co",
-                name: "Free Video Downloader",
-              },
-              mainEntity: {
-                "@type": "CreativeWork",
-                name: "Terms of Service",
-                url: "https://freevideodownloader.co/terms",
-                datePublished: "2025-06-28",
-                dateModified: "2025-06-28",
-                publisher: {
-                  "@type": "Organization",
-                  name: "Free Video Downloader",
-                  url: "https://freevideodownloader.co",
-                  logo: {
-                    "@type": "ImageObject",
-                    url: "https://freevideodownloader.co/logo.png",
-                  },
-                },
-                audience: {
-                  "@type": "Audience",
-                  audienceType: "General Public",
-                },
-                about: {
-                  "@type": "Thing",
-                  name: "Terms, Conditions, Copyright, Content Use",
-                },
-              },
-            }),
-          }}
-        />
-      </Head>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkSchema) }} />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
