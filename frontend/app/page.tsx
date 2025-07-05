@@ -1,51 +1,58 @@
-import type { Metadata } from "next"
 import { Hero } from "@/components/hero"
 import { Features } from "@/components/features"
-import { UniversalDownloader } from "@/components/universal-downloader"
-import { DemoSection } from "@/components/demo-section"
 import { SEOContent } from "@/components/seo-content"
+import type { Metadata } from "next"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 export const metadata: Metadata = {
-  title: "Free Online Video Downloader – No App Needed, Fast & No Watermark",
+  title: "Free Online Video Downloader: Download Videos from Any Website - Universal Tool",
   description:
-    "Free online video downloader to save high-quality videos from YouTube, TikTok, Instagram, Facebook, and Twitter. No app installation required, fast downloads, and no watermarks.",
-  keywords: [
-    "video downloader",
-    "free video downloader",
-    "online video downloader",
-    "YouTube downloader",
-    "TikTok downloader",
-    "Instagram video downloader",
-    "Facebook video downloader",
-    "Twitter video downloader",
-    "no watermark",
-    "HD video download",
-  ],
+    "Best free online video downloader to download videos from any website including Facebook, YouTube, TikTok, Instagram, Twitter & more. Universal video downloader with HD quality, fast downloads, and no watermarks.",
+  keywords:
+    "free online video downloader, download videos from any website, online video downloader, universal video downloader, online video download, video downloader free, download social media videos, HD video downloader",
   openGraph: {
-    title: "Free Online Video Downloader – No App Needed, Fast & No Watermark",
+    title: "Free Online Video Downloader: Download Videos from Any Website - Universal Tool",
     description:
-      "Free online video downloader to save high-quality videos from YouTube, TikTok, Instagram, Facebook, and Twitter. No app installation required, fast downloads, and no watermarks.",
+      "Download videos from any website with our free online video downloader. Supports all major platforms - fast, secure, and no software needed.",
+    type: "website",
+    url: "https://freevideodownloader.co/",
+    siteName: "FreeVideoDownloader.co",
     images: [
       {
-        url: "/images/universal-og-image.png",
+        url: "https://freevideodownloader.co/images/universal-og-image.png",
         width: 1200,
         height: 630,
-        alt: "Free Video Downloader - Download videos from any platform",
+        alt: "Free Online Video Downloader - Download Videos from Any Website",
       },
     ],
   },
   twitter: {
-    title: "Free Online Video Downloader – No App Needed, Fast & No Watermark",
+    card: "summary_large_image",
+    title: "Free Online Video Downloader: Download Videos from Any Website",
     description:
-      "Free online video downloader to save high-quality videos from YouTube, TikTok, Instagram, Facebook, and Twitter. No app installation required, fast downloads, and no watermarks.",
-    images: ["/images/universal-og-image.png"],
+      "Universal video downloader for all websites. Download videos online for free - fast, secure, and no software required.",
+    images: ["https://freevideodownloader.co/images/universal-og-image.png"],
+  },
+  alternates: {
+    canonical: "https://freevideodownloader.co/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 }
 
 export default function HomePage() {
   return (
     <>
-      {/* Structured Data for Homepage */}
+      {/* WebPage Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -53,46 +60,34 @@ export default function HomePage() {
             "@context": "https://schema.org",
             "@type": "WebPage",
             name: "Free Online Video Downloader – No App Needed, Fast & No Watermark",
+            url: "https://freevideodownloader.co/",
             description:
-              "Free online video downloader to save high-quality videos from YouTube, TikTok, Instagram, Facebook, and Twitter. No app installation required, fast downloads, and no watermarks.",
-            url: "https://freevideodownloader.co",
-            mainEntity: {
-              "@type": "SoftwareApplication",
-              name: "FreeVideoDownloader",
-              applicationCategory: "MultimediaApplication",
-              operatingSystem: "Web Browser",
-              description:
-                "Free online video downloader supporting YouTube, TikTok, Instagram, Facebook, Twitter and more platforms.",
-              offers: {
-                "@type": "Offer",
-                price: "0",
-                priceCurrency: "USD",
-                availability: "https://schema.org/InStock",
-              },
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "4.8",
-                ratingCount: "15420",
-                bestRating: "5",
-                worstRating: "1",
-              },
-            },
-            breadcrumb: {
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                {
-                  "@type": "ListItem",
-                  position: 1,
-                  name: "Home",
-                  item: "https://freevideodownloader.co",
-                },
-              ],
-            },
+              "Free online video downloader to save high-quality videos from any website. No app needed. Fast, easy, and no watermark — download any video instantly.",
+            inLanguage: "en",
           }),
         }}
       />
 
-      {/* FAQ Schema for Homepage */}
+      {/* BreadcrumbList Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://freevideodownloader.co/",
+              },
+            ],
+          }),
+        }}
+      />
+
+      {/* FAQ Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -102,66 +97,82 @@ export default function HomePage() {
             mainEntity: [
               {
                 "@type": "Question",
-                name: "Is FreeVideoDownloader really free to use?",
+                name: "How can I download videos from any website using your online video downloader?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Yes, FreeVideoDownloader is completely free to use. There are no hidden fees, subscriptions, or premium plans required. You can download unlimited videos from supported platforms without any cost.",
+                  text: "Our universal video downloader supports multiple platforms including Instagram, TikTok, YouTube, Facebook, Twitter, and more. Simply paste any video URL into our online video download tool and click download.",
                 },
               },
               {
                 "@type": "Question",
-                name: "Which platforms are supported for video downloading?",
+                name: "Is this free online video downloader really free to use?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "We support major platforms including YouTube, TikTok, Instagram, Facebook, Twitter/X, and many more. Our universal downloader can handle videos from most popular social media and video sharing platforms.",
+                  text: "Yes, our online video downloader is completely free to use. You can download videos from any website without any charges, subscriptions, or hidden fees.",
                 },
               },
               {
                 "@type": "Question",
-                name: "Do I need to install any software or app?",
+                name: "What video quality can I download with this universal video downloader?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "No installation required! FreeVideoDownloader works entirely in your web browser. Simply paste the video URL and download - it's that simple.",
+                  text: "Our online video download tool supports various qualities including HD, Full HD, and up to 4K resolution, ensuring you get the best possible video quality from any website.",
                 },
               },
               {
                 "@type": "Question",
-                name: "Are the downloaded videos watermark-free?",
+                name: "Do I need to install software to use this online video downloader?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Yes, all videos downloaded through our service are free from watermarks. You get the original video content without any additional branding or watermarks added by our service.",
+                  text: "No installation required! Our free online video downloader works directly in your browser. Simply visit our website, paste the video URL, and start your online video download immediately.",
                 },
               },
               {
                 "@type": "Question",
-                name: "What video qualities are available for download?",
+                name: "Are there any limitations on downloading videos from websites?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "We offer multiple quality options including HD (1080p), 720p, 480p, and 360p, depending on the source video's available qualities. You can choose the quality that best suits your needs.",
+                  text: "While our universal video downloader is free and unlimited, please ensure you comply with copyright laws and respect content creators' rights when downloading videos from any website.",
                 },
               },
               {
                 "@type": "Question",
-                name: "Is it legal to download videos using this service?",
+                name: "How do I use this online video download tool?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Users are responsible for ensuring they have the right to download content. We recommend only downloading videos you own, have permission to download, or that are available under appropriate licenses. Always respect copyright laws and platform terms of service.",
+                  text: "Using our free online video downloader is simple: copy the video URL from any supported website, paste it into our universal video downloader, select your desired quality, and click download.",
                 },
               },
               {
                 "@type": "Question",
-                name: "How fast are the downloads?",
+                name: "Can I download videos privately and securely with this online video downloader?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Download speeds depend on your internet connection and the video file size. Our service is optimized for fast processing and delivery, typically providing download links within seconds of submitting a URL.",
+                  text: "Yes, your privacy is protected when using our online video download service. We don't store any of your data or the videos you download from any website.",
                 },
               },
               {
                 "@type": "Question",
-                name: "Do you store the videos I download?",
+                name: "Does this universal video downloader work on mobile devices?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "No, we do not store any videos on our servers. The download process creates temporary links that expire after a short time. Your privacy and the content creators' rights are important to us.",
+                  text: "Yes, our free online video downloader is mobile-friendly and works perfectly on smartphones and tablets, allowing you to download videos from any website on any device.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What video formats does this online video download tool support?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Our universal video downloader supports various formats including MP4, MP3, and others, depending on the source website and your selected quality preferences.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What should I do if I encounter issues with the online video downloader?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "If you face any issues while using our free online video downloader, please check your internet connection and ensure the video URL is correct. For further assistance with online video download, you can contact our support team.",
                 },
               },
             ],
@@ -169,12 +180,157 @@ export default function HomePage() {
         }}
       />
 
-      <div className="flex flex-col min-h-screen">
+      <div className="min-h-screen">
         <Hero />
-        <UniversalDownloader />
-        <Features />
-        <DemoSection />
         <SEOContent />
+        <div id="features-section">
+          <Features />
+        </div>
+        {/* FAQ Section */}
+        <section className="py-16 px-4 bg-gray-50 dark:bg-gray-900">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
+              <p className="text-lg text-gray-600 dark:text-gray-300">
+                Everything you need to know about our free online video downloader
+              </p>
+            </div>
+
+            <Accordion type="single" collapsible className="space-y-4">
+              <AccordionItem
+                value="item-1"
+                className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+              >
+                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200">
+                  How can I download videos from any website using your online video downloader?
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-600 dark:text-gray-300">
+                  Our universal video downloader supports multiple platforms including Instagram, TikTok, YouTube,
+                  Facebook, Twitter, and more. Simply paste any video URL into our online video download tool and click
+                  download.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-2"
+                className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+              >
+                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200">
+                  Is this free online video downloader really free to use?
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-600 dark:text-gray-300">
+                  Yes, our online video downloader is completely free to use. You can download videos from any website
+                  without any charges, subscriptions, or hidden fees.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-3"
+                className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+              >
+                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200">
+                  What video quality can I download with this universal video downloader?
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-600 dark:text-gray-300">
+                  Our online video download tool supports various qualities including HD, Full HD, and up to 4K
+                  resolution, ensuring you get the best possible video quality from any website.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-4"
+                className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+              >
+                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200">
+                  Do I need to install software to use this online video downloader?
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-600 dark:text-gray-300">
+                  No installation required! Our free online video downloader works directly in your browser. Simply
+                  visit our website, paste the video URL, and start your online video download immediately.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-5"
+                className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+              >
+                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200">
+                  Are there any limitations on downloading videos from websites?
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-600 dark:text-gray-300">
+                  While our universal video downloader is free and unlimited, please ensure you comply with copyright
+                  laws and respect content creators' rights when downloading videos from any website.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-6"
+                className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+              >
+                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200">
+                  How do I use this online video download tool?
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-600 dark:text-gray-300">
+                  Using our free online video downloader is simple: copy the video URL from any supported website, paste
+                  it into our universal video downloader, select your desired quality, and click download.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-7"
+                className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+              >
+                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200">
+                  Can I download videos privately and securely with this online video downloader?
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-600 dark:text-gray-300">
+                  Yes, your privacy is protected when using our online video download service. We don't store any of
+                  your data or the videos you download from any website.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-8"
+                className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+              >
+                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200">
+                  Does this universal video downloader work on mobile devices?
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-600 dark:text-gray-300">
+                  Yes, our free online video downloader is mobile-friendly and works perfectly on smartphones and
+                  tablets, allowing you to download videos from any website on any device.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-9"
+                className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+              >
+                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200">
+                  What video formats does this online video download tool support?
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-600 dark:text-gray-300">
+                  Our universal video downloader supports various formats including MP4, MP3, and others, depending on
+                  the source website and your selected quality preferences.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-10"
+                className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+              >
+                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200">
+                  What should I do if I encounter issues with the online video downloader?
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-600 dark:text-gray-300">
+                  If you face any issues while using our free online video downloader, please check your internet
+                  connection and ensure the video URL is correct. For further assistance with online video download, you
+                  can contact our support team.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        </section>
       </div>
     </>
   )
