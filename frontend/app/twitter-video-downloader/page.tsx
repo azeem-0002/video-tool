@@ -16,11 +16,11 @@ export const metadata: Metadata = {
     description:
       "Download Twitter (X) videos and GIFs instantly in HD MP4. Our free online tool requires no login or software. Fast, secure, and compatible with all devices.",
     type: "website",
-    url: "https://freevideodownloader.co/twitter-video-downloader", // Ensure this is your actual domain
-    siteName: "FreeVideoDownloader.co", // Consistent site name
+    url: "https://freevideodownloader.co/twitter-video-downloader",
+    siteName: "FreeVideoDownloader.co",
     images: [
       {
-        url: "https://freevideodownloader.co/images/twitter-downloader-og-image.png", // Create a relevant image for Twitter/X
+        url: "https://freevideodownloader.co/images/twitter-downloader-og-image.png",
         width: 1200,
         height: 630,
         alt: "Twitter/X Video Downloader - Save Videos & GIFs",
@@ -31,12 +31,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Download Twitter/X Videos FREE - HD MP4 & GIFs",
     description: "Save Twitter (X) videos and GIFs in high quality MP4 format. Free, fast, and no login required.",
-    images: [
-      "https://freevideodownloader.co/images/twitter-downloader-og-image.png", // Create a relevant image for Twitter/X
-    ],
+    images: ["https://freevideodownloader.co/images/twitter-downloader-og-image.png"],
   },
   alternates: {
-    canonical: "/twitter-video-downloader", // Ensure this is your actual domain
+    canonical: "https://freevideodownloader.co/twitter-video-downloader",
   },
   robots: {
     index: true,
@@ -51,70 +49,142 @@ export const metadata: Metadata = {
   },
 }
 
-function StructuredDataTwitter() {
-  const webPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Twitter/X Video Downloader - Save Videos & GIFs in HD MP4 (Free)",
-    "url": "https://freevideodownloader.co/twitter-video-downloader",
-    "description": "Free Twitter/X video downloader: Easily download videos and GIFs from Twitter (now X) in high-quality HD MP4 format. No software, no login, fast, and works on all devices!",
-    "inLanguage": "en"
-  };
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://freevideodownloader.co/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Twitter Video Downloader",
-        "item": "https://freevideodownloader.co/twitter-video-downloader"
-      }
-    ]
-  };
-
-  return (
-    <>
-      {/* WebPage Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
-      />
-
-      {/* BreadcrumbList Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-
-      {/* Google Analytics Tag */}
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-PC6H4VWJNP"></script>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-PC6H4VWJNP');
-          `
-        }}
-      />
-    </>
-  );
-}
-
-
 export default function TwitterPage() {
   return (
     <>
-    <StructuredDataTwitter />
+      <Head>
+        {/* WebPage Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              name: "Twitter/X Video Downloader - Save Videos & GIFs in HD MP4 (Free)",
+              url: "https://freevideodownloader.co/twitter-video-downloader",
+              description:
+                "Free Twitter/X video downloader: Easily download videos and GIFs from Twitter (now X) in high-quality HD MP4 format. No software, no login, fast, and works on all devices!",
+              inLanguage: "en",
+            }),
+          }}
+        />
+        {/* Breadcrumb Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://freevideodownloader.co/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Twitter Video Downloader",
+                  item: "https://freevideodownloader.co/twitter-video-downloader",
+                },
+              ],
+            }),
+          }}
+        />
+        {/* FAQ Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "How can I download Twitter videos online?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "To save a video from Twitter, copy the tweet link, paste it into the input field on our tool, and click the download button. The file will be saved to your device in your selected resolution.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Do I need to sign up to use the Twitter video download tool?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "No registration is required. The service is available instantly without logging in or creating an account.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is there a daily or monthly download limit?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "There are no restrictions. Users can download unlimited Twitter videos without facing any cap or usage limit.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "What video formats and resolutions are available?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Our tool supports multiple quality options, including HD, Full HD, and up to 4K resolution, depending on the source video's quality.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Can I download videos posted on private Twitter accounts?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Videos from private accounts are only accessible if you have permission and access to view them. Our tool supports downloads from publicly accessible tweets.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is this Twitter video saving service free of cost?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes, this video downloader is completely free. No hidden charges or premium plans.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Will the downloaded video contain any branding or watermark?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "No, the video files are downloaded in their original form without any added logos or watermarks.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is the video downloading process user-friendly?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes, the interface is designed for all users. No technical skills are needed—just paste, click, and download.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Which devices support this downloader tool?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "The platform works on all major devices including Android phones, iPhones, iPads, laptops, desktops, and tablets via any web browser.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is this tool compatible with all operating systems?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes, it's compatible with Windows, macOS, iOS, Android, and Linux operating systems, as it is fully web-based.",
+                  },
+                },
+              ],
+            }),
+          }}
+        />
+      </Head>
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">

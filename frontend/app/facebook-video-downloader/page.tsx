@@ -51,70 +51,142 @@ export const metadata: Metadata = {
   },
 }
 
-function StructuredData() {
-  const webPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Facebook Video Downloader - Free & HD FB Video Saver (Reels, Stories, Live)",
-    "url": "https://freevideodownloader.co/facebook-video-downloader",
-    "description": "Download Facebook videos, Reels, Stories, and Live streams in HD quality — absolutely free and with no watermark. Our FB video downloader works online on any device – fast and secure!",
-    "inLanguage": "en"
-  };
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://freevideodownloader.co/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Facebook Video Downloader",
-        "item": "https://freevideodownloader.co/facebook-video-downloader"
-      }
-    ]
-  };
-
-  return (
-    <>
-      {/* WebPage Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
-      />
-
-      {/* BreadcrumbList Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-
-      {/* Google Analytics Tag */}
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-PC6H4VWJNP"></script>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-PC6H4VWJNP');
-          `
-        }}
-      />
-    </>
-  );
-}
-
-
 export default function FacebookPage() {
   return (
     <>
-      <StructuredData />
+      <Head>
+        {/* WebPage Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              name: "Facebook Video Downloader - Free & HD FB Video Saver (Reels, Stories, Live)",
+              url: "https://freevideodownloader.co/facebook-video-downloader",
+              description:
+                "Download Facebook videos, Reels, Stories, and Live streams in HD quality — absolutely free and with no watermark. Our FB video downloader works online on any device – fast and secure!",
+              inLanguage: "en",
+            }),
+          }}
+        />
+        {/* Breadcrumb Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://freevideodownloader.co/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Facebook Video Downloader",
+                  item: "https://freevideodownloader.co/facebook-video-downloader",
+                },
+              ],
+            }),
+          }}
+        />
+        {/* FAQ Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "What is a Facebook Video Downloader Tool?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "A Facebook Video Downloader is a web-based utility that lets users save videos directly from Facebook to their device. It supports high-resolution downloads (including HD and 4K), allowing offline viewing without internet access.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is Using the Facebook Video Downloader Free of Charge?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes, the tool is 100% free to use. There are no hidden fees, subscriptions, or sign-up requirements.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Do I Need to Register or Log In to Use It?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "No account creation or login is required. Simply copy the Facebook video link, paste it into the downloader, and initiate the download.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "What Video Resolutions Can I Download?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Available resolutions include SD, HD, Full HD, and up to 4K (if the original video supports it). The tool adjusts to provide the best available quality.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Can I Download Private Facebook Videos?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes, you can download private videos, but only if you have access or permission to view them. This ensures ethical use and respects content ownership.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Are There Limits to the Number of Videos I Can Download?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "There are no daily limits or restrictions. Users can download unlimited Facebook videos without any throttling or charges.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Will the Downloaded Videos Have Any Watermarks?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "No. All video downloads are watermark-free, ensuring clean and original content playback.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "In What File Format Will the Video Be Saved?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Videos are saved in MP4 format, which is widely compatible with smartphones, tablets, desktops, and most media players.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "How Do I Save a Facebook Video to My Device?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Copy the video URL from Facebook. Paste the link into the download input field. Select your preferred resolution. Click 'Download' to begin saving the video.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is the Facebook Downloader Safe and Private?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes. The downloader respects user privacy. It does not collect personal data or store download history. All downloads are processed anonymously.",
+                  },
+                },
+              ],
+            }),
+          }}
+        />
+      </Head>
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">

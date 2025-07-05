@@ -17,11 +17,11 @@ export const metadata: Metadata = {
     description:
       "Download YouTube videos instantly in HD, 4K, or 1080p MP4, or convert to MP3. Our free tool is fast, secure, and requires no software or registration.",
     type: "website",
-    url: "https://freevideodownloader.co/youtube-video-downloader", // Ensure this is your actual domain
-    siteName: "FreeVideoDownloader.co", // Consistent site name
+    url: "https://freevideodownloader.co/youtube-video-downloader",
+    siteName: "FreeVideoDownloader.co",
     images: [
       {
-        url: "https://freevideodownloader.co/images/youtube-downloader-og-image.png", // Create a relevant image for YouTube
+        url: "https://freevideodownloader.co/images/youtube-downloader-og-image.png",
         width: 1200,
         height: 630,
         alt: "YouTube Video Downloader - Save YouTube Videos",
@@ -32,12 +32,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Download YouTube Videos FREE - MP4 & MP3 in HD/4K",
     description: "Get YouTube videos in HD, 4K, or 1080p MP4, or convert to MP3. Fast, free, and no software needed.",
-    images: [
-      "https://freevideodownloader.co/images/youtube-downloader-og-image.png", // Create a relevant image for YouTube
-    ],
+    images: ["https://freevideodownloader.co/images/youtube-downloader-og-image.png"],
   },
   alternates: {
-    canonical: "https://freevideodownloader.co/youtube-video-downloader", // Ensure this is your actual domain
+    canonical: "https://freevideodownloader.co/youtube-video-downloader",
   },
   robots: {
     index: true,
@@ -52,70 +50,142 @@ export const metadata: Metadata = {
   },
 }
 
-function StructuredDataYouTube() {
-  const webPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "YouTube Video Downloader - Free MP4 & MP3 YouTube Saver (HD, 4K)",
-    "url": "https://freevideodownloader.co/youtube-video-downloader",
-    "description": "Free YouTube Downloader: Download YouTube videos in various qualities (HD, 4K, 1080p) to MP4 or convert to MP3. Fast, secure, and no software or watermark needed. Compatible with all devices!",
-    "inLanguage": "en"
-  };
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://freevideodownloader.co/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "YouTube Video Downloader",
-        "item": "https://freevideodownloader.co/youtube-video-downloader"
-      }
-    ]
-  };
-
-  return (
-    <>
-      {/* WebPage Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
-      />
-
-      {/* BreadcrumbList Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-
-      {/* Google Analytics Tag */}
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-PC6H4VWJNP"></script>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-PC6H4VWJNP');
-          `
-        }}
-      />
-    </>
-  );
-}
-
-
 export default function YouTubePage() {
   return (
     <>
-    <StructuredDataYouTube/>
+      <Head>
+        {/* WebPage Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              name: "YouTube Video Downloader - Free MP4 & MP3 YouTube Saver (HD, 4K)",
+              url: "https://freevideodownloader.co/youtube-video-downloader",
+              description:
+                "Free YouTube Downloader: Download YouTube videos in various qualities (HD, 4K, 1080p) to MP4 or convert to MP3. Fast, secure, and no software or watermark needed. Compatible with all devices!",
+              inLanguage: "en",
+            }),
+          }}
+        />
+        {/* Breadcrumb Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://freevideodownloader.co/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "YouTube Video Downloader",
+                  item: "https://freevideodownloader.co/youtube-video-downloader",
+                },
+              ],
+            }),
+          }}
+        />
+        {/* FAQ Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "What is a YouTube video downloader?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "A YouTube video downloader is an online utility that enables users to save videos from YouTube directly to their devices. This tool supports multiple resolutions, including high-definition options up to 4K, depending on availability.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is there any cost involved in using the tool?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "No, this service is offered at no charge. Users can access all features without paying fees or purchasing a subscription.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is user registration required?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "No account creation or login is necessary. You can start downloading videos right away without providing any personal details.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "What video resolutions are supported?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "The downloader supports a variety of quality options, ranging from standard definition to ultra HD (4K), based on the original video quality.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Can I save private video links?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Videos marked as private can be downloaded only if you have authorized access. A valid link and viewing rights are required.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Are there any watermarks on the downloaded files?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "No. Saved videos are provided in their original format without any added branding or watermarks.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is there a limit on the number of videos I can download?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "There are no usage restrictions. You can download unlimited videos, as often as you like.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Which file types are available for download?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Videos can be saved in multiple formats, including MP4 and WEBM, based on what's supported by the source content and user preference.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Do I need to install any applications or browser extensions?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "No installation is required. The downloader works directly from your browser, offering a seamless and software-free experience.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is downloading YouTube videos allowed?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Saving content from YouTube may conflict with their Terms of Service. It's advised to download only content for which you have permission or that is in the public domain. Always follow copyright regulations in your region.",
+                  },
+                },
+              ],
+            }),
+          }}
+        />
+      </Head>
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">

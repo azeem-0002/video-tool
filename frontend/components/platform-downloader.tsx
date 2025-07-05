@@ -22,6 +22,7 @@ import {
 import { VideoResult } from "@/components/video-result"
 import { toast } from "sonner"
 import Link from "next/link"
+import { transformResponse } from "@/lib/response-transformer"
 
 interface PlatformDownloaderProps {
   platform: string
@@ -138,7 +139,7 @@ export function PlatformDownloader({ platform, endpoint, placeholder }: Platform
     try {
       console.log(`Processing ${platform} URL: ${url}`)
 
-      // Call Next.js API route instead of backend directly
+      // Call Next.js API route
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
@@ -148,71 +149,48 @@ export function PlatformDownloader({ platform, endpoint, placeholder }: Platform
       })
 
       console.log("Response status:", response.status)
-      console.log("Response headers:", response.headers)
-      console.log("Backend URL:", process.env.BACKEND_URL) // This will be undefined on client side
-      console.log("Endpoint being called:", endpoint)
+      console.log("Response headers:", Object.fromEntries(response.headers.entries()))
 
-      // Replace this section:
-      // Add this to see the actual response
-
-      // With this improved version:
       const responseText = await response.text()
-      console.log("Raw response:", responseText)
+      console.log("Raw response:", responseText.substring(0, 500))
 
-      // Check if response is JSON
+      if (!response.ok) {
+        let errorMessage = `HTTP ${response.status}`
+
+        try {
+          const errorData = JSON.parse(responseText)
+          errorMessage = errorData.error || errorMessage
+        } catch {
+          errorMessage = responseText || errorMessage
+        }
+
+        // Handle specific error cases
+        if (response.status === 404) {
+          throw new Error("Video not found. Please check if the URL is correct and the video is publicly accessible.")
+        } else if (response.status === 403) {
+          throw new Error("Access denied. The video might be private or restricted.")
+        } else if (response.status === 429) {
+          throw new Error("Too many requests. Please wait a moment and try again.")
+        } else if (response.status >= 500) {
+          throw new Error("Server error. Please try again later.")
+        } else {
+          throw new Error(`Failed to process video: ${errorMessage}`)
+        }
+      }
+
       let apiResponse
       try {
         apiResponse = JSON.parse(responseText)
       } catch (parseError) {
         console.error("Failed to parse JSON response:", parseError)
-        console.error("Response text:", responseText)
-
-        // Check if it's an HTML error page
-        if (responseText.includes("<html>") || responseText.includes("<!DOCTYPE")) {
-          throw new Error("Server returned an HTML error page. Please check your backend configuration.")
-        }
-
-        // Check if it's a plain text error (like "Internal Server Error")
-        if (responseText.startsWith("Internal Server Error") || responseText.startsWith("Error")) {
-          throw new Error(`Server error: ${responseText}`)
-        }
-
-        // Check if it's a 500 error response
-        if (response.status >= 500) {
-          throw new Error(
-            `Server error (${response.status}): The backend service is currently unavailable. Please try again later.`,
-          )
-        }
-
-        // Check if it's a 404 error
-        if (response.status === 404) {
-          throw new Error("Service endpoint not found. Please check your configuration.")
-        }
-
-        // Check if response is empty
-        if (!responseText.trim()) {
-          throw new Error("Empty response from server. Please check your backend configuration.")
-        }
-
-        // Generic parsing error with more context
-        throw new Error(`Invalid response format. Expected JSON but received: ${responseText.substring(0, 200)}...`)
+        throw new Error("Invalid response from server. Please try again.")
       }
 
       console.log("API Response:", apiResponse)
 
       if (!apiResponse.success) {
-        // Handle backend-specific errors
         const errorMessage = apiResponse.error || "Failed to process video"
-        if (errorMessage.toLowerCase().includes("not found") || errorMessage.toLowerCase().includes("404")) {
-          throw new Error("Video not found. The video might have been deleted or the URL is incorrect.")
-        } else if (
-          errorMessage.toLowerCase().includes("private") ||
-          errorMessage.toLowerCase().includes("restricted")
-        ) {
-          throw new Error("Cannot download private or restricted videos. Please use a public video URL.")
-        } else {
-          throw new Error(errorMessage)
-        }
+        throw new Error(errorMessage)
       }
 
       // Check if we got valid data
@@ -221,7 +199,7 @@ export function PlatformDownloader({ platform, endpoint, placeholder }: Platform
       }
 
       // Transform the backend response to match our frontend format
-      const transformedData = transformBackendResponse(apiResponse.data, platform)
+      const transformedData = transformResponse(apiResponse)
 
       // Validate transformed data
       if (!transformedData.downloadLinks || transformedData.downloadLinks.length === 0) {
@@ -245,139 +223,6 @@ export function PlatformDownloader({ platform, endpoint, placeholder }: Platform
       toast.error("Failed to process video")
     } finally {
       setLoading(false)
-    }
-  }
-
-  // Transform backend responses (same as universal downloader)
-  const transformBackendResponse = (data: any, platform: string): VideoData => {
-    switch (platform) {
-      case "tiktok":
-        return {
-          title: data.title || data.title_audio || "TikTok Video",
-          thumbnail: data.thumbnail || "/placeholder.svg?height=200&width=320",
-          downloadLinks: [
-            ...(data.video
-              ? data.video.map((url: string, index: number) => ({
-                  quality: "Video",
-                  url,
-                  format: "mp4",
-                }))
-              : []),
-            ...(data.audio
-              ? data.audio.map((url: string, index: number) => ({
-                  quality: "Audio Only",
-                  url,
-                  format: "mp3",
-                }))
-              : []),
-          ],
-        }
-
-      case "facebook":
-        return {
-          title: data.title || "Facebook Video",
-          thumbnail: data.thumbnail || "/placeholder.svg?height=200&width=320",
-          downloadLinks: [
-            ...(data.HD
-              ? [
-                  {
-                    quality: "HD",
-                    url: data.HD,
-                    format: "mp4",
-                  },
-                ]
-              : []),
-            ...(data.Normal_video
-              ? [
-                  {
-                    quality: "SD",
-                    url: data.Normal_video,
-                    format: "mp4",
-                  },
-                ]
-              : []),
-          ],
-        }
-
-      case "youtube":
-        return {
-          title: data.title || "YouTube Video",
-          thumbnail: data.thumbnail || "/placeholder.svg?height=200&width=320",
-          downloadLinks: [
-            ...(data.mp4
-              ? [
-                  {
-                    quality: "Video",
-                    url: data.mp4,
-                    format: "mp4",
-                  },
-                ]
-              : []),
-            ...(data.mp3
-              ? [
-                  {
-                    quality: "Audio Only",
-                    url: data.mp3,
-                    format: "mp3",
-                  },
-                ]
-              : []),
-          ],
-        }
-
-      case "instagram":
-        if (Array.isArray(data)) {
-          return {
-            title: "Instagram Video",
-            thumbnail: data[0]?.thumbnail || "/placeholder.svg?height=200&width=320",
-            downloadLinks: data.map((item: any, index: number) => ({
-              quality: `Video ${index + 1}`,
-              url: item.url,
-              format: "mp4",
-            })),
-          }
-        }
-        return {
-          title: "Instagram Video",
-          thumbnail: "/placeholder.svg?height=200&width=320",
-          downloadLinks: [],
-        }
-
-      case "twitter":
-        return {
-          title: data.title || "Twitter Video",
-          thumbnail: data.thumbnail || "/placeholder.svg?height=200&width=320",
-          downloadLinks: Array.isArray(data.url)
-            ? data.url.map((item: any, index: number) => {
-                if (item.hd) {
-                  return {
-                    quality: "HD",
-                    url: item.hd,
-                    format: "mp4",
-                  }
-                }
-                if (item.sd) {
-                  return {
-                    quality: "SD",
-                    url: item.sd,
-                    format: "mp4",
-                  }
-                }
-                return {
-                  quality: `Video ${index + 1}`,
-                  url: typeof item === "string" ? item : item.url || item,
-                  format: "mp4",
-                }
-              })
-            : [],
-        }
-
-      default:
-        return {
-          title: "Video",
-          thumbnail: "/placeholder.svg?height=200&width=320",
-          downloadLinks: [],
-        }
     }
   }
 
@@ -457,7 +302,12 @@ export function PlatformDownloader({ platform, endpoint, placeholder }: Platform
                   onChange={(e) => handleUrlChange(e.target.value)}
                   className="flex-1"
                 />
-                <Button type="button" variant="outline" onClick={handlePaste} className="px-3 whitespace-nowrap">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handlePaste}
+                  className="px-3 whitespace-nowrap bg-transparent"
+                >
                   Paste
                 </Button>
               </div>

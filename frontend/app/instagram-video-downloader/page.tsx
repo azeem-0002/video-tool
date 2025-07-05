@@ -51,70 +51,134 @@ export const metadata: Metadata = {
   },
 }
 
-function StructuredDataInstagram() {
-  const webPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Instagram Video Downloader: Save Reels, Stories & IGTV in HD - Free & No Watermark",
-    "url": "https://freevideodownloader.co/instagram-video-downloader",
-    "description": "Free Instagram Video Downloader: Easily download Instagram videos, Reels, Stories, and IGTV in HD MP4. No watermark, no login, fast, and secure. Works on all devices (iOS & Android).",
-    "inLanguage": "en"
-  };
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://freevideodownloader.co/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Instagram Video Downloader",
-        "item": "https://freevideodownloader.co/instagram-video-downloader"
-      }
-    ]
-  };
-
-  return (
-    <>
-      {/* WebPage Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
-      />
-
-      {/* BreadcrumbList Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-
-      {/* Google Analytics Tag */}
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-PC6H4VWJNP"></script>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-PC6H4VWJNP');
-          `
-        }}
-      />
-    </>
-  );
-}
-
-
 export default function InstagramPage() {
   return (
     <>
-    <StructuredDataInstagram />
+      <Head>
+        {/* WebPage Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              name: "Instagram Video Downloader: Save Reels, Stories & IGTV in HD - Free & No Watermark",
+              url: "https://freevideodownloader.co/instagram-video-downloader",
+              description:
+                "Free Instagram Video Downloader: Easily download Instagram videos, Reels, Stories, and IGTV in HD MP4. No watermark, no login, fast, and secure. Works on all devices (iOS & Android).",
+              inLanguage: "en",
+            }),
+          }}
+        />
+        {/* Breadcrumb Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://freevideodownloader.co/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Instagram Video Downloader",
+                  item: "https://freevideodownloader.co/instagram-video-downloader",
+                },
+              ],
+            }),
+          }}
+        />
+        {/* FAQ Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "Is the Instagram video download tool available at no cost?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes, this Instagram video download service is 100% free of charge. Users can access all features without any hidden fees or subscriptions.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Do I need to register to use the Instagram video downloader?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "No sign-up or registration is required. Anyone can visit the platform and begin downloading Instagram videos instantly without creating an account.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "What resolutions are supported for Instagram video downloads?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "The tool supports video downloads in multiple resolutions, including Full HD (1080p) and Ultra HD (4K), depending on the source video quality.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Can the tool download both public and private Instagram videos?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes, it allows downloads from public profiles and private content only if the user has authorized access. Always ensure proper permissions before downloading private media.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Do downloaded Instagram videos contain watermarks?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "No watermarks are added to the downloaded files. You receive clean, original-quality videos without any branding or overlay.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is there a restriction on the number of Instagram videos I can download?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "There are no daily or monthly limits. Users can download unlimited videos from Instagram without any usage caps.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "What is the process for downloading videos from Instagram?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Copy the Instagram video URL, paste it into the downloader input field, and click the download button. The video will be ready for saving within moments.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is using this Instagram video downloader secure?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes, the tool follows secure browsing practices, and no personal data or download history is stored. Your privacy is respected at all times.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Can downloaded Instagram videos be reused for commercial projects?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "All content rights remain with the original creators. For commercial or public use, ensure you have the appropriate licenses or permissions from the video owner.",
+                  },
+                },
+              ],
+            }),
+          }}
+        />
+      </Head>
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">

@@ -11,21 +11,12 @@ export async function POST(request: NextRequest) {
     const backendUrl = process.env.BACKEND_URL
     const apiKey = process.env.API_KEY
 
-    console.log("Environment check:", {
-      backendUrl: backendUrl ? "SET" : "NOT_SET",
-      apiKey: apiKey ? "SET" : "NOT_SET",
-      nodeEnv: process.env.NODE_ENV,
-    })
-
     if (!backendUrl || !apiKey) {
-      console.error("Missing environment variables:", { backendUrl, apiKey })
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Server configuration error - missing environment variables",
-        },
-        { status: 500 },
-      )
+      console.error("Missing environment variables:", {
+        backendUrl: backendUrl ? "SET" : "NOT_SET",
+        apiKey: apiKey ? "SET" : "NOT_SET",
+      })
+      return NextResponse.json({ success: false, error: "Server configuration error" }, { status: 500 })
     }
 
     console.log("Making request to:", `${backendUrl}/api/youtube`)
@@ -34,48 +25,46 @@ export async function POST(request: NextRequest) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "ngrok-skip-browser-warning": "true",
         "x-api-key": apiKey,
+        "ngrok-skip-browser-warning": "true",
       },
       body: JSON.stringify({ url }),
     })
 
     console.log("Backend response status:", response.status)
+    console.log("Backend response headers:", Object.fromEntries(response.headers.entries()))
+
+    const responseText = await response.text()
+    console.log("Backend response text:", responseText.substring(0, 500))
 
     if (!response.ok) {
-      // Read the response body only once
-      const errorText = await response.text()
-      console.error("YouTube backend error:", errorText)
+      let errorMessage = `HTTP ${response.status}`
 
-      // Try to parse as JSON if possible, otherwise use as text
-      let errorMessage = errorText
       try {
-        const errorData = JSON.parse(errorText)
-        errorMessage = errorData.error || errorData.message || errorText
+        const errorData = JSON.parse(responseText)
+        errorMessage = errorData.error || errorData.message || errorMessage
       } catch {
-        // If not JSON, use the text as is
-        errorMessage = errorText
+        errorMessage = responseText || errorMessage
       }
 
-      return NextResponse.json(
-        {
-          success: false,
-          error: `Backend error (${response.status}): ${errorMessage}`,
-        },
-        { status: response.status },
-      )
+      console.error("Backend error:", errorMessage)
+      return NextResponse.json({ success: false, error: `Backend error: ${errorMessage}` }, { status: response.status })
     }
 
-    const data = await response.json()
-    console.log("Backend response data:", data)
-    return NextResponse.json(data)
+    let data
+    try {
+      data = JSON.parse(responseText)
+    } catch (parseError) {
+      console.error("Failed to parse response:", parseError)
+      return NextResponse.json({ success: false, error: "Invalid response from backend" }, { status: 500 })
+    }
+
+    console.log("Parsed backend data:", data)
+    return NextResponse.json({ success: true, data })
   } catch (error) {
     console.error("YouTube API error:", error)
     return NextResponse.json(
-      {
-        success: false,
-        error: `Internal server error: ${error instanceof Error ? error.message : "Unknown error"}`,
-      },
+      { success: false, error: `Internal server error: ${error instanceof Error ? error.message : "Unknown error"}` },
       { status: 500 },
     )
   }

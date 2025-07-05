@@ -1,165 +1,281 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { FileText } from "lucide-react"
 import type { Metadata } from "next"
+import Head from "next/head"
 
 export const metadata: Metadata = {
-  title: "Terms of Service - FreeVideoDownloader",
+  title: "Terms of Service | Free Video Downloader",
   description:
-    "Review the Terms of Service for FreeVideoDownloader.co. Learn about your rights, responsibilities, acceptable use, copyright rules, and limitations when using our free video downloading tools.",
-  keywords: [
-    "FreeVideoDownloader Terms",
-    "Video Downloader Terms of Service",
-    "Content Download Guidelines",
-    "Copyright Disclaimer",
-    "Third-party Platform Terms",
-    "TikTok YouTube Downloader Rules",
-    "Legal Use of Video Downloader",
-    "DMCA Policy",
-    "Safe Video Downloading",
-    "Acceptable Use Policy"
-  ],
+    "Read the Terms of Service for Free Video Downloader covering copyright compliance, user responsibilities, and legal disclaimers.",
   robots: {
     index: true,
     follow: true,
   },
 }
 
-
-export default function TermsOfServicePage() {
+export default function TermsOfService() {
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900 mb-4">
-            <FileText className="w-8 h-8 text-blue-600" />
+    <>
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              "@id": "https://freevideodownloader.co/terms#webpage",
+              url: "https://freevideodownloader.co/terms",
+              name: "Terms of Service",
+              description:
+                "Review the Free Video Downloader Terms of Service outlining proper usage of tools, copyright policies, and user responsibilities for video downloading from third-party platforms.",
+              inLanguage: "en",
+              isPartOf: {
+                "@type": "WebSite",
+                url: "https://freevideodownloader.co",
+                name: "Free Video Downloader",
+              },
+              mainEntity: {
+                "@type": "CreativeWork",
+                name: "Terms of Service",
+                url: "https://freevideodownloader.co/terms",
+                datePublished: "2025-06-28",
+                dateModified: "2025-06-28",
+                publisher: {
+                  "@type": "Organization",
+                  name: "Free Video Downloader",
+                  url: "https://freevideodownloader.co",
+                  logo: {
+                    "@type": "ImageObject",
+                    url: "https://freevideodownloader.co/logo.png",
+                  },
+                },
+                audience: {
+                  "@type": "Audience",
+                  audienceType: "General Public",
+                },
+                about: {
+                  "@type": "Thing",
+                  name: "Terms, Conditions, Copyright, Content Use",
+                },
+              },
+            }),
+          }}
+        />
+      </Head>
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold mb-4">Terms of Service</h1>
+            <p className="text-muted-foreground">Last updated: January 5, 2025</p>
           </div>
-          <h1 className="text-3xl font-bold mb-4">📄 Terms of Service</h1>
-          <div className="text-sm text-muted-foreground">
-            <p><strong>Effective Date:</strong> 06/28/2025</p>
-            <p><strong>Website:</strong> https://freevideodownloader.co</p>
+
+          <div className="space-y-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>1. Acceptance of Terms</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  By accessing and using FreeVideoDownloader.co ("the Service"), you accept and agree to be bound by the
+                  terms and provision of this agreement. If you do not agree to abide by the above, please do not use
+                  this service.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>2. Description of Service</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  FreeVideoDownloader.co provides a free online service that allows users to download videos from
+                  various social media platforms and websites. The service is provided "as is" and we make no warranties
+                  regarding the availability, functionality, or quality of the service.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>3. User Responsibilities</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-muted-foreground">As a user of our service, you agree to:</p>
+                <ul className="list-disc list-inside text-muted-foreground space-y-2">
+                  <li>Use the service only for lawful purposes</li>
+                  <li>Respect copyright laws and intellectual property rights</li>
+                  <li>Not download content without proper authorization from content owners</li>
+                  <li>Not use the service to infringe on others' rights</li>
+                  <li>Not attempt to reverse engineer or exploit the service</li>
+                  <li>Not use automated tools or bots to access the service</li>
+                  <li>Comply with all applicable local, state, and federal laws</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>4. Copyright and Intellectual Property</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-muted-foreground">
+                  We respect intellectual property rights and expect our users to do the same. You acknowledge that:
+                </p>
+                <ul className="list-disc list-inside text-muted-foreground space-y-2">
+                  <li>All content downloaded through our service remains the property of its original creators</li>
+                  <li>You are responsible for ensuring you have the right to download and use any content</li>
+                  <li>We do not claim ownership of any content processed through our service</li>
+                  <li>You should only download content that you own or have permission to download</li>
+                  <li>Commercial use of downloaded content may require additional permissions</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>5. Prohibited Uses</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-muted-foreground">You may not use our service:</p>
+                <ul className="list-disc list-inside text-muted-foreground space-y-2">
+                  <li>To download copyrighted content without permission</li>
+                  <li>For any illegal or unauthorized purpose</li>
+                  <li>To violate any international, federal, provincial, or state regulations or laws</li>
+                  <li>To transmit or procure the sending of any advertising or promotional material</li>
+                  <li>To impersonate or attempt to impersonate the company, employees, or other users</li>
+                  <li>To engage in any other conduct that restricts or inhibits anyone's use of the service</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>6. Service Availability</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  We strive to maintain the service's availability but do not guarantee uninterrupted access. The
+                  service may be temporarily unavailable due to maintenance, updates, or technical issues. We reserve
+                  the right to modify, suspend, or discontinue the service at any time without notice.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>7. Privacy Policy</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  Your privacy is important to us. Please review our Privacy Policy, which also governs your use of the
+                  service, to understand our practices regarding the collection and use of your information.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>8. Disclaimers</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-muted-foreground">
+                  The information on this website is provided on an "as is" basis. To the fullest extent permitted by
+                  law, this company:
+                </p>
+                <ul className="list-disc list-inside text-muted-foreground space-y-2">
+                  <li>Excludes all representations and warranties relating to this website and its contents</li>
+                  <li>Does not guarantee the accuracy, completeness, or timeliness of the service</li>
+                  <li>Is not responsible for any errors or omissions in the content</li>
+                  <li>Does not warrant that the service will be available or error-free</li>
+                  <li>Is not liable for any damages arising from the use of the service</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>9. Limitation of Liability</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  In no event shall FreeVideoDownloader.co, its officers, directors, employees, or agents be liable for
+                  any indirect, incidental, special, consequential, or punitive damages, including without limitation,
+                  loss of profits, data, use, goodwill, or other intangible losses, resulting from your use of the
+                  service.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>10. Indemnification</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  You agree to defend, indemnify, and hold harmless FreeVideoDownloader.co and its licensee and
+                  licensors, and their employees, contractors, agents, officers and directors, from and against any and
+                  all claims, damages, obligations, losses, liabilities, costs or debt, and expenses (including but not
+                  limited to attorney's fees).
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>11. Termination</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  We may terminate or suspend your access immediately, without prior notice or liability, for any reason
+                  whatsoever, including without limitation if you breach the Terms. Upon termination, your right to use
+                  the service will cease immediately.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>12. Changes to Terms</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a
+                  revision is material, we will try to provide at least 30 days notice prior to any new terms taking
+                  effect. What constitutes a material change will be determined at our sole discretion.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>13. Governing Law</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  These Terms shall be interpreted and governed by the laws of the jurisdiction in which we operate,
+                  without regard to its conflict of law provisions. Our failure to enforce any right or provision of
+                  these Terms will not be considered a waiver of those rights.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>14. Contact Information</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  If you have any questions about these Terms of Service, please contact us:
+                </p>
+                <div className="space-y-2 text-muted-foreground">
+                  <p>Email: contact@freevideodownloader.co</p>
+                  <p>Website: https://freevideodownloader.co</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
-
-        <Card className="mb-8">
-          <CardContent className="pt-6">
-            <p className="text-lg leading-relaxed">
-              Welcome to our freevideodownloader.co! The Terms of Service that are governed to use our website and tools
-              to download content by any of third-party platforms or websites. To get access or to use our services you
-              should have to agree or fulfil these Terms given below.
-            </p>
-          </CardContent>
-        </Card>
-
-        {[
-          {
-            title: "1. Acceptance of Terms",
-            content: `By using our freevideodownloader.co, you should have to confirm that:
-• It has been read, understood and agreed by you for the sake of legally bound to these terms and conditions.
-• You have a legal age for your jurisdiction to use these services.
-• On the other hand, if you disagree with any part of these terms please don't use the website.`
-          },
-          {
-            title: "2. Description of Service",
-            content: `freevideodownloader.co permits the users to download videos and media from the following platforms/website:
-
-• TikTok
-• Instagram
-• Facebook
-• YouTube
-• Twitter (X)
-
-The URL that is publicly available if any content by the user he/she has to paste it to receive downloadable versions, subject to each and every platform's policies and copyright laws.
-We have no store of any videos on our servers. All downloads are processed in real time by user provided links.`
-          },
-          {
-            title: "3. Disclaimer on Third-Party Platforms",
-            content: `You should have to acknowledge and agree with that:
-• freevideodownloader.co is neither affiliated, associated, nor endorsed by TikTok, Instagram, Facebook, YouTube, or Twitter.
-• All the trademarks, logos and brand names are the property of their respective owners.
-• The use of our services neither grant you any rights over the intellectual property of these platforms nor permits it.`
-          },
-          {
-            title: "4. User Responsibilities",
-            content: `You should have to be liable in contradiction to these:
-• The website can be used only for personal and non-commercial purposes.
-• You will not be authorized to download or redistribute copyrighted content without prior permission of the content owner.
-• Our services can’t be used for any illegal, infringing, or abusive activity.
-• To agree with the Terms of Service and Community Guidelines of the original platform from which you download content.
-
-Any kind of misuse of our tools may result in access restriction or legal action. You are fully responsible for how you have to use downloaded content.`
-          },
-          {
-            title: "5. Copyright and Content Ownership",
-            content: `All rights of downloaded content remain legally bound with their respective content creators or platforms therefore we don't host any of the content that user download.
-If you are a content owner and wish to have a link or tool be removed, please contact us at [contact@freevideodownloader.co].
-We will respond to you briskly to copyright takedown requests (DMCA).`
-          },
-          {
-            title: "6. Prohibited Uses",
-            content: `You have to agree not to:
-• Download or attempt to download content beyond login restrictions.
-• Use scrapers, automated bots, or spamming tools on our website.
-• Sell, or distribute downloaded content for profit unless you are the rightful owner or have permission.
-• Overcome security features of third-party platforms.
-
-On the other hand violation of these prohibitions may result in temporary or permanent ban from using our services.`
-          },
-          {
-            title: "7. No Warranty & Limitation of Liability",
-            content: `We provide our services "as is" and "as available", without any kind of warranty and guarantee:
-• Availability of all platform links continuously.
-• That all videos will remain downloadable (due to API or platform changes).
-• That downloaded files having no errors or malicious content.
-
-We are not liable for:
-• Any content that is downloaded via our downloader tools.
-• Misused content.
-• Any kind of damage resulting after using our website.`
-          },
-          {
-            title: "8. Changes to the Terms",
-            content: `To improve or update these Terms at any time. It's our legal right that's why the most updated tool version for our users will always be available at:
-https://freevideodownloader.co/terms
-
-Users can continue use of the website after changes constitute acceptance of the updated Terms and conditions.`
-          },
-          {
-            title: "9. Privacy-Policy",
-            content: `Our site is governed by our PRIVACY-POLICY as the rule and justice is adopted by other websites. For further please review it at:
-https://freevideodownloader.co/privacy`
-          },
-          {
-            title: "10. Contact Information",
-            content: `For any type of questions, concerns, or DMCA/copyright issues, please contact us at:
-📧 Email: contant@freevideodownloader.co
-🌐 Website: https://freevideodownloader.co`
-          },
-          {
-            title: "📌 Final Notes",
-            content: `The legal rights for the content creators and platforms are highly esteemed by us. Our tools are designed for the sake of educational, personal, and fair-use purposes.
-Therefore it is optimized by you to use our service legally and ethically.`
-          }
-        ].map((section, index) => (
-          <Card key={index}>
-            <CardHeader>
-              <CardTitle className="flex items-start gap-2 whitespace-pre-wrap text-left">
-                <span className="text-blue-600 font-bold">{section.title}</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="whitespace-pre-wrap leading-relaxed">{section.content}</p>
-            </CardContent>
-          </Card>
-        ))}
-
-        <Card className="mt-8 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
-          <CardContent className="pt-6">
-            <p className="leading-relaxed text-center font-medium text-green-800 dark:text-green-200">
-              Thank you for using our service responsibly. We're committed to providing a simple, secure, and privacy-focused video downloading experience.
-            </p>
-          </CardContent>
-        </Card>
       </div>
-    </div>
+    </>
   )
 }

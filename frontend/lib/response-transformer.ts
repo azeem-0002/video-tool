@@ -45,24 +45,95 @@ function createDownloadLink(url: any, quality: string, format: string) {
   }
 }
 
+// Helper function to extract URLs from nested objects
+function extractUrlsFromObject(obj: any, prefix = ""): Array<{ url: string; quality: string; format: string }> {
+  const urls: Array<{ url: string; quality: string; format: string }> = []
+
+  if (!obj || typeof obj !== "object") return urls
+
+  // Common URL property names
+  const urlKeys = ["url", "download_url", "video_url", "link", "src", "href", "file_url", "stream_url"]
+
+  for (const key of urlKeys) {
+    if (obj[key] && typeof obj[key] === "string") {
+      const cleanUrl = validateAndCleanUrl(obj[key])
+      if (cleanUrl) {
+        const quality = obj.quality || obj.resolution || obj.format_note || `${prefix} ${key}`
+        const format = obj.format || obj.ext || (cleanUrl.includes(".mp3") ? "mp3" : "mp4")
+        urls.push({ url: cleanUrl, quality, format })
+      }
+    }
+  }
+
+  return urls
+}
+
 export function transformTikTokResponse(data: any): VideoData {
   const downloadLinks = []
 
   console.log("Transforming TikTok response:", data)
 
-  // Handle video URLs - check if it's an array with valid URLs
+  // Method 1: Handle video URLs - check if it's an array with valid URLs
   if (data.video && Array.isArray(data.video)) {
     data.video.forEach((url: any, index: number) => {
-      const link = createDownloadLink(url, index === 0 ? "Video (HD)" : `Video ${index + 1}`, "mp4")
-      if (link) downloadLinks.push(link)
+      if (typeof url === "string") {
+        const link = createDownloadLink(url, index === 0 ? "Video (HD)" : `Video ${index + 1}`, "mp4")
+        if (link) downloadLinks.push(link)
+      } else if (url && typeof url === "object") {
+        const extractedUrls = extractUrlsFromObject(url, "Video")
+        extractedUrls.forEach((extracted) => {
+          const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+          if (link) downloadLinks.push(link)
+        })
+      }
     })
   }
 
-  // Handle audio URLs - check if it's an array with valid URLs
+  // Method 2: Handle single video URL
+  if (data.video && typeof data.video === "string") {
+    const link = createDownloadLink(data.video, "Video", "mp4")
+    if (link) downloadLinks.push(link)
+  }
+
+  // Method 3: Handle audio URLs - check if it's an array with valid URLs
   if (data.audio && Array.isArray(data.audio)) {
     data.audio.forEach((url: any, index: number) => {
-      const link = createDownloadLink(url, index === 0 ? "Audio Only" : `Audio ${index + 1}`, "mp3")
+      if (typeof url === "string") {
+        const link = createDownloadLink(url, index === 0 ? "Audio Only" : `Audio ${index + 1}`, "mp3")
+        if (link) downloadLinks.push(link)
+      } else if (url && typeof url === "object") {
+        const extractedUrls = extractUrlsFromObject(url, "Audio")
+        extractedUrls.forEach((extracted) => {
+          const link = createDownloadLink(extracted.url, extracted.quality, "mp3")
+          if (link) downloadLinks.push(link)
+        })
+      }
+    })
+  }
+
+  // Method 4: Handle single audio URL
+  if (data.audio && typeof data.audio === "string") {
+    const link = createDownloadLink(data.audio, "Audio Only", "mp3")
+    if (link) downloadLinks.push(link)
+  }
+
+  // Method 5: Check for direct URL properties
+  const directUrlProps = ["download_url", "video_url", "url", "play", "wmplay", "hdplay"]
+  directUrlProps.forEach((prop) => {
+    if (data[prop] && typeof data[prop] === "string") {
+      const link = createDownloadLink(data[prop], "Video", "mp4")
       if (link) downloadLinks.push(link)
+    }
+  })
+
+  // Method 6: Check for formats array
+  if (data.formats && Array.isArray(data.formats)) {
+    data.formats.forEach((format: any, index: number) => {
+      const extractedUrls = extractUrlsFromObject(format, "Format")
+      extractedUrls.forEach((extracted) => {
+        const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+        if (link) downloadLinks.push(link)
+      })
     })
   }
 
@@ -72,6 +143,8 @@ export function transformTikTokResponse(data: any): VideoData {
     videoTitle = data.title.trim()
   } else if (data.title_audio && data.title_audio.trim()) {
     videoTitle = data.title_audio.trim()
+  } else if (data.description && data.description.trim()) {
+    videoTitle = data.description.trim().substring(0, 100)
   }
 
   return {
@@ -86,93 +159,80 @@ export function transformFacebookResponse(data: any): VideoData {
 
   console.log("Transforming Facebook response:", data)
 
-  // Handle HD video (check for non-null values)
-  if (data.HD && data.HD !== null) {
+  // Method 1: Handle HD video
+  if (data.HD && data.HD !== null && data.HD !== false) {
     const link = createDownloadLink(data.HD, "HD", "mp4")
     if (link) downloadLinks.push(link)
   }
 
-  // Handle normal video (check for non-null values)
-  if (data.Normal_video && data.Normal_video !== null) {
+  // Method 2: Handle normal video
+  if (data.Normal_video && data.Normal_video !== null && data.Normal_video !== false) {
     const link = createDownloadLink(data.Normal_video, "SD", "mp4")
     if (link) downloadLinks.push(link)
   }
 
-  // Check for alternative Facebook URL properties
-  if (!downloadLinks.length) {
-    // Check for direct video URL
-    if (data.video_url) {
-      const link = createDownloadLink(data.video_url, "Video", "mp4")
+  // Method 3: Check for alternative Facebook URL properties
+  const fbUrlProps = ["video_url", "download_url", "video", "url"]
+  fbUrlProps.forEach((prop) => {
+    if (data[prop] && typeof data[prop] === "string") {
+      const link = createDownloadLink(data[prop], "Video", "mp4")
       if (link) downloadLinks.push(link)
     }
+  })
 
-    // Check for download URL
-    if (data.download_url) {
-      const link = createDownloadLink(data.download_url, "Video", "mp4")
-      if (link) downloadLinks.push(link)
-    }
-
-    // Check for media URLs
-    if (data.media && Array.isArray(data.media)) {
-      data.media.forEach((mediaItem: any, index: number) => {
-        if (mediaItem.url) {
-          const link = createDownloadLink(mediaItem.url, `Video ${index + 1}`, "mp4")
-          if (link) downloadLinks.push(link)
-        }
-      })
-    }
-
-    // Check for video property
-    if (data.video) {
-      const link = createDownloadLink(data.video, "Video", "mp4")
-      if (link) downloadLinks.push(link)
-    }
-
-    // Check for url property
-    if (data.url) {
-      if (Array.isArray(data.url)) {
-        data.url.forEach((urlItem: any, index: number) => {
-          if (urlItem && typeof urlItem === "string") {
-            const link = createDownloadLink(urlItem, `Video ${index + 1}`, "mp4")
-            if (link) downloadLinks.push(link)
-          } else if (urlItem && urlItem.url) {
-            const link = createDownloadLink(urlItem.url, `Video ${index + 1}`, "mp4")
-            if (link) downloadLinks.push(link)
-          }
-        })
-      } else if (typeof data.url === "string") {
-        const link = createDownloadLink(data.url, "Video", "mp4")
+  // Method 4: Handle URL arrays
+  if (data.url && Array.isArray(data.url)) {
+    data.url.forEach((urlItem: any, index: number) => {
+      if (typeof urlItem === "string") {
+        const link = createDownloadLink(urlItem, `Video ${index + 1}`, "mp4")
         if (link) downloadLinks.push(link)
+      } else if (urlItem && typeof urlItem === "object") {
+        const extractedUrls = extractUrlsFromObject(urlItem, "Video")
+        extractedUrls.forEach((extracted) => {
+          const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+          if (link) downloadLinks.push(link)
+        })
       }
-    }
+    })
+  }
 
-    // Check for links property
-    if (data.links && Array.isArray(data.links)) {
-      data.links.forEach((linkItem: any, index: number) => {
-        if (linkItem.url) {
-          const quality = linkItem.quality || `Video ${index + 1}`
-          const link = createDownloadLink(linkItem.url, quality, "mp4")
-          if (link) downloadLinks.push(link)
-        }
+  // Method 5: Handle media arrays
+  if (data.media && Array.isArray(data.media)) {
+    data.media.forEach((mediaItem: any, index: number) => {
+      const extractedUrls = extractUrlsFromObject(mediaItem, "Media")
+      extractedUrls.forEach((extracted) => {
+        const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+        if (link) downloadLinks.push(link)
       })
-    }
+    })
+  }
 
-    // Check for formats property (common in some Facebook responses)
-    if (data.formats && Array.isArray(data.formats)) {
-      data.formats.forEach((format: any, index: number) => {
-        if (format.url) {
-          const quality = format.quality || format.format_id || `Video ${index + 1}`
-          const link = createDownloadLink(format.url, quality, "mp4")
-          if (link) downloadLinks.push(link)
-        }
+  // Method 6: Handle links array
+  if (data.links && Array.isArray(data.links)) {
+    data.links.forEach((linkItem: any, index: number) => {
+      const extractedUrls = extractUrlsFromObject(linkItem, "Link")
+      extractedUrls.forEach((extracted) => {
+        const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+        if (link) downloadLinks.push(link)
       })
-    }
+    })
+  }
+
+  // Method 7: Handle formats array
+  if (data.formats && Array.isArray(data.formats)) {
+    data.formats.forEach((format: any, index: number) => {
+      const extractedUrls = extractUrlsFromObject(format, "Format")
+      extractedUrls.forEach((extracted) => {
+        const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+        if (link) downloadLinks.push(link)
+      })
+    })
   }
 
   console.log("Facebook download links found:", downloadLinks)
 
   return {
-    title: data.title || "Facebook Video",
+    title: data.title || data.description || "Facebook Video",
     thumbnail: validateAndCleanUrl(data.thumbnail) || "/placeholder.svg?height=200&width=320",
     downloadLinks,
   }
@@ -181,20 +241,127 @@ export function transformFacebookResponse(data: any): VideoData {
 export function transformYouTubeResponse(data: any): VideoData {
   const downloadLinks = []
 
-  // Handle MP4 video
-  if (data.mp4) {
-    const link = createDownloadLink(data.mp4, "Video", "mp4")
+  console.log("Transforming YouTube response:", data)
+
+  // Method 1: Check for direct mp4/mp3 properties
+  if (data.mp4 && data.mp4.trim()) {
+    const link = createDownloadLink(data.mp4, "Video (MP4)", "mp4")
     if (link) downloadLinks.push(link)
   }
 
-  // Handle MP3 audio
-  if (data.mp3) {
-    const link = createDownloadLink(data.mp3, "Audio Only", "mp3")
+  if (data.mp3 && data.mp3.trim()) {
+    const link = createDownloadLink(data.mp3, "Audio Only (MP3)", "mp3")
     if (link) downloadLinks.push(link)
   }
+
+  // Method 2: Check for common URL properties
+  const ytUrlProps = ["video_url", "download_url", "url", "stream_url"]
+  ytUrlProps.forEach((prop) => {
+    if (data[prop] && typeof data[prop] === "string" && data[prop].trim()) {
+      const link = createDownloadLink(data[prop], "Video", "mp4")
+      if (link) downloadLinks.push(link)
+    }
+  })
+
+  // Method 3: Handle URL arrays
+  if (data.url && Array.isArray(data.url)) {
+    data.url.forEach((urlItem: any, index: number) => {
+      if (typeof urlItem === "string" && urlItem.trim()) {
+        const link = createDownloadLink(urlItem, `Video ${index + 1}`, "mp4")
+        if (link) downloadLinks.push(link)
+      } else if (urlItem && typeof urlItem === "object") {
+        const extractedUrls = extractUrlsFromObject(urlItem, "Video")
+        extractedUrls.forEach((extracted) => {
+          const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+          if (link) downloadLinks.push(link)
+        })
+      }
+    })
+  }
+
+  // Method 4: Handle formats array (common in yt-dlp responses)
+  if (data.formats && Array.isArray(data.formats)) {
+    data.formats.forEach((format: any, index: number) => {
+      const extractedUrls = extractUrlsFromObject(format, "Format")
+      extractedUrls.forEach((extracted) => {
+        let quality = extracted.quality
+        if (format.height) quality = `${format.height}p`
+        else if (format.quality) quality = format.quality
+        else if (format.format_note) quality = format.format_note
+
+        const link = createDownloadLink(extracted.url, quality, extracted.format)
+        if (link) downloadLinks.push(link)
+      })
+    })
+  }
+
+  // Method 5: Handle entries array (playlist responses)
+  if (data.entries && Array.isArray(data.entries) && data.entries.length > 0) {
+    const firstEntry = data.entries[0]
+    const extractedUrls = extractUrlsFromObject(firstEntry, "Entry")
+    extractedUrls.forEach((extracted) => {
+      const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+      if (link) downloadLinks.push(link)
+    })
+  }
+
+  // Method 6: Handle video property (can be string or array)
+  if (data.video) {
+    if (Array.isArray(data.video)) {
+      data.video.forEach((videoItem: any, index: number) => {
+        if (typeof videoItem === "string" && videoItem.trim()) {
+          const link = createDownloadLink(videoItem, `Video ${index + 1}`, "mp4")
+          if (link) downloadLinks.push(link)
+        } else if (videoItem && typeof videoItem === "object") {
+          const extractedUrls = extractUrlsFromObject(videoItem, "Video")
+          extractedUrls.forEach((extracted) => {
+            const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+            if (link) downloadLinks.push(link)
+          })
+        }
+      })
+    } else if (typeof data.video === "string" && data.video.trim()) {
+      const link = createDownloadLink(data.video, "Video", "mp4")
+      if (link) downloadLinks.push(link)
+    }
+  }
+
+  // Method 7: Handle audio property (can be string or array)
+  if (data.audio) {
+    if (Array.isArray(data.audio)) {
+      data.audio.forEach((audioItem: any, index: number) => {
+        if (typeof audioItem === "string" && audioItem.trim()) {
+          const link = createDownloadLink(audioItem, `Audio ${index + 1}`, "mp3")
+          if (link) downloadLinks.push(link)
+        } else if (audioItem && typeof audioItem === "object") {
+          const extractedUrls = extractUrlsFromObject(audioItem, "Audio")
+          extractedUrls.forEach((extracted) => {
+            const link = createDownloadLink(extracted.url, extracted.quality, "mp3")
+            if (link) downloadLinks.push(link)
+          })
+        }
+      })
+    } else if (typeof data.audio === "string" && data.audio.trim()) {
+      const link = createDownloadLink(data.audio, "Audio Only", "mp3")
+      if (link) downloadLinks.push(link)
+    }
+  }
+
+  // Method 8: Handle requested_formats array
+  if (data.requested_formats && Array.isArray(data.requested_formats)) {
+    data.requested_formats.forEach((format: any, index: number) => {
+      const extractedUrls = extractUrlsFromObject(format, "Requested")
+      extractedUrls.forEach((extracted) => {
+        const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+        if (link) downloadLinks.push(link)
+      })
+    })
+  }
+
+  console.log("YouTube download links found:", downloadLinks)
 
   return {
-    title: data.title || "YouTube Video",
+    title: data.title || data.fulltitle || data.display_id || "YouTube Video",
     thumbnail: validateAndCleanUrl(data.thumbnail) || "/placeholder.svg?height=200&width=320",
     downloadLinks,
   }
@@ -203,56 +370,52 @@ export function transformYouTubeResponse(data: any): VideoData {
 export function transformInstagramResponse(data: any): VideoData {
   const downloadLinks = []
 
+  console.log("Transforming Instagram response:", data)
+
+  // Method 1: Handle array response
   if (Array.isArray(data)) {
     data.forEach((item: any, index: number) => {
-      if (item.url) {
-        const link = createDownloadLink(item.url, `Video ${index + 1}`, "mp4")
+      if (typeof item === "string") {
+        const link = createDownloadLink(item, `Video ${index + 1}`, "mp4")
         if (link) downloadLinks.push(link)
+      } else if (item && typeof item === "object") {
+        const extractedUrls = extractUrlsFromObject(item, "Item")
+        extractedUrls.forEach((extracted) => {
+          const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+          if (link) downloadLinks.push(link)
+        })
       }
     })
   }
 
+  // Method 2: Handle single object response
+  if (data && typeof data === "object" && !Array.isArray(data)) {
+    const extractedUrls = extractUrlsFromObject(data, "Instagram")
+    extractedUrls.forEach((extracted) => {
+      const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+      if (link) downloadLinks.push(link)
+    })
+  }
+
+  // Method 3: Handle media array
+  if (data.media && Array.isArray(data.media)) {
+    data.media.forEach((mediaItem: any, index: number) => {
+      const extractedUrls = extractUrlsFromObject(mediaItem, "Media")
+      extractedUrls.forEach((extracted) => {
+        const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+        if (link) downloadLinks.push(link)
+      })
+    })
+  }
+
+  console.log("Instagram download links found:", downloadLinks)
+
   return {
-    title: "Instagram Video",
+    title: data.title || data.caption || "Instagram Video",
     thumbnail:
       Array.isArray(data) && data[0]?.thumbnail
         ? validateAndCleanUrl(data[0].thumbnail) || "/placeholder.svg?height=200&width=320"
-        : "/placeholder.svg?height=200&width=320",
-    downloadLinks,
-  }
-}
-
-export function transformPinterestResponse(data: any): VideoData {
-  const result = data.result || data
-  const downloadLinks = []
-
-  // Handle direct video URL
-  if (result.video_url) {
-    const link = createDownloadLink(result.video_url, "Video", "mp4")
-    if (link) downloadLinks.push(link)
-  }
-
-  // Handle 720p video
-  if (result.videos?.V_720P?.url) {
-    const link = createDownloadLink(result.videos.V_720P.url, "720p", "mp4")
-    if (link) downloadLinks.push(link)
-  }
-
-  // Handle HLS stream
-  if (result.videos?.V_HLSV4?.url) {
-    const link = createDownloadLink(result.videos.V_HLSV4.url, "HLS Stream", "m3u8")
-    if (link) downloadLinks.push(link)
-  }
-
-  // Handle image content for non-video pins
-  if (result.images?.orig && !result.is_video) {
-    const link = createDownloadLink(result.images.orig.url, "Original Image", "png")
-    if (link) downloadLinks.push(link)
-  }
-
-  return {
-    title: result.title || "Pinterest Content",
-    thumbnail: validateAndCleanUrl(result.image || result.images?.orig?.url) || "/placeholder.svg?height=200&width=320",
+        : validateAndCleanUrl(data?.thumbnail) || "/placeholder.svg?height=200&width=320",
     downloadLinks,
   }
 }
@@ -262,113 +425,139 @@ export function transformTwitterResponse(data: any): VideoData {
 
   console.log("Transforming Twitter response:", data)
 
-  if (Array.isArray(data.url)) {
+  // Method 1: Handle URL array
+  if (data.url && Array.isArray(data.url)) {
     data.url.forEach((item: any, index: number) => {
       console.log(`Processing Twitter URL item ${index}:`, item)
 
-      // Check if item has hd property
-      if (item && item.hd) {
-        const link = createDownloadLink(item.hd, "HD", "mp4")
-        if (link) downloadLinks.push(link)
-        return
-      }
-
-      // Check if item has sd property
-      if (item && item.sd) {
-        const link = createDownloadLink(item.sd, "SD", "mp4")
-        if (link) downloadLinks.push(link)
-        return
-      }
-
-      // Check if item has url property
-      if (item && item.url) {
-        const link = createDownloadLink(item.url, `Video ${index + 1}`, "mp4")
-        if (link) downloadLinks.push(link)
-        return
-      }
-
-      // Check if item is a string URL
-      if (typeof item === "string" && item.trim()) {
+      if (typeof item === "string") {
         const link = createDownloadLink(item, `Video ${index + 1}`, "mp4")
         if (link) downloadLinks.push(link)
-        return
-      }
-
-      // Check for other possible URL properties
-      if (item && typeof item === "object") {
-        const possibleUrlKeys = ["video_url", "download_url", "link", "src", "href"]
-        for (const key of possibleUrlKeys) {
-          if (item[key]) {
-            const link = createDownloadLink(item[key], `Video ${index + 1}`, "mp4")
-            if (link) {
-              downloadLinks.push(link)
-              return
-            }
-          }
+      } else if (item && typeof item === "object") {
+        // Check for specific Twitter properties
+        if (item.hd) {
+          const link = createDownloadLink(item.hd, "HD", "mp4")
+          if (link) downloadLinks.push(link)
         }
-      }
+        if (item.sd) {
+          const link = createDownloadLink(item.sd, "SD", "mp4")
+          if (link) downloadLinks.push(link)
+        }
 
-      console.warn(`No valid URL found in Twitter item ${index}:`, item)
+        // Extract other URLs from the object
+        const extractedUrls = extractUrlsFromObject(item, "Twitter")
+        extractedUrls.forEach((extracted) => {
+          const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+          if (link) downloadLinks.push(link)
+        })
+      }
     })
   }
 
-  // Check for alternative URL structures
-  if (!downloadLinks.length) {
-    // Check for direct video property
-    if (data.video) {
-      const link = createDownloadLink(data.video, "Video", "mp4")
+  // Method 2: Handle single URL
+  if (data.url && typeof data.url === "string") {
+    const link = createDownloadLink(data.url, "Video", "mp4")
+    if (link) downloadLinks.push(link)
+  }
+
+  // Method 3: Check for direct video properties
+  const twitterUrlProps = ["video", "download_url", "video_url"]
+  twitterUrlProps.forEach((prop) => {
+    if (data[prop] && typeof data[prop] === "string") {
+      const link = createDownloadLink(data[prop], "Video", "mp4")
       if (link) downloadLinks.push(link)
     }
+  })
 
-    // Check for download_url property
-    if (data.download_url) {
-      const link = createDownloadLink(data.download_url, "Video", "mp4")
-      if (link) downloadLinks.push(link)
-    }
-
-    // Check for media property
-    if (data.media && Array.isArray(data.media)) {
-      data.media.forEach((mediaItem: any, index: number) => {
-        if (mediaItem.url) {
-          const link = createDownloadLink(mediaItem.url, `Video ${index + 1}`, "mp4")
-          if (link) downloadLinks.push(link)
-        }
+  // Method 4: Handle media array
+  if (data.media && Array.isArray(data.media)) {
+    data.media.forEach((mediaItem: any, index: number) => {
+      const extractedUrls = extractUrlsFromObject(mediaItem, "Media")
+      extractedUrls.forEach((extracted) => {
+        const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+        if (link) downloadLinks.push(link)
       })
-    }
+    })
+  }
+
+  // Method 5: Handle formats array
+  if (data.formats && Array.isArray(data.formats)) {
+    data.formats.forEach((format: any, index: number) => {
+      const extractedUrls = extractUrlsFromObject(format, "Format")
+      extractedUrls.forEach((extracted) => {
+        const link = createDownloadLink(extracted.url, extracted.quality, extracted.format)
+        if (link) downloadLinks.push(link)
+      })
+    })
   }
 
   console.log("Twitter download links found:", downloadLinks)
 
   return {
-    title: data.title || "Twitter Video",
+    title: data.title || data.description || "Twitter Video",
     thumbnail: validateAndCleanUrl(data.thumbnail) || "/placeholder.svg?height=200&width=320",
     downloadLinks,
   }
 }
 
+export function transformResponse(data: any): VideoData {
+  // Check if the response has success property and data
+  if (data.success && data.data) {
+    return transformBackendResponse(data.data, detectPlatformFromData(data.data))
+  }
+
+  // If no success property, assume the data is the actual content
+  return transformBackendResponse(data, detectPlatformFromData(data))
+}
+
+function detectPlatformFromData(data: any): string {
+  // Try to detect platform from data structure
+  if (data.video && Array.isArray(data.video) && data.audio) {
+    return "tiktok"
+  }
+  if (data.HD || data.Normal_video) {
+    return "facebook"
+  }
+  if (data.mp4 || data.mp3 || data.formats || data.video_url) {
+    return "youtube"
+  }
+  if (Array.isArray(data)) {
+    return "instagram"
+  }
+  if (data.url && Array.isArray(data.url)) {
+    return "twitter"
+  }
+
+  return "unknown"
+}
+
 export function transformBackendResponse(data: any, platform: string): VideoData {
   console.log("Transforming response for platform:", platform, "Data:", data)
+
+  // Handle nested data structure - check if data has a nested 'data' property
+  let actualData = data
+  if (data && data.data && typeof data.data === "object") {
+    console.log("Found nested data structure, using inner data")
+    actualData = data.data
+  }
 
   let result: VideoData
 
   switch (platform) {
     case "tiktok":
-      result = transformTikTokResponse(data)
+      result = transformTikTokResponse(actualData)
       break
     case "facebook":
-      result = transformFacebookResponse(data)
+      result = transformFacebookResponse(actualData)
       break
     case "youtube":
-      result = transformYouTubeResponse(data)
+      result = transformYouTubeResponse(actualData)
       break
     case "instagram":
-      result = transformInstagramResponse(data)
-      break
-    case "pinterest":
-      result = transformPinterestResponse(data)
+      result = transformInstagramResponse(actualData)
       break
     case "twitter":
-      result = transformTwitterResponse(data)
+      result = transformTwitterResponse(actualData)
       break
     default:
       result = {
