@@ -293,20 +293,20 @@ const VideoResult = memo(function VideoResult({ data }: VideoResultProps) {
                     </Badge>
                   )}
                 </div>
-                <div className="flex items-center justify-between">
-                  <p className="text-sm text-muted-foreground">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <p className="text-sm text-muted-foreground break-all sm:break-normal flex-1 min-w-0">
                     {link.url.length > 50 ? link.url.substring(0, 50) + "..." : link.url}
                   </p>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 w-full sm:w-auto">
                     <button
                       onClick={() => handlePreview(link.url, link.format)}
-                      className="px-3 py-1.5 text-sm rounded-md bg-secondary hover:bg-secondary/80 transition-colors"
+                      className="flex-1 sm:flex-none px-4 py-2 text-sm rounded-md bg-secondary hover:bg-secondary/80 transition-colors min-h-[40px] flex items-center justify-center"
                     >
                       Preview
                     </button>
                     <button
                       onClick={() => handleDownload(link.url, data.title, index)}
-                      className="px-3 py-1.5 text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/80 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+                      className="flex-1 sm:flex-none px-4 py-2 text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/80 transition-colors disabled:cursor-not-allowed disabled:opacity-50 min-h-[40px] flex items-center justify-center"
                       disabled={downloadingStates[index]}
                     >
                       {downloadingStates[index] ? "Downloading..." : "Download"}
