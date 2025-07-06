@@ -1,8 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Mail, MessageCircle, Clock } from "lucide-react"
+import { Mail, MessageCircle, Clock, Shield, FileText, AlertTriangle } from "lucide-react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -63,144 +61,170 @@ export default function ContactUs() {
 
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
-            <p className="text-muted-foreground">
-              Have questions, suggestions, or need help? We're here to assist you with our video downloader service.
+          {/* Header Section */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Get in touch at freevideodownloader.co
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              We are here to assist — obviously privately and simply.
+            </p>
+            <p className="text-muted-foreground mt-4">
+              Although we do not request your personal information yet we welcome comments, questions, or concerns
+              raised by you on behalf of your experience.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Contact Form */}
-            <Card>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            {/* Email Support Card */}
+            <Card className="border-l-4 border-l-blue-500">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5" />
-                  Send us a Message
+                <CardTitle className="flex items-center gap-3">
+                  <Mail className="w-6 h-6 text-blue-500" />
+                  Email Support
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <form className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium mb-2">
-                        Name
-                      </label>
-                      <Input id="name" placeholder="Your name" />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium mb-2">
-                        Email
-                      </label>
-                      <Input id="email" type="email" placeholder="your@email.com" />
-                    </div>
-                  </div>
-                  <div>
-                    <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                      Subject
-                    </label>
-                    <Input id="subject" placeholder="What's this about?" />
-                  </div>
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium mb-2">
-                      Message
-                    </label>
-                    <Textarea id="message" placeholder="Tell us how we can help you..." className="min-h-[120px]" />
-                  </div>
-                  <Button type="submit" className="w-full">
-                    Send Message
-                  </Button>
-                </form>
+              <CardContent className="space-y-4">
+                <p className="text-muted-foreground">Ask a question or want to document a problem?</p>
+                <p className="text-muted-foreground">Just email us straight at:</p>
+                <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <p className="font-mono text-lg font-semibold text-blue-700 dark:text-blue-300">
+                    contact@freevideodownloader.co
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Clock className="w-4 h-4" />
+                  Usually Monday to Friday, we reply within 24 to 48 hours.
+                </div>
               </CardContent>
             </Card>
 
-            {/* Contact Information */}
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Mail className="w-5 h-5" />
-                    Direct Email
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    For direct inquiries, technical support, or business matters:
-                  </p>
-                  <div className="bg-muted p-4 rounded-lg">
-                    <p className="font-mono text-sm">contact@freevideodownloader.co</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Clock className="w-5 h-5" />
-                    Response Time
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    We typically respond to all inquiries within <strong>24-48 hours</strong>. For urgent technical
-                    issues, we aim to respond even faster.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>What We Can Help With</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-muted-foreground">
-                    <li>• Technical issues with video downloads</li>
-                    <li>• Questions about supported platforms</li>
-                    <li>• Feature requests and suggestions</li>
-                    <li>• Copyright and legal inquiries</li>
-                    <li>• Business partnerships</li>
-                    <li>• General feedback about our service</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
+            {/* How Can You Contact Us */}
+            <Card className="border-l-4 border-l-green-500">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-3">
+                  <MessageCircle className="w-6 h-6 text-green-500" />
+                  How can you contact us?
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">You are warmly welcome to reach out for:</p>
+                <ul className="space-y-2 text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                    Broad questions or comments connected to tools,
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                    Notifying broken features or website problems,
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                    Advice for development,
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                    Concerns regarding our terms or privacy statement,
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                    Not Personal Information Called for that are not related to the said queries.
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* FAQ Section */}
-          <div className="mt-12">
-            <Card>
-              <CardHeader>
-                <CardTitle>Frequently Asked Questions</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div>
-                  <h3 className="font-semibold mb-2">How quickly do you respond to messages?</h3>
-                  <p className="text-muted-foreground">
-                    We aim to respond to all inquiries within 24-48 hours. Urgent technical issues are prioritized and
-                    typically receive faster responses.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-2">Do you collect personal information from contact forms?</h3>
-                  <p className="text-muted-foreground">
-                    We only use the information you provide to respond to your inquiry. We don't store personal data
-                    unnecessarily or use it for marketing purposes.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-2">Can you help with copyright issues?</h3>
-                  <p className="text-muted-foreground">
-                    Yes, we take copyright concerns seriously. If you have questions about content usage or need to
-                    report copyright infringement, please contact us directly.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-2">Do you offer business partnerships or API access?</h3>
-                  <p className="text-muted-foreground">
-                    We're open to discussing business partnerships and API access. Please reach out with details about
-                    your project or requirements.
-                  </p>
-                </div>
+          {/* Privacy Information */}
+          <Card className="mb-8 border-l-4 border-l-purple-500">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <Shield className="w-6 h-6 text-purple-500" />
+                We do not call for you to supply:
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ul className="space-y-2 text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                    Title name,
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                    Email for newsletter purposes,
+                  </li>
+                </ul>
+                <ul className="space-y-2 text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                    Account or login process,
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                    Phone number
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-6 p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
+                <p className="text-purple-800 dark:text-purple-200 font-medium">
+                  and it is also assured to you that Your message is kept private; we do not save or distribute any
+                  personal information at any platform at any cost.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Legal Information */}
+          <Card className="mb-8 border-l-4 border-l-orange-500">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <FileText className="w-6 h-6 text-orange-500" />
+                Demand legal information
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4">In connection with legal specifics, kindly entertain to:</p>
+              <div className="flex flex-wrap gap-4">
+                <Button variant="outline" asChild>
+                  <a href="/privacy">Policy on Privacy</a>
+                </Button>
+                <Button variant="outline" asChild>
+                  <a href="/terms">Service Terms of Contract</a>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Alert Reminder */}
+          <Card className="mb-8 border-l-4 border-l-yellow-500">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <AlertTriangle className="w-6 h-6 text-yellow-500" />
+                Alert Reminder
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="bg-yellow-50 dark:bg-yellow-950/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">
+                <p className="text-yellow-800 dark:text-yellow-200">
+                  <strong>User information or downloads are not stored by us.</strong> Still on your browser — your
+                  activity.
+                </p>
+              </div>
+              <p className="text-muted-foreground">
+                You are in charge of how you use our tool; kindly respect all local laws and copyrights.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Final Message */}
+          <div className="text-center">
+            <Card className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border-2 border-dashed border-blue-300 dark:border-blue-700">
+              <CardContent className="py-8">
+                <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  That's It: Clearly Private, Useful.
+                </h2>
+                <p className="text-lg text-muted-foreground">That's how the internet ought to operate.</p>
               </CardContent>
             </Card>
           </div>
