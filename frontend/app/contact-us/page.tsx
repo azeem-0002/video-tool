@@ -16,46 +16,66 @@ export const metadata: Metadata = {
 export default function ContactUs() {
   return (
     <>
-      {/* ContactPage Schema */}
+      {/* Schema.org: ContactPage + BreadcrumbList */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "ContactPage",
-            "@id": "https://freevideodownloader.co/contact-us#webpage",
-            url: "https://freevideodownloader.co/contact-us",
-            name: "Contact Us",
-            description:
-              "Reach out to Free Video Downloader for inquiries, technical issues, or feedback. We do not collect personal information and respond within 24–48 hours.",
-            inLanguage: "en",
-            isPartOf: {
-              "@type": "WebSite",
-              name: "Free Video Downloader",
-              url: "https://freevideodownloader.co",
-            },
-            mainEntity: {
-              "@type": "Organization",
-              name: "Free Video Downloader",
-              url: "https://freevideodownloader.co",
-              email: "contact@freevideodownloader.co",
-              contactPoint: {
-                "@type": "ContactPoint",
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "ContactPage",
+              "@id": "https://freevideodownloader.co/contact-us#webpage",
+              url: "https://freevideodownloader.co/contact-us",
+              name: "Contact Us",
+              description:
+                "Reach out to Free Video Downloader for inquiries, technical issues, or feedback. We do not collect personal information and respond within 24–48 hours.",
+              inLanguage: "en",
+              isPartOf: {
+                "@type": "WebSite",
+                name: "Free Video Downloader",
+                url: "https://freevideodownloader.co",
+              },
+              mainEntity: {
+                "@type": "Organization",
+                name: "Free Video Downloader",
+                url: "https://freevideodownloader.co",
                 email: "contact@freevideodownloader.co",
-                contactType: "Customer Support",
-                availableLanguage: ["English"],
-                areaServed: "Worldwide",
+                contactPoint: {
+                  "@type": "ContactPoint",
+                  email: "contact@freevideodownloader.co",
+                  contactType: "Customer Support",
+                  availableLanguage: ["English"],
+                  areaServed: "Worldwide",
+                },
+                logo: {
+                  "@type": "ImageObject",
+                  url: "https://freevideodownloader.co/logo.png",
+                },
               },
-              logo: {
-                "@type": "ImageObject",
-                url: "https://freevideodownloader.co/logo.png",
+              audience: {
+                "@type": "Audience",
+                audienceType: "General Public",
               },
             },
-            audience: {
-              "@type": "Audience",
-              audienceType: "General Public",
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://freevideodownloader.co",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Contact Us",
+                  item: "https://freevideodownloader.co/contact-us",
+                },
+              ],
             },
-          }),
+          ]),
         }}
       />
 

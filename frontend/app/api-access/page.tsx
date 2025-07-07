@@ -27,52 +27,73 @@ export default function APIAccessPage() {
 
   return (
     <>
-      {/* WebAPI Schema */}
+      {/* Structured Data: WebAPI + BreadcrumbList */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebAPI",
-            name: "FreeVideoDownloader API",
-            description:
-              "The FreeVideoDownloader API provides fast, reliable access to video and audio downloads from top platforms like YouTube, TikTok, Instagram, Facebook, and Twitter. Designed for developers and businesses.",
-            documentation: "https://freevideodownloader.co/api",
-            termsOfService: "https://freevideodownloader.co/terms-of-service",
-            provider: {
-              "@type": "Organization",
-              name: "FreeVideoDownloader",
-              url: "https://freevideodownloader.co",
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "WebAPI",
+              name: "FreeVideoDownloader API",
+              description:
+                "The FreeVideoDownloader API provides fast, reliable access to video and audio downloads from top platforms like YouTube, TikTok, Instagram, Facebook, and Twitter. Designed for developers and businesses.",
+              documentation: "https://freevideodownloader.co/api",
+              termsOfService: "https://freevideodownloader.co/terms-of-service",
+              provider: {
+                "@type": "Organization",
+                name: "FreeVideoDownloader",
+                url: "https://freevideodownloader.co",
+              },
+              endpointDescription: "https://freevideodownloader.co/api/docs",
+              endpointUrl: "https://freevideodownloader.co/api/v1",
+              protocol: "REST",
+              contentType: "application/json",
+              areaServed: "Worldwide",
+              offers: {
+                "@type": "Offer",
+                price: "Contact for pricing",
+                priceCurrency: "USD",
+                availability: "https://schema.org/InStock",
+              },
+              contactPoint: {
+                "@type": "ContactPoint",
+                contactType: "API Support",
+                email: "contact@freevideodownloader.co",
+                availableLanguage: "English",
+              },
+              keywords: [
+                "video download API",
+                "YouTube downloader API",
+                "TikTok video API",
+                "Instagram video extractor",
+                "Facebook video downloader",
+                "Twitter video API",
+                "REST video API",
+              ],
             },
-            endpointDescription: "https://freevideodownloader.co/api/docs",
-            endpointUrl: "https://freevideodownloader.co/api/v1",
-            protocol: "REST",
-            contentType: "application/json",
-            areaServed: "Worldwide",
-            offers: {
-              "@type": "Offer",
-              price: "Contact for pricing",
-              priceCurrency: "USD",
-              availability: "https://schema.org/InStock",
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://freevideodownloader.co",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "API Access",
+                  item: "https://freevideodownloader.co/api-access",
+                },
+              ],
             },
-            contactPoint: {
-              "@type": "ContactPoint",
-              contactType: "API Support",
-              email: "contact@freevideodownloader.co",
-              availableLanguage: "English",
-            },
-            keywords: [
-              "video download API",
-              "YouTube downloader API",
-              "TikTok video API",
-              "Instagram video extractor",
-              "Facebook video downloader",
-              "Twitter video API",
-              "REST video API",
-            ],
-          }),
+          ]),
         }}
       />
+
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
