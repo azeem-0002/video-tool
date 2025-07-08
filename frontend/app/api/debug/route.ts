@@ -1,6 +1,14 @@
 import { type NextRequest, NextResponse } from "next/server"
 
 export async function GET(request: NextRequest) {
+  // Skip during build time to prevent connection errors
+  if (process.env.NODE_ENV === "production" && !process.env.VERCEL_URL) {
+    return NextResponse.json({
+      backendStatus: "skipped",
+      message: "Debug API skipped during build process",
+    })
+  }
+
   try {
     const backendUrl = process.env.BACKEND_URL
     const apiKey = process.env.API_KEY

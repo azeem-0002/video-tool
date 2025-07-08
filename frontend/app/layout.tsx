@@ -11,6 +11,7 @@ import { ErrorBoundary } from "@/components/error-boundary"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.DOMAIN_URL || "https://freevideodownloader.co"),
   title: "Free Video Downloader - Download Videos from YouTube, TikTok, Instagram & More",
   description:
     "Download videos from YouTube, TikTok, Instagram, Facebook, and Twitter for free. Fast, secure, and easy-to-use video downloader with no registration required.",
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://freevideodownloader.co",
+    url: process.env.DOMAIN_URL || "https://freevideodownloader.co",
     siteName: "Free Video Downloader",
     title: "Free Video Downloader - Download Videos from YouTube, TikTok, Instagram & More",
     description:
@@ -64,7 +65,7 @@ export const metadata: Metadata = {
     creator: "@freevideodownloader",
   },
   alternates: {
-    canonical: "https://freevideodownloader.co",
+    canonical: process.env.DOMAIN_URL || "https://freevideodownloader.co",
   },
   icons: {
     icon: [
