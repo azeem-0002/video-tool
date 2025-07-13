@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useState, memo, useCallback } from "react"
+import { useState, memo, useCallback, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Download, Menu, X } from "lucide-react"
@@ -16,9 +16,19 @@ const platforms = [
   { name: "Twitter", href: "/twitter-video-downloader" },
 ]
 
-// Memoize the component to prevent unnecessary re-renders
 const Navigation = memo(function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    platforms.forEach(platform => {
+      if (platform.href !== "/") {
+        const link = document.createElement('link')
+        link.rel = 'prefetch'
+        link.href = platform.href
+        document.head.appendChild(link)
+      }
+    })
+  }, [])
 
   const handleToggle = useCallback(() => {
     setIsOpen((prev) => !prev)
@@ -36,7 +46,7 @@ const Navigation = memo(function Navigation() {
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 contain-layout">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2" onClick={handleScrollToTop}>
+          <Link href="/" className="flex items-center space-x-2" onClick={handleScrollToTop} prefetch>
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-purple-600">
               <Download className="h-4 w-4 text-white" />
             </div>
@@ -48,7 +58,7 @@ const Navigation = memo(function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             {platforms.map((platform) => (
-              <Link key={platform.name} href={platform.href} onClick={handleScrollToTop}>
+              <Link key={platform.name} href={platform.href} onClick={handleScrollToTop} prefetch>
                 <Button variant="ghost" size="sm" className="text-sm">
                   {platform.name}
                 </Button>
@@ -73,7 +83,7 @@ const Navigation = memo(function Navigation() {
         >
           <div className="flex flex-col space-y-2 pt-4">
             {platforms.map((platform) => (
-              <Link key={platform.name} href={platform.href} onClick={handleScrollToTop}>
+              <Link key={platform.name} href={platform.href} onClick={handleScrollToTop} prefetch>
                 <Button variant="ghost" size="sm" className="w-full justify-start" onClick={handleClose}>
                   {platform.name}
                 </Button>

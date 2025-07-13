@@ -1,8 +1,17 @@
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
 import { Hero } from "@/components/hero"
-import { Features } from "@/components/features"
-import { SEOContent } from "@/components/seo-content"
 import type { Metadata } from "next"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+
+// Lazy load non-critical components
+const Features = dynamic(() => import('@/components/features').then(mod => ({ default: mod.Features })), {
+  loading: () => <div className="h-96 bg-muted animate-pulse rounded-lg" />
+})
+
+const SEOContent = dynamic(() => import('@/components/seo-content').then(mod => ({ default: mod.SEOContent })), {
+  loading: () => <div className="h-64 bg-muted animate-pulse rounded-lg" />
+})
 
 export const metadata: Metadata = {
   title: "Free Online Video Downloader: Download Videos from Any Website - Universal Tool",
@@ -180,11 +189,19 @@ export default function HomePage() {
         }}
       />
 
+      {/* Critical content loads first */}
       <div className="min-h-screen">
         <Hero />
-        <SEOContent />
+        
+        {/* Lazy load non-critical sections */}
+        <Suspense fallback={<div className="h-64 bg-muted animate-pulse rounded-lg" />}>
+          <SEOContent />
+        </Suspense>
+        
         <div id="features-section">
-          <Features />
+          <Suspense fallback={<div className="h-96 bg-muted animate-pulse rounded-lg" />}>
+            <Features />
+          </Suspense>
         </div>
         {/* FAQ Section */}
         <section className="py-16 px-4 bg-gray-50 dark:bg-gray-900">
