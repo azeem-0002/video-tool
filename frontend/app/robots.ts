@@ -19,6 +19,7 @@ export default function robots(): MetadataRoute.Robots {
           "/privacy",
           "/terms",
           "/contact-us",
+          "/sitemap.xml"
         ],
         disallow: [
           "/api/",
@@ -34,7 +35,6 @@ export default function robots(): MetadataRoute.Robots {
           "/*?*fbclid*",
           "/*?*gclid*",
         ],
-        crawlDelay: 1,
       },
 
       // Googlebot
@@ -42,7 +42,6 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "Googlebot",
         allow: ["/"],
         disallow: ["/api/", "/admin/", "/private/"],
-        crawlDelay: 0,
       },
 
       // Googlebot Images
@@ -65,7 +64,6 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "SemrushBot", disallow: "/" },
       { userAgent: "MJ12bot", disallow: "/" },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
+    sitemap: `${baseUrl}/sitemap.xml`
   };
 }
