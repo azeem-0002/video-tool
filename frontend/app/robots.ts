@@ -1,7 +1,7 @@
-import type { MetadataRoute } from "next"
+import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = "https://freevideodownloader.co"
+  const baseUrl = "https://freevideodownloader.co";
 
   return {
     rules: [
@@ -9,68 +9,63 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: [
-           "/", 
-          "/youtube-video-downloader", 
-          "/tiktok-video-downloader", 
-          "/instagram-video-downloader", 
-          "/facebook-video-downloader", 
-          "/twitter-video-downloader", 
+          "/",
+          "/youtube-video-downloader",
+          "/tiktok-video-downloader",
+          "/instagram-video-downloader",
+          "/facebook-video-downloader",
+          "/twitter-video-downloader",
           "/api-access",
-          "/privacy", 
+          "/privacy",
           "/terms",
-          "/contact-us", 
+          "/contact-us",
         ],
         disallow: [
           "/api/",
           "/admin/",
           "/_next/",
-          "/*.json$",
-          "/*.xml$",
           "/private/",
           "/temp/",
           "/draft/",
           "/test/",
+          "/*.json$",
+          "/*.xml$",
           "/*?*utm_*",
           "/*?*fbclid*",
           "/*?*gclid*",
         ],
         crawlDelay: 1,
       },
-      // Special rules for Googlebot
+
+      // Googlebot
       {
         userAgent: "Googlebot",
-        allow: "/",
+        allow: ["/"],
         disallow: ["/api/", "/admin/", "/private/"],
         crawlDelay: 0,
       },
-      // Rules for Googlebot Images
+
+      // Googlebot Images
       {
         userAgent: "Googlebot-Image",
-        allow: ["/", "/*.jpg$", "/*.png$", "/*.gif$", "/*.webp$", "/*.svg$"],
+        allow: ["/*.jpg$", "/*.jpeg$", "/*.png$", "/*.gif$", "/*.webp$", "/*.svg$"],
         disallow: ["/api/", "/admin/"],
       },
-      // Rules for Bingbot
+
+      // Bingbot
       {
         userAgent: "Bingbot",
-        allow: "/",
+        allow: ["/"],
         disallow: ["/api/", "/admin/", "/private/"],
         crawlDelay: 2,
       },
-      // Block bad bots
-      {
-        userAgent: "AhrefsBot",
-        disallow: "/",
-      },
-      {
-        userAgent: "SemrushBot",
-        disallow: "/",
-      },
-      {
-        userAgent: "MJ12bot",
-        disallow: "/",
-      },
+
+      // Block common SEO scraper bots
+      { userAgent: "AhrefsBot", disallow: "/" },
+      { userAgent: "SemrushBot", disallow: "/" },
+      { userAgent: "MJ12bot", disallow: "/" },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
     host: baseUrl,
-  }
+  };
 }
