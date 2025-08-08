@@ -8,9 +8,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 export const metadata: Metadata = {
   title: "YouTube Video Downloader - Free MP4 & MP3 YouTube Saver (HD, 4K)",
   description:
-    "Free YouTube Downloader: Download YouTube videos in various qualities (HD, 4K, 1080p) to MP4 or convert to MP3. Fast, secure, and no software or watermark needed. Compatible with all devices!",
+    "Free YouTube Downloader like SaveFrom - Download in HD, 4K, 1080p to MP4 or MP3. Fast, secure, no watermark or software needed. Works on all devices!",
   keywords:
-    "YouTube video downloader, download YouTube videos, YouTube MP4 download, YouTube to MP3 converter, free YouTube downloader, HD YouTube video, 4K YouTube download, YouTube saver, best YouTube downloader",
+    "Savefrom, YouTube video downloader, download YouTube videos, YouTube MP4 download, YouTube to MP3 converter, free YouTube downloader, HD YouTube video, 4K YouTube download, YouTube saver, best YouTube downloader",
   openGraph: {
     title: "YouTube Video Downloader - Free MP4 & MP3 YouTube Saver (HD, 4K)",
     description:
