@@ -1,8 +1,7 @@
 "use client"
 
 import type React from "react"
-
-import { useState, useRef, memo, useCallback, useMemo } from "react"
+import { useState, useRef, memo, useCallback, useMemo, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -24,7 +23,6 @@ interface VideoData {
   }>
 }
 
-// Memoize the component to prevent unnecessary re-renders
 const UniversalDownloader = memo(function UniversalDownloader() {
   const [url, setUrl] = useState("")
   const [loading, setLoading] = useState(false)
@@ -36,13 +34,13 @@ const UniversalDownloader = memo(function UniversalDownloader() {
     message: string
     platform?: string
   } | null>(null)
+  const [pendingUrl, setPendingUrl] = useState<string | null>(null) // Store URL for deferred processing
+  const [isPageLoaded, setIsPageLoaded] = useState(false) // Track page load status
 
-  // Memoize platform detection function
+  // Detect platform function (unchanged)
   const detectPlatform = useCallback((url: string): string | null => {
     if (!url) return null
-
     const urlLower = url.toLowerCase()
-
     if (urlLower.includes("youtube.com") || urlLower.includes("youtu.be")) {
       return "youtube"
     } else if (urlLower.includes("tiktok.com")) {
@@ -54,18 +52,15 @@ const UniversalDownloader = memo(function UniversalDownloader() {
     } else if (urlLower.includes("twitter.com") || urlLower.includes("x.com")) {
       return "twitter"
     }
-
     return null
   }, [])
 
-  // Memoize URL validation function
+  // Validate URL function (unchanged)
   const validateUrl = useCallback(
     (inputUrl: string): { isValid: boolean; message: string; platform?: string } => {
       if (!inputUrl.trim()) {
         return { isValid: false, message: "Please enter a URL" }
       }
-
-      // Check if it's a valid URL format
       try {
         const urlObj = new URL(inputUrl)
         if (!urlObj.protocol.startsWith("http")) {
@@ -74,8 +69,6 @@ const UniversalDownloader = memo(function UniversalDownloader() {
       } catch {
         return { isValid: false, message: "Invalid URL format. Please enter a valid URL." }
       }
-
-      // Check platform support
       const platform = detectPlatform(inputUrl)
       if (!platform) {
         return {
@@ -83,7 +76,6 @@ const UniversalDownloader = memo(function UniversalDownloader() {
           message: "Unsupported platform. We support YouTube, TikTok, Instagram, Facebook, and Twitter.",
         }
       }
-
       return {
         isValid: true,
         message: `✓ Valid ${platform.charAt(0).toUpperCase() + platform.slice(1)} URL detected`,
@@ -93,13 +85,12 @@ const UniversalDownloader = memo(function UniversalDownloader() {
     [detectPlatform],
   )
 
-  // Handle URL input change with real-time validation
+  // Handle URL input change (unchanged)
   const handleUrlChange = useCallback(
     (inputUrl: string) => {
       setUrl(inputUrl)
       setError("")
       setResult(null)
-
       if (inputUrl.trim()) {
         const validation = validateUrl(inputUrl)
         setUrlValidation(validation)
@@ -110,12 +101,10 @@ const UniversalDownloader = memo(function UniversalDownloader() {
     [validateUrl],
   )
 
+  // Handle submit function (unchanged, but extracted for reuse)
   const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault()
-
-      // Validate URL before submission
-      const validation = validateUrl(url)
+    async (submittedUrl: string) => {
+      const validation = validateUrl(submittedUrl)
       setUrlValidation(validation)
 
       if (!validation.isValid) {
@@ -124,27 +113,23 @@ const UniversalDownloader = memo(function UniversalDownloader() {
       }
 
       const platform = validation.platform!
-
       setLoading(true)
       setError("")
       setResult(null)
 
       try {
-        console.log(`Processing ${platform} URL: ${url}`)
-
-        // Call Next.js API route instead of backend directly
+        console.log(`Processing ${platform} URL: ${submittedUrl}`)
         const response = await fetch("/api/universal", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ url }),
+          body: JSON.stringify({ url: submittedUrl }),
         })
 
         console.log("Response status:", response.status)
 
         if (!response.ok) {
-          // Read response body only once
           const responseText = await response.text()
           console.error("Response error:", responseText)
 
@@ -156,7 +141,6 @@ const UniversalDownloader = memo(function UniversalDownloader() {
             errorMessage = responseText || errorMessage
           }
 
-          // Check for ngrok offline error
           if (errorMessage.includes("ngrok") && errorMessage.includes("offline")) {
             throw new Error(
               "🚨 Backend service is offline. The ngrok tunnel has expired or stopped. Please restart your backend service and update the ngrok URL.",
@@ -168,7 +152,6 @@ const UniversalDownloader = memo(function UniversalDownloader() {
             )
           }
 
-          // Handle specific error cases
           if (response.status === 404) {
             throw new Error("Video not found. Please check if the URL is correct and the video is publicly accessible.")
           } else if (response.status === 403) {
@@ -192,11 +175,8 @@ const UniversalDownloader = memo(function UniversalDownloader() {
 
         console.log("API Response:", apiResponse)
 
-        // Check if API response indicates failure
         if (!apiResponse.success) {
           const errorMessage = apiResponse.error || "Failed to process video"
-
-          // Check for ngrok offline error in API response
           if (errorMessage.includes("ngrok") && errorMessage.includes("offline")) {
             throw new Error(
               "🚨 Backend service is offline. The ngrok tunnel has expired or stopped. Please restart your backend service and update the ngrok URL in your environment variables.",
@@ -207,22 +187,18 @@ const UniversalDownloader = memo(function UniversalDownloader() {
               "🚨 Backend connection failed. The ngrok tunnel is not accessible. Please check your backend service and ngrok configuration.",
             )
           }
-
           throw new Error(errorMessage)
         }
 
-        // Check if response has data property
         if (!apiResponse.hasOwnProperty("data")) {
           throw new Error("No video data received from the server.")
         }
 
         console.log(`Raw ${platform} backend data:`, JSON.stringify(apiResponse.data, null, 2))
 
-        // Use the centralized response transformer - pass the entire response data
         const transformedData = transformBackendResponse(apiResponse.data, platform)
         console.log("Transformed data:", transformedData)
 
-        // Final validation of transformed data
         if (!transformedData.downloadLinks || transformedData.downloadLinks.length === 0) {
           console.error("No download links after transformation:", {
             originalData: apiResponse.data,
@@ -230,9 +206,7 @@ const UniversalDownloader = memo(function UniversalDownloader() {
             platform,
           })
 
-          // Provide more detailed error message based on the platform
           let detailedError = `Unable to extract download links from this ${platform} video.`
-
           switch (platform) {
             case "youtube":
               detailedError += " This could be due to:"
@@ -274,14 +248,11 @@ const UniversalDownloader = memo(function UniversalDownloader() {
               detailedError += " The video format might not be supported or the content is protected."
           }
 
-          // Log the actual data structure for debugging
           console.log(`${platform} data structure received:`, Object.keys(apiResponse.data))
           console.log(`Full ${platform} response:`, apiResponse.data)
-
           throw new Error(detailedError)
         }
 
-        // Validate that download links have actual URLs
         const validLinks = transformedData.downloadLinks.filter((link) => link.url && link.url.trim())
         if (validLinks.length === 0) {
           throw new Error(
@@ -289,7 +260,6 @@ const UniversalDownloader = memo(function UniversalDownloader() {
           )
         }
 
-        // Update the result with only valid links
         setResult({
           ...transformedData,
           downloadLinks: validLinks,
@@ -299,27 +269,68 @@ const UniversalDownloader = memo(function UniversalDownloader() {
       } catch (err) {
         console.error("Processing error:", err)
         let errorMessage = "An unexpected error occurred"
-
         if (err instanceof TypeError && err.message.includes("fetch")) {
           errorMessage =
             "Network error: Unable to connect to the server. Please check your internet connection and try again."
         } else if (err instanceof Error) {
           errorMessage = err.message
         }
-
         setError(errorMessage)
         toast.error("Failed to process video")
       } finally {
         setLoading(false)
+        setPendingUrl(null) // Clear pending URL after processing
       }
     },
-    [url, validateUrl],
+    [validateUrl],
   )
 
-  // Enhanced paste function with multiple fallback methods
+  // Handle button click
+  const handleButtonClick = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault()
+      if (urlValidation?.isValid) {
+        if (isPageLoaded) {
+          // If page is loaded, process immediately
+          handleSubmit(url)
+        } else {
+          // Store URL for processing after page load
+          setPendingUrl(url)
+          toast.info("URL saved. Processing will start once the page is fully loaded.")
+        }
+      }
+    },
+    [url, urlValidation, isPageLoaded, handleSubmit],
+  )
+
+  // Detect page load completion
+  useEffect(() => {
+    const handleLoad = () => {
+      setIsPageLoaded(true)
+    }
+
+    // Check if the page is already loaded
+    if (document.readyState === "complete") {
+      setIsPageLoaded(true)
+    } else {
+      window.addEventListener("load", handleLoad)
+    }
+
+    return () => {
+      window.removeEventListener("load", handleLoad)
+    }
+  }, [])
+
+  // Process pending URL after page load
+  useEffect(() => {
+    if (isPageLoaded && pendingUrl) {
+      handleSubmit(pendingUrl)
+    }
+  }, [isPageLoaded, pendingUrl, handleSubmit])
+
+  // Handle paste function (unchanged)
   const handlePaste = useCallback(async () => {
     try {
-      // Method 1: Try using the Clipboard API directly
       if (navigator.clipboard && navigator.clipboard.readText) {
         const text = await navigator.clipboard.readText()
         if (text) {
@@ -332,15 +343,11 @@ const UniversalDownloader = memo(function UniversalDownloader() {
       console.log("Primary clipboard method failed, trying alternatives...")
     }
 
-    // Method 2: Focus the input and execute paste command
     try {
       if (inputRef.current) {
         inputRef.current.focus()
-
-        // For mobile browsers that support execCommand
         const successful = document.execCommand("paste")
         if (successful) {
-          // The paste event will trigger onChange which calls handleUrlChange
           toast.success("URL pasted from clipboard")
           return
         }
@@ -349,7 +356,6 @@ const UniversalDownloader = memo(function UniversalDownloader() {
       console.log("Secondary clipboard method failed, trying manual paste prompt...")
     }
 
-    // Method 3: Prompt the user to paste manually
     toast.info("Please paste the URL manually by long-pressing the input field", {
       duration: 3000,
       action: {
@@ -363,7 +369,7 @@ const UniversalDownloader = memo(function UniversalDownloader() {
     })
   }, [handleUrlChange])
 
-  // Memoize platform cards to prevent re-renders
+  // Platform cards (unchanged)
   const platformCards = useMemo(
     () => (
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto place-items-center">
@@ -428,7 +434,6 @@ const UniversalDownloader = memo(function UniversalDownloader() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 contain-layout">
-      {/* Error Alert - Displayed at the top */}
       {error && (
         <Alert variant="destructive" className="border-red-200 bg-red-50 dark:bg-red-900/20">
           <AlertTriangle className="h-4 w-4" />
@@ -445,7 +450,7 @@ const UniversalDownloader = memo(function UniversalDownloader() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleButtonClick} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="url">Video URL</Label>
               <div className="flex gap-2">
@@ -470,7 +475,6 @@ const UniversalDownloader = memo(function UniversalDownloader() {
                 </Button>
               </div>
 
-              {/* URL Validation Feedback */}
               {urlValidation && (
                 <div className="flex items-center gap-2 text-sm">
                   {urlValidation.isValid ? (
@@ -491,29 +495,24 @@ const UniversalDownloader = memo(function UniversalDownloader() {
             <Button
               type="submit"
               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-              disabled={(urlValidation ? !urlValidation.isValid : false)}
+              disabled={loading || !url || (urlValidation && !urlValidation.isValid)}
             >
               {loading ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Processing...
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Processing...
                 </>
               ) : (
                 <>
-                  <Download className="h-4 w-4 mr-2" />
-                  Download Video
+                  <Download className="h-4 w-4 mr-2" /> Download Video
                 </>
               )}
             </Button>
-
           </form>
         </CardContent>
       </Card>
 
-      {/* Video Result - Now appears before Prefer Dedicated Tools */}
       {result && <VideoResult data={result} />}
 
-      {/* Descriptive paragraph */}
       <div className="text-center max-w-2xl mx-auto mb-8">
         <p className="text-xl text-muted-foreground text-pretty">
           Universal video downloader supporting all major platforms. Our free online video download tool works with
@@ -521,7 +520,6 @@ const UniversalDownloader = memo(function UniversalDownloader() {
         </p>
       </div>
 
-      {/* Prefer Dedicated Tools - Now appears after video result */}
       <Card className="contain-paint">
         <CardHeader className="text-center">
           <CardTitle className="text-xl text-balance">Prefer Dedicated Tools?</CardTitle>
