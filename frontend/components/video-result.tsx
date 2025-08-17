@@ -1,11 +1,10 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Download, ExternalLink, CheckCircle, AlertTriangle } from "lucide-react"
+import { CheckCircle, AlertTriangle } from "lucide-react"
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useEffect, memo, useCallback } from "react"
 import { toast } from "sonner"
 
 interface VideoResultProps {
@@ -20,11 +19,29 @@ interface VideoResultProps {
   }
 }
 
-export function VideoResult({ data }: VideoResultProps) {
+// Memoize the component to prevent unnecessary re-renders
+const VideoResult = memo(function VideoResult({ data }: VideoResultProps) {
   const [downloadingStates, setDownloadingStates] = useState<{ [key: number]: boolean }>({})
 
+  useEffect(() => {
+    if (data) {
+      // Small delay to ensure the component is fully rendered
+      const timer = setTimeout(() => {
+        const resultSection = document.getElementById("video-result-section")
+        if (resultSection) {
+          resultSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          })
+        }
+      }, 100)
+
+      return () => clearTimeout(timer)
+    }
+  }, [data])
+
   // Validate if URL is a proper string and looks like a valid URL
-  const isValidUrl = (url: any): boolean => {
+  const isValidUrl = useCallback((url: any): boolean => {
     if (!url || typeof url !== "string" || url.trim() === "") {
       return false
     }
@@ -38,108 +55,167 @@ export function VideoResult({ data }: VideoResultProps) {
       const urlStr = url.toString().trim()
       return urlStr.length > 0 && (urlStr.startsWith("http") || urlStr.startsWith("/") || urlStr.includes("."))
     }
-  }
+  }, [])
 
-  const handleDownload = async (url: string, filename: string, index: number) => {
-    try {
-      setDownloadingStates((prev) => ({ ...prev, [index]: true }))
+  const handleDownload = useCallback(
+    async (url: string, filename: string, index: number) => {
+      try {
+        console.log("Download button clicked:", { url, filename, index })
 
-      console.log("Download URL received:", url, "Type:", typeof url)
+        setDownloadingStates((prev) => ({ ...prev, [index]: true }))
 
-      // Validate URL
-      if (!isValidUrl(url)) {
-        console.error("Invalid URL:", url)
-        throw new Error(`Invalid download URL: ${url}`)
-      }
+        if (!url || typeof url !== "string" || url.trim() === "") {
+          throw new Error("Invalid download URL")
+        }
 
-      // Ensure URL is a string and trim whitespace
-      const cleanUrl = url.toString().trim()
+        const cleanUrl = url.toString().trim()
+        const sanitizedTitle = data.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()
+        const extension = cleanUrl.includes(".mp3") ? "mp3" : cleanUrl.includes(".m3u8") ? "m3u8" : "mp4"
+        const finalFilename = `${sanitizedTitle}_${Date.now()}.${extension}`
 
-      // Create a proper filename
-      const sanitizedTitle = data.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()
-      const extension = cleanUrl.includes(".mp3") ? "mp3" : cleanUrl.includes(".m3u8") ? "m3u8" : "mp4"
-      const finalFilename = `${sanitizedTitle}_${Date.now()}.${extension}`
-
-      if (cleanUrl.includes(".m3u8")) {
         // For HLS streams, open in new tab
-        window.open(cleanUrl, "_blank", "noopener,noreferrer")
-        toast.success("HLS stream opened in new tab")
-      } else {
-        // For direct video/audio files, try to download
+        if (cleanUrl.includes(".m3u8")) {
+          window.open(cleanUrl, "_blank", "noopener,noreferrer")
+          toast.success("Stream opened in new tab")
+          return
+        }
+
+        // Check if this is a Twitter/X video (special handling needed)
+        const isTwitterVideo =
+          cleanUrl.includes("video.twimg.com") ||
+          cleanUrl.includes("pbs.twimg.com") ||
+          cleanUrl.includes("twitter.com") ||
+          cleanUrl.includes("x.com")
+
+        if (isTwitterVideo) {
+          // For Twitter videos, use direct link method first
+          try {
+            console.log("Handling Twitter video download")
+
+            // Create a temporary anchor element for download
+            const link = document.createElement("a")
+            link.href = cleanUrl
+            link.download = finalFilename
+            link.target = "_blank"
+            link.rel = "noopener noreferrer"
+
+            // Add to DOM temporarily
+            link.style.display = "none"
+            document.body.appendChild(link)
+
+            // Trigger download
+            link.click()
+
+            // Clean up
+            document.body.removeChild(link)
+
+            toast.success("Twitter video download started!")
+            return
+          } catch (twitterError) {
+            console.log("Twitter direct download failed, trying alternative")
+
+            // Fallback: Open in new tab with download instructions
+            window.open(cleanUrl, "_blank", "noopener,noreferrer")
+            toast.info("Video opened in new tab. Right-click and select 'Save video as...' to download", {
+              duration: 6000,
+            })
+            return
+          }
+        }
+
+        // For non-Twitter videos, try fetch method first
         try {
+          console.log("Attempting fetch download for non-Twitter video")
+
           const response = await fetch(cleanUrl, {
             method: "GET",
             headers: {
               Accept: "*/*",
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
             },
+            mode: "cors",
           })
 
           if (response.ok) {
             const blob = await response.blob()
-            const downloadUrl = window.URL.createObjectURL(blob)
+            console.log("Blob created successfully, size:", blob.size)
 
+            // Create download URL and trigger download
+            const downloadUrl = URL.createObjectURL(blob)
             const link = document.createElement("a")
             link.href = downloadUrl
             link.download = finalFilename
             link.style.display = "none"
+
             document.body.appendChild(link)
             link.click()
             document.body.removeChild(link)
 
-            // Clean up the blob URL
-            setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 100)
+            // Cleanup
+            setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000)
 
-            toast.success("Download started successfully!")
+            toast.success("Video download started!")
+            return
           } else {
-            throw new Error("Failed to fetch file")
+            console.log("Fetch failed with status:", response.status)
           }
         } catch (fetchError) {
-          console.log("Direct download failed, trying fallback method")
-          // Fallback: try direct link download
+          console.log("Fetch method failed:", fetchError)
+        }
+
+        // Fallback method: Direct download link
+        try {
+          console.log("Trying direct download link method")
+
           const link = document.createElement("a")
           link.href = cleanUrl
           link.download = finalFilename
           link.target = "_blank"
           link.rel = "noopener noreferrer"
+          link.style.display = "none"
+
           document.body.appendChild(link)
           link.click()
           document.body.removeChild(link)
 
-          toast.success("Download link opened!")
+          toast.success("Download initiated!")
+          return
+        } catch (directError) {
+          console.log("Direct download failed:", directError)
         }
+
+        // Final fallback: Open in new tab
+        console.log("All download methods failed, opening in new tab")
+        window.open(cleanUrl, "_blank", "noopener,noreferrer")
+        toast.info("Video opened in new tab. Right-click and select 'Save video as...' to download", {
+          duration: 6000,
+        })
+      } catch (error) {
+        console.error("Download error:", error)
+        toast.error(`Download failed: ${error instanceof Error ? error.message : "Unknown error"}`)
+      } finally {
+        setDownloadingStates((prev) => ({ ...prev, [index]: false }))
       }
-    } catch (error) {
-      console.error("Download failed:", error)
-      toast.error(`Download failed: ${error instanceof Error ? error.message : "Unknown error"}`)
+    },
+    [data.title],
+  )
 
-      // Final fallback: try to open in new tab if URL seems valid
-      if (url && typeof url === "string" && url.trim().length > 0) {
-        try {
-          window.open(url.toString().trim(), "_blank", "noopener,noreferrer")
-          toast.info("Opened download link in new tab as fallback")
-        } catch (openError) {
-          console.error("Failed to open URL:", openError)
-          toast.error("Unable to process download URL")
-        }
+  const handlePreview = useCallback(
+    (url: string, format: string) => {
+      if (!isValidUrl(url)) {
+        toast.error("Invalid preview URL")
+        return
       }
-    } finally {
-      setDownloadingStates((prev) => ({ ...prev, [index]: false }))
-    }
-  }
 
-  const handlePreview = (url: string, format: string) => {
-    if (!isValidUrl(url)) {
-      toast.error("Invalid preview URL")
-      return
-    }
+      const cleanUrl = url.toString().trim()
 
-    const cleanUrl = url.toString().trim()
-
-    if (format === "m3u8") {
-      toast.info("HLS stream will open in new tab")
-    }
-    window.open(cleanUrl, "_blank", "noopener,noreferrer")
-  }
+      if (format === "m3u8") {
+        toast.info("HLS stream will open in new tab")
+      }
+      window.open(cleanUrl, "_blank", "noopener,noreferrer")
+    },
+    [isValidUrl],
+  )
 
   // Filter out invalid download links
   const validDownloadLinks = data.downloadLinks.filter((link) => {
@@ -152,12 +228,12 @@ export function VideoResult({ data }: VideoResultProps) {
 
   if (validDownloadLinks.length === 0) {
     return (
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden contain-paint">
         <CardContent className="pt-6">
           <div className="text-center py-8">
             <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">No Valid Download Links</h3>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-pretty">
               The video was processed but no valid download links were found. This might be due to:
             </p>
             <ul className="text-sm text-muted-foreground mt-2 space-y-1">
@@ -172,7 +248,7 @@ export function VideoResult({ data }: VideoResultProps) {
   }
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden contain-paint" id="video-result-section">
       <CardHeader>
         <CardTitle className="flex flex-col sm:flex-row items-start gap-4">
           <div className="relative w-full sm:w-32 h-20 rounded-lg overflow-hidden flex-shrink-0">
@@ -181,6 +257,9 @@ export function VideoResult({ data }: VideoResultProps) {
               alt={data.title}
               fill
               className="object-cover"
+              sizes="(max-width: 640px) 100vw, 128px"
+              priority={false}
+              loading="lazy"
               onError={(e) => {
                 const target = e.target as HTMLImageElement
                 target.src = "/placeholder.svg?height=80&width=128"
@@ -188,7 +267,7 @@ export function VideoResult({ data }: VideoResultProps) {
             />
           </div>
           <div className="flex-1 min-w-0 mt-2 sm:mt-0">
-            <h3 className="text-lg font-semibold line-clamp-2">{data.title}</h3>
+            <h3 className="text-lg font-semibold line-clamp-2 text-balance">{data.title}</h3>
             <div className="flex items-center gap-2 mt-2">
               <CheckCircle className="h-4 w-4 text-green-500" />
               <span className="text-sm text-green-600 font-medium">Ready to download</span>
@@ -203,7 +282,7 @@ export function VideoResult({ data }: VideoResultProps) {
             {validDownloadLinks.map((link, index) => (
               <div
                 key={index}
-                className="flex flex-col p-4 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
+                className="flex flex-col p-4 rounded-lg border bg-card hover:bg-accent/50 transition-colors contain-paint"
               >
                 <div className="flex flex-wrap items-center gap-2 mb-3">
                   <Badge variant="secondary">{link.quality}</Badge>
@@ -213,59 +292,35 @@ export function VideoResult({ data }: VideoResultProps) {
                       Audio
                     </Badge>
                   )}
-                  {link.format === "mp4" && (
-                    <Badge variant="outline" className="text-xs">
-                      Video
-                    </Badge>
-                  )}
-                  {link.format === "m3u8" && (
-                    <Badge variant="outline" className="text-xs">
-                      Stream
-                    </Badge>
-                  )}
                 </div>
-                <div className="grid grid-cols-2 gap-2 w-full">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handlePreview(link.url, link.format)}
-                    className="w-full"
-                  >
-                    <ExternalLink className="h-4 w-4 mr-1" />
-                    {link.format === "m3u8" ? "Stream" : "Preview"}
-                  </Button>
-                  <Button
-                    size="sm"
-                    onClick={() => handleDownload(link.url, `${data.title}.${link.format}`, index)}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 w-full"
-                    disabled={downloadingStates[index]}
-                  >
-                    {downloadingStates[index] ? (
-                      <>
-                        <div className="h-4 w-4 mr-1 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                        <span className="hidden sm:inline">Downloading...</span>
-                        <span className="sm:hidden">...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Download className="h-4 w-4 mr-1" />
-                        Download
-                      </>
-                    )}
-                  </Button>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <p className="text-sm text-muted-foreground break-all sm:break-normal flex-1 min-w-0">
+                    {link.url.length > 50 ? link.url.substring(0, 50) + "..." : link.url}
+                  </p>
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <button
+                      onClick={() => handlePreview(link.url, link.format)}
+                      className="flex-1 sm:flex-none px-4 py-2 text-sm rounded-md bg-secondary hover:bg-secondary/80 transition-colors min-h-[40px] flex items-center justify-center"
+                    >
+                      Preview
+                    </button>
+                    <button
+                      onClick={() => handleDownload(link.url, data.title, index)}
+                      className="flex-1 sm:flex-none px-4 py-2 text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/80 transition-colors disabled:cursor-not-allowed disabled:opacity-50 min-h-[40px] flex items-center justify-center"
+                      disabled={downloadingStates[index]}
+                    >
+                      {downloadingStates[index] ? "Downloading..." : "Download"}
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
-          </div>
-
-          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-            <p className="text-sm text-blue-700 dark:text-blue-300">
-              💡 <strong>Tip:</strong> If direct download doesn't work, try the Preview button to open the file in a new
-              tab, then right-click and "Save as..."
-            </p>
           </div>
         </div>
       </CardContent>
     </Card>
   )
-}
+})
+
+export { VideoResult }
+export default VideoResult

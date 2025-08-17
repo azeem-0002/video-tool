@@ -1,50 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 
-export async function POST(request: NextRequest) {
-  try {
-    const { url } = await request.json()
-
-    if (!url) {
-      return NextResponse.json({ success: false, error: "URL is required" }, { status: 400 })
-    }
-
-    // Auto-detect platform from URL
-    const platform = detectPlatform(url)
-    if (!platform) {
-      return NextResponse.json({ success: false, error: "Unsupported platform" }, { status: 400 })
-    }
-
-    // Forward to the appropriate platform endpoint
-    const backendUrl = process.env.BACKEND_URL
-    const apiKey = process.env.API_KEY
-
-    if (!backendUrl || !apiKey) {
-      return NextResponse.json({ success: false, error: "Server configuration error" }, { status: 500 })
-    }
-
-    const response = await fetch(`${backendUrl}/api/${platform}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "ngrok-skip-browser-warning": "true",
-        "x-api-key": apiKey,
-      },
-      body: JSON.stringify({ url }),
-    })
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      return NextResponse.json({ success: false, error: `Backend error: ${errorText}` }, { status: response.status })
-    }
-
-    const data = await response.json()
-    return NextResponse.json(data)
-  } catch (error) {
-    console.error("Universal API error:", error)
-    return NextResponse.json({ success: false, error: "Internal server error" }, { status: 500 })
-  }
-}
-
+// Auto-detect platform from URL
 function detectPlatform(url: string): string | null {
   if (!url) return null
 
@@ -60,9 +16,89 @@ function detectPlatform(url: string): string | null {
     return "facebook"
   } else if (urlLower.includes("twitter.com") || urlLower.includes("x.com")) {
     return "twitter"
-  } else if (urlLower.includes("pinterest.com")) {
-    return "pinterest"
   }
 
   return null
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const { url } = await request.json()
+
+    if (!url) {
+      return NextResponse.json({ success: false, error: "URL is required" }, { status: 400 })
+    }
+
+    // Detect platform
+    const platform = detectPlatform(url)
+    if (!platform) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Unsupported platform. We support YouTube, TikTok, Instagram, Facebook, and Twitter.",
+        },
+        { status: 400 },
+      )
+    }
+
+    const backendUrl = process.env.BACKEND_URL
+    const apiKey = process.env.API_KEY
+
+    if (!backendUrl || !apiKey) {
+      console.error("Missing environment variables:", {
+        backendUrl: backendUrl ? "SET" : "NOT_SET",
+        apiKey: apiKey ? "SET" : "NOT_SET",
+      })
+      return NextResponse.json({ success: false, error: "Server configuration error" }, { status: 500 })
+    }
+
+    console.log(`Making request to: ${backendUrl}/api/${platform}`)
+
+    const response = await fetch(`${backendUrl}/api/${platform}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "ngrok-skip-browser-warning": "true",
+      },
+      body: JSON.stringify({ url }),
+    })
+
+    console.log("Backend response status:", response.status)
+    console.log("Backend response headers:", Object.fromEntries(response.headers.entries()))
+
+    const responseText = await response.text()
+    console.log("Backend response text:", responseText.substring(0, 500))
+
+    if (!response.ok) {
+      let errorMessage = `HTTP ${response.status}`
+
+      try {
+        const errorData = JSON.parse(responseText)
+        errorMessage = errorData.error || errorData.message || errorMessage
+      } catch {
+        errorMessage = responseText || errorMessage
+      }
+
+      console.error("Backend error:", errorMessage)
+      return NextResponse.json({ success: false, error: `Backend error: ${errorMessage}` }, { status: response.status })
+    }
+
+    let data
+    try {
+      data = JSON.parse(responseText)
+    } catch (parseError) {
+      console.error("Failed to parse response:", parseError)
+      return NextResponse.json({ success: false, error: "Invalid response from backend" }, { status: 500 })
+    }
+
+    console.log("Parsed backend data:", data)
+    return NextResponse.json({ success: true, data })
+  } catch (error) {
+    console.error("Universal API error:", error)
+    return NextResponse.json(
+      { success: false, error: `Internal server error: ${error instanceof Error ? error.message : "Unknown error"}` },
+      { status: 500 },
+    )
+  }
 }
