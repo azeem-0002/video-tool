@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef, memo, useCallback, useMemo, useEffect } from "react"
+import { useState, useRef, memo, useCallback, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -34,6 +34,7 @@ const UniversalDownloader = memo(function UniversalDownloader() {
     message: string
     platform?: string
   } | null>(null)
+  const [hydrated, setHydrated] = useState(false) // 🚀 hydration flag
 
   // Detect platform
   const detectPlatform = useCallback((url: string): string | null => {
@@ -146,16 +147,31 @@ const UniversalDownloader = memo(function UniversalDownloader() {
         const validation = validateUrl(inputUrl)
         setUrlValidation(validation)
 
-        // 🚀 Auto-submit if valid
-        if (validation.isValid) {
+        // 🚀 Auto-submit if valid + not already loading
+        if (validation.isValid && hydrated && !loading) {
           handleSubmit(inputUrl)
         }
       } else {
         setUrlValidation(null)
       }
     },
-    [validateUrl, handleSubmit],
+    [validateUrl, handleSubmit, hydrated, loading],
   )
+
+  // ✅ Hydration complete flag
+  useEffect(() => {
+    setHydrated(true)
+  }, [])
+
+  // ✅ If URL already available on hydration → auto submit
+  useEffect(() => {
+    if (hydrated && url.trim()) {
+      const validation = validateUrl(url)
+      if (validation.isValid && !loading) {
+        handleSubmit(url)
+      }
+    }
+  }, [hydrated]) // only once
 
   // ✅ Handle paste (auto process if valid)
   const handlePaste = useCallback(async () => {
@@ -197,56 +213,6 @@ const UniversalDownloader = memo(function UniversalDownloader() {
       input.removeEventListener("paste", handleInputPaste)
     }
   }, [handleUrlChange])
-
-  // Platform cards
-  // const platformCards = useMemo(
-  //   () => (
-  //     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto place-items-center">
-  //       {/* TikTok */}
-  //       <Link href="/tiktok-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
-  //         <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-black dark:hover:border-white bg-gradient-to-r from-gray-900 to-black text-white">
-  //           <CardContent className="p-4 text-center">
-  //             <h3 className="font-semibold">TikTok Downloader</h3>
-  //           </CardContent>
-  //         </Card>
-  //       </Link>
-  //       {/* YouTube */}
-  //       <Link href="/youtube-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
-  //         <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-red-500 bg-gradient-to-r from-red-500 to-red-600 text-white">
-  //           <CardContent className="p-4 text-center">
-  //             <div className="flex items-center justify-center gap-2">
-  //               <Youtube className="w-5 h-5" />
-  //               <h3 className="font-semibold">YouTube Downloader</h3>
-  //             </div>
-  //           </CardContent>
-  //         </Card>
-  //       </Link>
-  //       {/* Facebook */}
-  //       <Link href="/facebook-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
-  //         <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-blue-500 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-  //           <CardContent className="p-4 text-center">
-  //             <div className="flex items-center justify-center gap-2">
-  //               <Facebook className="w-5 h-5" />
-  //               <h3 className="font-semibold">Facebook Downloader</h3>
-  //             </div>
-  //           </CardContent>
-  //         </Card>
-  //       </Link>
-  //       {/* Instagram */}
-  //       <Link href="/instagram-video-downloader" className="block w-full" onClick={() => window.scrollTo(0, 0)}>
-  //         <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-pink-500 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white">
-  //           <CardContent className="p-4 text-center">
-  //             <div className="flex items-center justify-center gap-2">
-  //               <Instagram className="w-5 h-5" />
-  //               <h3 className="font-semibold">Instagram Saver</h3>
-  //             </div>
-  //           </CardContent>
-  //         </Card>
-  //       </Link>
-  //     </div>
-  //   ),
-  //   [],
-  // )
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -320,14 +286,6 @@ const UniversalDownloader = memo(function UniversalDownloader() {
       </Card>
 
       {result && <VideoResult data={result} />}
-
-      {/* <Card>
-        <CardHeader className="text-center">
-          <CardTitle className="text-xl">Prefer Dedicated Tools?</CardTitle>
-          <CardDescription>Check out platform-specific downloaders</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center">{platformCards}</CardContent>
-      </Card> */}
     </div>
   )
 })
