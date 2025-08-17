@@ -5,7 +5,6 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules: [
-      // Default rules for all bots
       {
         userAgent: "*",
         allow: [
@@ -19,12 +18,12 @@ export default function robots(): MetadataRoute.Robots {
           "/privacy",
           "/terms",
           "/contact-us",
-          "/sitemap.xml"
+          "/sitemap.xml",
+          "/_next/static/",   // ✅ allow static files
         ],
         disallow: [
           "/api/",
           "/admin/",
-          "/_next/",
           "/private/",
           "/temp/",
           "/draft/",
@@ -36,34 +35,13 @@ export default function robots(): MetadataRoute.Robots {
           "/*?*gclid*",
         ],
       },
-
-      // Googlebot
-      {
-        userAgent: "Googlebot",
-        allow: ["/"],
-        disallow: ["/api/", "/admin/", "/private/"],
-      },
-
-      // Googlebot Images
-      {
-        userAgent: "Googlebot-Image",
-        allow: ["/*.jpg$", "/*.jpeg$", "/*.png$", "/*.gif$", "/*.webp$", "/*.svg$"],
-        disallow: ["/api/", "/admin/"],
-      },
-
-      // Bingbot
-      {
-        userAgent: "Bingbot",
-        allow: ["/"],
-        disallow: ["/api/", "/admin/", "/private/"],
-        crawlDelay: 2,
-      },
-
-      // Block common SEO scraper bots
+      { userAgent: "Googlebot", allow: ["/", "/_next/static/"], disallow: ["/api/", "/admin/", "/private/"] },
+      { userAgent: "Googlebot-Image", allow: ["/*.jpg$", "/*.jpeg$", "/*.png$", "/*.gif$", "/*.webp$", "/*.svg$", "/_next/static/"], disallow: ["/api/", "/admin/"] },
+      { userAgent: "Bingbot", allow: ["/", "/_next/static/"], disallow: ["/api/", "/admin/", "/private/"], crawlDelay: 2 },
       { userAgent: "AhrefsBot", disallow: "/" },
       { userAgent: "SemrushBot", disallow: "/" },
       { userAgent: "MJ12bot", disallow: "/" },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }

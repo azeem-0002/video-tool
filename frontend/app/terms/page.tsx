@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+   alternates: {
+    canonical: "https://freevideodownloader.co/terms",
+  },
 }
 
 export default function TermsOfService() {

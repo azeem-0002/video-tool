@@ -9,6 +9,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+   alternates: {
+    canonical: "https://freevideodownloader.co/privacy",
+  },
 }
 
 export default function PrivacyPolicy() {

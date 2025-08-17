@@ -303,21 +303,20 @@ const UniversalDownloader = memo(function UniversalDownloader() {
     [url, urlValidation, isPageLoaded, handleSubmit],
   )
 
-  // Detect page load completion
+  // Detect page load completion (changed to DOMContentLoaded for earlier interactivity)
   useEffect(() => {
-    const handleLoad = () => {
+    const handleDOMContentLoaded = () => {
       setIsPageLoaded(true)
     }
 
-    // Check if the page is already loaded
-    if (document.readyState === "complete") {
+    if (document.readyState === "interactive" || document.readyState === "complete") {
       setIsPageLoaded(true)
     } else {
-      window.addEventListener("load", handleLoad)
+      document.addEventListener("DOMContentLoaded", handleDOMContentLoaded)
     }
 
     return () => {
-      window.removeEventListener("load", handleLoad)
+      document.removeEventListener("DOMContentLoaded", handleDOMContentLoaded)
     }
   }, [])
 

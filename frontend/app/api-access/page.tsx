@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+   alternates: {
+    canonical: "https://freevideodownloader.co/api-access",
+  },
 }
 
 export default function APIAccessPage() {
